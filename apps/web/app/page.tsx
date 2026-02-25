@@ -80,18 +80,7 @@ export default function Home() {
       />
 
       <div className="relative z-10 mx-auto max-w-3xl text-center">
-        {/* Badge */}
-        <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 backdrop-blur-sm">
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
-          </span>
-          <span className="text-sm font-medium text-gray-300">
-            Coming Soon
-          </span>
-        </div>
-
-        {/* Ship Logo */}
+        {/* Ship Logo — visible immediately */}
         <div className="mx-auto mb-6 w-48 sm:w-56 md:w-64">
           <div
             className="text-white/80"
@@ -101,32 +90,46 @@ export default function Home() {
           </div>
         </div>
 
-        {/* App Name */}
-        <h1 className="text-display-2xl font-bold tracking-tight text-white">
-          Ship
-          <span className="text-burgundy">Cru</span>
-        </h1>
+        {/* Hero group — fades in after 1s */}
+        <div className="animate-fade-in-hero">
+          {/* Badge */}
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 backdrop-blur-sm">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+            </span>
+            <span className="text-sm font-medium text-gray-300">
+              Coming Soon
+            </span>
+          </div>
 
-        {/* Subtle divider */}
-        <div className="mx-auto mt-6 h-px w-24 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+          {/* App Name */}
+          <h1 className="font-display text-display-2xl font-bold tracking-tight text-white">
+            Ship
+            <span className="text-burgundy">Cru</span>
+          </h1>
 
-        {/* Tagline */}
-        <p className="mx-auto mt-5 max-w-2xl text-lg sm:text-xl md:text-display-xs leading-relaxed text-gray-400">
-          Where the <span className="text-burgundy">finest</span> crews <span className="text-white">ship</span> product and launch careers of the highest <span className="text-burgundy">distinction</span>.
-        </p>
+          {/* Subtle divider */}
+          <div className="mx-auto mt-6 h-px w-24 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
 
-        {/* Etymology */}
-        <div className="mt-10 animate-fade-in">
+          {/* Tagline */}
+          <p className="font-display mx-auto mt-5 max-w-2xl text-lg sm:text-xl md:text-display-xs leading-relaxed text-gray-400">
+            Where the <span className="text-burgundy">finest</span> crews <span className="text-white">ship</span> product and <span className="text-white">launch</span> careers of the highest <span className="text-burgundy">distinction</span>.
+          </p>
+        </div>
+
+        {/* Etymology — fades in after 2s */}
+        <div className="mt-10 animate-fade-in-definitions">
           <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto_1fr] items-start gap-8 sm:gap-0">
             {/* Ship */}
             <div className="sm:pr-12 text-left">
               <div className="flex items-baseline gap-2.5">
-                <span className="text-2xl sm:text-3xl font-semibold text-white tracking-tight">
+                <span className="font-display text-2xl sm:text-3xl font-semibold text-white tracking-tight">
                   ship
                 </span>
                 <span className="text-sm text-gray-600">/SHip/</span>
               </div>
-              <p className="mt-1 text-xs text-gray-700">
+              <p className="mt-1 text-sm italic text-gray-600">
                 Old English <em>scip</em>, of Germanic origin
               </p>
 
@@ -183,14 +186,14 @@ export default function Home() {
             {/* Cru */}
             <div className="sm:pl-12 text-left">
               <div className="flex items-baseline gap-2.5">
-                <span className="text-2xl sm:text-3xl font-semibold text-gray-300 tracking-tight">
+                <span className="font-display text-2xl sm:text-3xl font-semibold text-gray-300 tracking-tight">
                   cru
                 </span>
                 <span className="text-sm text-gray-600">
                   /kro&#x342;o/
                 </span>
               </div>
-              <p className="mt-1 text-xs text-gray-700">
+              <p className="mt-1 text-sm italic text-gray-600">
                 French, from <em>cru</em> &lsquo;growth&rsquo;, past participle of <em>cro&icirc;tre</em>
               </p>
 
