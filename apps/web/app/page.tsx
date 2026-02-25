@@ -8,19 +8,63 @@ export default function Home() {
         className="pointer-events-none absolute inset-0"
         style={{
           background: [
-            "radial-gradient(ellipse 80% 60% at 50% 45%, rgba(99, 91, 255, 0.07) 0%, transparent 60%)",
-            "radial-gradient(ellipse 50% 40% at 50% 50%, rgba(139, 92, 246, 0.05) 0%, transparent 50%)",
-            "radial-gradient(circle at 50% 100%, rgba(30, 27, 75, 0.4) 0%, transparent 50%)",
+            "radial-gradient(ellipse 80% 60% at 50% 45%, rgba(164, 52, 62, 0.06) 0%, transparent 60%)",
+            "radial-gradient(ellipse 50% 40% at 50% 50%, rgba(140, 40, 50, 0.04) 0%, transparent 50%)",
+            "radial-gradient(circle at 50% 100%, rgba(50, 20, 25, 0.35) 0%, transparent 50%)",
           ].join(", "),
         }}
       />
+
+      {/* Grape cluster background — bottom right */}
+      <svg
+        className="pointer-events-none absolute bottom-16 right-8 sm:bottom-24 sm:right-16 md:right-24"
+        width="280"
+        height="320"
+        viewBox="0 0 280 320"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        style={{ opacity: 0.035 }}
+      >
+        {/* Vine stem */}
+        <path
+          d="M140 10 Q120 40 130 70 Q140 100 135 130"
+          stroke="#A4343E"
+          strokeWidth="3"
+          strokeLinecap="round"
+          fill="none"
+        />
+        {/* Tendril */}
+        <path
+          d="M130 35 Q110 25 100 35 Q90 45 95 55"
+          stroke="#A4343E"
+          strokeWidth="2"
+          strokeLinecap="round"
+          fill="none"
+        />
+        {/* Leaf */}
+        <path
+          d="M155 50 Q175 30 165 15 Q155 30 140 40 Q150 45 155 50Z"
+          fill="#A4343E"
+        />
+        {/* Grape berries — cluster */}
+        {[
+          [140, 140], [120, 150], [160, 150],
+          [105, 170], [135, 170], [165, 170], [195, 160],
+          [95, 195], [120, 190], [150, 190], [180, 190],
+          [108, 215], [138, 210], [168, 210],
+          [125, 235], [155, 230],
+          [140, 255],
+        ].map(([cx, cy], i) => (
+          <circle key={i} cx={cx} cy={cy} r="18" fill="#A4343E" />
+        ))}
+      </svg>
 
       {/* Top fade for depth */}
       <div
         className="pointer-events-none absolute inset-x-0 top-0 h-40"
         style={{
           background:
-            "linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, transparent 100%)",
+            "linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, transparent 100%)",
         }}
       />
 
@@ -96,7 +140,7 @@ export default function Home() {
             {/* Cru */}
             <div className="sm:pl-10 sm:text-left text-center">
               <div className="flex items-baseline justify-center sm:justify-start gap-2.5">
-                <span className="text-2xl sm:text-3xl font-semibold text-burgundy tracking-tight">
+                <span className="text-2xl sm:text-3xl font-semibold text-gray-300 tracking-tight">
                   cru
                 </span>
                 <span className="text-sm italic text-gray-600">
@@ -110,7 +154,7 @@ export default function Home() {
                 </li>
                 <li className="text-base sm:text-lg text-gray-500">
                   <span className="text-gray-600 tabular-nums">2.</span>{" "}
-                  product <span className="text-burgundy">vintages</span> of the highest <span className="text-burgundy">distinction</span>
+                  a vineyard whose vintages are of the highest distinction
                 </li>
               </ol>
             </div>
@@ -123,7 +167,7 @@ export default function Home() {
         className="pointer-events-none absolute inset-x-0 bottom-0 h-48"
         style={{
           background:
-            "linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 100%)",
+            "linear-gradient(to top, rgba(0,0,0,0.35) 0%, transparent 100%)",
         }}
       />
     </main>
