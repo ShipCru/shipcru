@@ -84,7 +84,7 @@ export default function Home() {
         <div className="mx-auto mb-6 w-48 sm:w-56 md:w-64">
           <div
             className="text-white/80"
-            style={{ animation: "shipFloat 6s ease-in-out infinite" }}
+            style={{ animation: "shipFloat 3s ease-in-out infinite" }}
           >
             <ShipLogo />
           </div>
