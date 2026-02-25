@@ -157,18 +157,18 @@ export default function Home() {
               <ol className="mt-2.5 space-y-3 list-none p-0">
                 <li>
                   <p className="text-base sm:text-lg text-gray-300">
-                    to deploy product to production.
-                  </p>
-                  <p className="mt-1 text-sm italic text-gray-600">
-                    &ldquo;the crew shipped it to production before morning coffee&rdquo;
-                  </p>
-                </li>
-                <li>
-                  <p className="text-base sm:text-lg text-gray-300">
                     to launch a career forward.
                   </p>
                   <p className="mt-1 text-sm italic text-gray-600">
                     &ldquo;she shipped her career to the next level&rdquo;
+                  </p>
+                </li>
+                <li>
+                  <p className="text-base sm:text-lg text-gray-300">
+                    to deploy product to production.
+                  </p>
+                  <p className="mt-1 text-sm italic text-gray-600">
+                    &ldquo;the crew shipped it to production before morning coffee&rdquo;
                   </p>
                 </li>
               </ol>
