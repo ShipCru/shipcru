@@ -60,3 +60,10 @@ input[type="number"] {
 input[type="search"]::-webkit-search-cancel-button {
     -webkit-appearance: none;
 }
+
+/* Ship floating animation */
+@keyframes shipFloat {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    25% { transform: translateY(-6px) rotate(0.5deg); }
+    75% { transform: translateY(4px) rotate(-0.5deg); }
+}

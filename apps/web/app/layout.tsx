@@ -2,7 +2,7 @@ import "../styles/globals.css";
 
 export const metadata = {
   title: "ShipCru",
-  description: "Coming Soon",
+  description: "Ship code with your cru.",
 };
 
 export default function RootLayout({
@@ -11,8 +11,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className="bg-primary-950 text-white antialiased">{children}</body>
+    <html lang="en" className="dark-mode">
+      <body className="bg-bg-primary-solid text-white antialiased">
+        {children}
+      </body>
     </html>
   );
 }
