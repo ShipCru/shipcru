@@ -139,7 +139,7 @@ export default function Home() {
                     to deploy product to production.
                   </p>
                   <p className="mt-1 text-sm italic text-gray-600">
-                    &ldquo;ship fast, learn faster, iterate always&rdquo;
+                    &ldquo;we shipped v2 before the demo&rdquo;
                   </p>
                 </li>
                 <li>
@@ -200,7 +200,7 @@ export default function Home() {
                     the crew that ships product.
                   </p>
                   <p className="mt-1 text-sm italic text-gray-600">
-                    &ldquo;the cru shipped three releases this week&rdquo;
+                    &ldquo;a crew that ships to production before morning coffee&rdquo;
                   </p>
                 </li>
                 <li>
@@ -215,11 +215,10 @@ export default function Home() {
                 <li>
                   <p className="text-base sm:text-lg text-gray-300">
                     <span className="text-gray-600 tabular-nums">3.</span>{" "}
-                    a vineyard or group of vineyards, especially one of
-                    recognized superior quality.
+                    a vineyard of recognized superior quality.
                   </p>
                   <p className="mt-1 text-sm italic text-gray-600">
-                    &ldquo;a premier cru Burgundy&rdquo;
+                    &ldquo;a grand cru from Pauillac, Bordeaux&rdquo;
                   </p>
                 </li>
               </ol>
