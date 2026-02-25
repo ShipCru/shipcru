@@ -49,7 +49,7 @@ export default function Home() {
         {/* App Name */}
         <h1 className="text-display-2xl font-bold tracking-tight text-white">
           Ship
-          <span className="text-violet-400">Cru</span>
+          <span className="text-burgundy">Cru</span>
         </h1>
 
         {/* Subtle divider */}
@@ -57,7 +57,7 @@ export default function Home() {
 
         {/* Tagline */}
         <p className="mx-auto mt-8 max-w-2xl text-lg sm:text-xl md:text-display-xs leading-relaxed text-gray-400">
-          Where great crews ship product of the highest distinction.
+          Where the <span className="text-burgundy">finest</span> crews ship product of the highest <span className="text-burgundy">distinction</span>.
         </p>
 
         {/* Etymology */}
@@ -74,11 +74,11 @@ export default function Home() {
               <ol className="mt-4 space-y-2 list-none p-0">
                 <li className="text-base sm:text-lg text-gray-500">
                   <span className="text-gray-600 tabular-nums">1.</span>{" "}
-                  to deploy code to production
+                  to deploy product to production
                 </li>
                 <li className="text-base sm:text-lg text-gray-500">
                   <span className="text-gray-600 tabular-nums">2.</span>{" "}
-                  to send a product into the world
+                  to launch a career forward
                 </li>
                 <li className="text-base sm:text-lg text-gray-500">
                   <span className="text-gray-600 tabular-nums">3.</span>{" "}
@@ -96,7 +96,7 @@ export default function Home() {
             {/* Cru */}
             <div className="sm:pl-10 sm:text-left text-center">
               <div className="flex items-baseline justify-center sm:justify-start gap-2.5">
-                <span className="text-2xl sm:text-3xl font-semibold text-violet-400 tracking-tight">
+                <span className="text-2xl sm:text-3xl font-semibold text-burgundy tracking-tight">
                   cru
                 </span>
                 <span className="text-sm italic text-gray-600">
@@ -106,11 +106,11 @@ export default function Home() {
               <ol className="mt-4 space-y-2 list-none p-0">
                 <li className="text-base sm:text-lg text-gray-500">
                   <span className="text-gray-600 tabular-nums">1.</span>{" "}
-                  the crew you <em className="not-italic text-white/70">ship</em> with
+                  the team that <em className="not-italic text-white/70">ships</em> careers forward
                 </li>
                 <li className="text-base sm:text-lg text-gray-500">
                   <span className="text-gray-600 tabular-nums">2.</span>{" "}
-                  vintages of the highest distinction
+                  product <span className="text-burgundy">vintages</span> of the highest <span className="text-burgundy">distinction</span>
                 </li>
               </ol>
             </div>

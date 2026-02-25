@@ -112,6 +112,8 @@
     }
 
     /* BASE COLOR */
+    --color-burgundy: #9B3A44;
+
     --color-transparent: rgb(0 0 0 / 0);
 
     --color-white: rgb(255 255 255);

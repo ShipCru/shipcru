@@ -2,7 +2,7 @@ import "../styles/globals.css";
 
 export const metadata = {
   title: "ShipCru",
-  description: "Where great crews ship product of the highest distinction.",
+  description: "Where the finest crews ship product of the highest distinction.",
   icons: {
     icon: "/favicon.svg",
   },
