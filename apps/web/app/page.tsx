@@ -102,7 +102,7 @@ export default function Home() {
           <div className="mx-auto mt-6 h-px w-24 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
 
           {/* Tagline */}
-          <p className="font-display mx-auto mt-5 max-w-2xl text-lg sm:text-xl md:text-display-xs leading-relaxed text-gray-400">
+          <p className="font-display mx-auto mt-5 max-w-2xl text-xl sm:text-2xl md:text-display-sm leading-relaxed text-gray-400">
             Where the <span className="text-burgundy">finest</span> crews <span className="text-white">ship</span> product and <span className="text-white">launch</span> careers of the highest <span className="text-burgundy">distinction</span>.
           </p>
         </div>
