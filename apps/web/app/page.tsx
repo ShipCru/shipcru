@@ -160,7 +160,7 @@ export default function Home() {
                     to deploy product to production.
                   </p>
                   <p className="mt-1 text-sm italic text-gray-600">
-                    &ldquo;we shipped v2 before the demo&rdquo;
+                    &ldquo;the crew shipped it to production before morning coffee&rdquo;
                   </p>
                 </li>
                 <li>
@@ -222,7 +222,7 @@ export default function Home() {
                     a team of exceptional quality.
                   </p>
                   <p className="mt-1 text-sm italic text-gray-600">
-                    &ldquo;a crew that ships to production before morning coffee&rdquo;
+                    &ldquo;a crew known for shipping without compromise&rdquo;
                   </p>
                 </li>
               </ol>
