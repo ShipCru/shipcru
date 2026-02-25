@@ -2,7 +2,7 @@ import { ShipLogo } from "./components/ShipLogo";
 
 export default function Home() {
   return (
-    <main className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-4">
+    <main className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-4 py-16 sm:py-20">
       {/* Layered gradient backdrop */}
       <div
         className="pointer-events-none absolute inset-0"
@@ -81,7 +81,7 @@ export default function Home() {
 
       <div className="relative z-10 mx-auto max-w-3xl text-center">
         {/* Badge */}
-        <div className="mb-10 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 backdrop-blur-sm">
+        <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 backdrop-blur-sm">
           <span className="relative flex h-2 w-2">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
@@ -92,7 +92,7 @@ export default function Home() {
         </div>
 
         {/* Ship Logo */}
-        <div className="mx-auto mb-10 w-48 sm:w-56 md:w-64">
+        <div className="mx-auto mb-6 w-48 sm:w-56 md:w-64">
           <div
             className="text-white/80"
             style={{ animation: "shipFloat 6s ease-in-out infinite" }}
@@ -108,16 +108,16 @@ export default function Home() {
         </h1>
 
         {/* Subtle divider */}
-        <div className="mx-auto mt-10 h-px w-24 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+        <div className="mx-auto mt-6 h-px w-24 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
 
         {/* Tagline */}
-        <p className="mx-auto mt-8 max-w-2xl text-lg sm:text-xl md:text-display-xs leading-relaxed text-gray-400">
+        <p className="mx-auto mt-5 max-w-2xl text-lg sm:text-xl md:text-display-xs leading-relaxed text-gray-400">
           Where the <span className="text-burgundy">finest</span> crews ship product and launch careers of the highest <span className="text-burgundy">distinction</span>.
         </p>
 
         {/* Etymology */}
-        <div className="mt-16 animate-fade-in">
-          <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto_1fr] items-start gap-10 sm:gap-0">
+        <div className="mt-10 animate-fade-in">
+          <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto_1fr] items-start gap-8 sm:gap-0">
             {/* Ship */}
             <div className="sm:pr-12 text-left">
               <div className="flex items-baseline gap-2.5">
@@ -132,14 +132,14 @@ export default function Home() {
                 <span className="text-sm italic text-gray-600">verb</span>
                 <div className="h-px flex-1 bg-white/10" />
               </div>
-              <ol className="mt-3 space-y-4 list-none p-0">
+              <ol className="mt-2.5 space-y-3 list-none p-0">
                 <li>
                   <p className="text-base sm:text-lg text-gray-300">
                     <span className="text-gray-600 tabular-nums">1.</span>{" "}
                     to deploy product to production.
                   </p>
                   <p className="mt-1 text-sm italic text-gray-600">
-                    &ldquo;we shipped the new release at midnight&rdquo;
+                    &ldquo;ship fast, learn faster, iterate always&rdquo;
                   </p>
                 </li>
                 <li>
@@ -154,11 +154,11 @@ export default function Home() {
               </ol>
 
               {/* noun */}
-              <div className="mt-6 flex items-center gap-3">
+              <div className="mt-4 flex items-center gap-3">
                 <span className="text-sm italic text-gray-600">noun</span>
                 <div className="h-px flex-1 bg-white/10" />
               </div>
-              <ol className="mt-3 list-none p-0" start={3}>
+              <ol className="mt-2.5 list-none p-0" start={3}>
                 <li>
                   <p className="text-base sm:text-lg text-gray-300">
                     <span className="text-gray-600 tabular-nums">3.</span>{" "}
@@ -190,7 +190,7 @@ export default function Home() {
                 <span className="text-sm italic text-gray-600">noun</span>
                 <div className="h-px flex-1 bg-white/10" />
               </div>
-              <ol className="mt-3 space-y-4 list-none p-0">
+              <ol className="mt-2.5 space-y-3 list-none p-0">
                 <li>
                   <p className="text-base sm:text-lg text-gray-300">
                     <span className="text-gray-600 tabular-nums">1.</span>{" "}
