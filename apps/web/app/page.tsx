@@ -92,17 +92,6 @@ export default function Home() {
 
         {/* Hero group — fades in after 1s */}
         <div className="animate-fade-in-hero">
-          {/* Badge */}
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 backdrop-blur-sm">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
-            </span>
-            <span className="text-sm font-medium text-gray-300">
-              Coming Soon
-            </span>
-          </div>
-
           {/* App Name */}
           <h1 className="font-display text-display-2xl font-bold tracking-tight text-white">
             Ship
