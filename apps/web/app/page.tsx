@@ -112,7 +112,7 @@ export default function Home() {
 
         {/* Tagline */}
         <p className="mx-auto mt-8 max-w-2xl text-lg sm:text-xl md:text-display-xs leading-relaxed text-gray-400">
-          Where the <span className="text-burgundy">finest</span> crews ship product of the highest <span className="text-burgundy">distinction</span>.
+          Where the <span className="text-burgundy">finest</span> crews ship product and launch careers of the highest <span className="text-burgundy">distinction</span>.
         </p>
 
         {/* Etymology */}
