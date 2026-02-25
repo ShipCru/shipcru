@@ -23,7 +23,7 @@ export default function Home() {
         viewBox="0 0 280 320"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        style={{ opacity: 0.035 }}
+        style={{ opacity: 0.07 }}
       >
         {/* Vine stem */}
         <path
@@ -45,6 +45,8 @@ export default function Home() {
         <path
           d="M155 50 Q175 30 165 15 Q155 30 140 40 Q150 45 155 50Z"
           fill="#A4343E"
+          stroke="#A4343E"
+          strokeWidth="1"
         />
         {/* Grape berries — cluster */}
         {[
@@ -55,7 +57,16 @@ export default function Home() {
           [125, 235], [155, 230],
           [140, 255],
         ].map(([cx, cy], i) => (
-          <circle key={i} cx={cx} cy={cy} r="18" fill="#A4343E" />
+          <circle
+            key={i}
+            cx={cx}
+            cy={cy}
+            r="18"
+            fill="#A4343E"
+            fillOpacity="0.3"
+            stroke="#A4343E"
+            strokeWidth="1.5"
+          />
         ))}
       </svg>
 
@@ -106,27 +117,53 @@ export default function Home() {
 
         {/* Etymology */}
         <div className="mt-16 animate-fade-in">
-          <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto_1fr] items-start gap-8 sm:gap-0">
+          <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto_1fr] items-start gap-10 sm:gap-0">
             {/* Ship */}
-            <div className="sm:pr-10 sm:text-right text-center">
-              <div className="flex items-baseline justify-center sm:justify-end gap-2.5">
+            <div className="sm:pr-12 text-left">
+              <div className="flex items-baseline gap-2.5">
                 <span className="text-2xl sm:text-3xl font-semibold text-white tracking-tight">
                   ship
                 </span>
-                <span className="text-sm italic text-gray-600">/SHip/</span>
+                <span className="text-sm text-gray-600">/SHip/</span>
               </div>
-              <ol className="mt-4 space-y-2 list-none p-0">
-                <li className="text-base sm:text-lg text-gray-500">
-                  <span className="text-gray-600 tabular-nums">1.</span>{" "}
-                  to deploy product to production
+
+              {/* verb */}
+              <div className="mt-4 flex items-center gap-3">
+                <span className="text-sm italic text-gray-600">verb</span>
+                <div className="h-px flex-1 bg-white/10" />
+              </div>
+              <ol className="mt-3 space-y-4 list-none p-0">
+                <li>
+                  <p className="text-base sm:text-lg text-gray-300">
+                    <span className="text-gray-600 tabular-nums">1.</span>{" "}
+                    to deploy product to production.
+                  </p>
+                  <p className="mt-1 text-sm italic text-gray-600">
+                    &ldquo;we shipped the new release at midnight&rdquo;
+                  </p>
                 </li>
-                <li className="text-base sm:text-lg text-gray-500">
-                  <span className="text-gray-600 tabular-nums">2.</span>{" "}
-                  to launch a career forward
+                <li>
+                  <p className="text-base sm:text-lg text-gray-300">
+                    <span className="text-gray-600 tabular-nums">2.</span>{" "}
+                    to launch a career forward.
+                  </p>
+                  <p className="mt-1 text-sm italic text-gray-600">
+                    &ldquo;she shipped her career to the next level&rdquo;
+                  </p>
                 </li>
-                <li className="text-base sm:text-lg text-gray-500">
-                  <span className="text-gray-600 tabular-nums">3.</span>{" "}
-                  a vessel on the open sea
+              </ol>
+
+              {/* noun */}
+              <div className="mt-6 flex items-center gap-3">
+                <span className="text-sm italic text-gray-600">noun</span>
+                <div className="h-px flex-1 bg-white/10" />
+              </div>
+              <ol className="mt-3 list-none p-0" start={3}>
+                <li>
+                  <p className="text-base sm:text-lg text-gray-300">
+                    <span className="text-gray-600 tabular-nums">3.</span>{" "}
+                    a vessel on the open sea.
+                  </p>
                 </li>
               </ol>
             </div>
@@ -138,23 +175,49 @@ export default function Home() {
             <div className="sm:hidden mx-auto h-px w-16 bg-gradient-to-r from-transparent via-white/15 to-transparent" />
 
             {/* Cru */}
-            <div className="sm:pl-10 sm:text-left text-center">
-              <div className="flex items-baseline justify-center sm:justify-start gap-2.5">
+            <div className="sm:pl-12 text-left">
+              <div className="flex items-baseline gap-2.5">
                 <span className="text-2xl sm:text-3xl font-semibold text-gray-300 tracking-tight">
                   cru
                 </span>
-                <span className="text-sm italic text-gray-600">
+                <span className="text-sm text-gray-600">
                   /kro&#x342;o/
                 </span>
               </div>
-              <ol className="mt-4 space-y-2 list-none p-0">
-                <li className="text-base sm:text-lg text-gray-500">
-                  <span className="text-gray-600 tabular-nums">1.</span>{" "}
-                  the team that <em className="not-italic text-white/70">ships</em> careers forward
+
+              {/* noun */}
+              <div className="mt-4 flex items-center gap-3">
+                <span className="text-sm italic text-gray-600">noun</span>
+                <div className="h-px flex-1 bg-white/10" />
+              </div>
+              <ol className="mt-3 space-y-4 list-none p-0">
+                <li>
+                  <p className="text-base sm:text-lg text-gray-300">
+                    <span className="text-gray-600 tabular-nums">1.</span>{" "}
+                    the crew that ships product.
+                  </p>
+                  <p className="mt-1 text-sm italic text-gray-600">
+                    &ldquo;the cru shipped three releases this week&rdquo;
+                  </p>
                 </li>
-                <li className="text-base sm:text-lg text-gray-500">
-                  <span className="text-gray-600 tabular-nums">2.</span>{" "}
-                  a vineyard whose vintages are of the highest distinction
+                <li>
+                  <p className="text-base sm:text-lg text-gray-300">
+                    <span className="text-gray-600 tabular-nums">2.</span>{" "}
+                    a group of people who work closely together.
+                  </p>
+                  <p className="mt-1 text-sm italic text-gray-600">
+                    &ldquo;an engineering cru&rdquo;
+                  </p>
+                </li>
+                <li>
+                  <p className="text-base sm:text-lg text-gray-300">
+                    <span className="text-gray-600 tabular-nums">3.</span>{" "}
+                    a vineyard or group of vineyards, especially one of
+                    recognized superior quality.
+                  </p>
+                  <p className="mt-1 text-sm italic text-gray-600">
+                    &ldquo;a premier cru Burgundy&rdquo;
+                  </p>
                 </li>
               </ol>
             </div>
