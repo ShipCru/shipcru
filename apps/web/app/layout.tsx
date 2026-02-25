@@ -1,4 +1,4 @@
-import "./globals.css";
+import "../styles/globals.css";
 
 export const metadata = {
   title: "ShipCru",
@@ -12,7 +12,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className="bg-primary-950 text-white antialiased">{children}</body>
     </html>
   );
 }
