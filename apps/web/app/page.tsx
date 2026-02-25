@@ -64,6 +64,69 @@ export default function Home() {
         <p className="mt-6 text-sm text-gray-500">
           Development tools for teams that ship fast.
         </p>
+
+        {/* Etymology */}
+        <div className="mt-16 animate-fade-in">
+          <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto_1fr] items-start gap-8 sm:gap-0">
+            {/* Ship */}
+            <div className="sm:pr-10 sm:text-right text-center">
+              <div className="flex items-baseline justify-center sm:justify-end gap-2.5">
+                <span className="text-xl font-semibold text-white tracking-tight">
+                  ship
+                </span>
+                <span className="text-xs italic text-gray-600">/SHip/</span>
+              </div>
+              <ol className="mt-3.5 space-y-1.5 list-none p-0">
+                <li className="text-sm text-gray-500">
+                  <span className="text-gray-600 tabular-nums">1.</span>{" "}
+                  to deploy code to production
+                </li>
+                <li className="text-sm text-gray-500">
+                  <span className="text-gray-600 tabular-nums">2.</span>{" "}
+                  to send a product into the world
+                </li>
+                <li className="text-sm text-gray-500">
+                  <span className="text-gray-600 tabular-nums">3.</span>{" "}
+                  a vessel on the open sea
+                </li>
+              </ol>
+            </div>
+
+            {/* Vertical divider — desktop only */}
+            <div className="hidden sm:block w-px self-stretch bg-gradient-to-b from-transparent via-white/15 to-transparent" />
+
+            {/* Mobile divider */}
+            <div className="sm:hidden mx-auto h-px w-16 bg-gradient-to-r from-transparent via-white/15 to-transparent" />
+
+            {/* Cru */}
+            <div className="sm:pl-10 sm:text-left text-center">
+              <div className="flex items-baseline justify-center sm:justify-start gap-2.5">
+                <span className="text-xl font-semibold text-violet-400 tracking-tight">
+                  cru
+                </span>
+                <span className="text-xs italic text-gray-600">
+                  /kro&#x342;o/
+                </span>
+              </div>
+              <ol className="mt-3.5 space-y-1.5 list-none p-0">
+                <li className="text-sm text-gray-500">
+                  <span className="text-gray-600 tabular-nums">1.</span>{" "}
+                  a vineyard&thinsp;&mdash;&thinsp;
+                  <em className="not-italic text-gray-400">Grand Cru</em>
+                </li>
+                <li className="text-sm text-gray-500">
+                  <span className="text-gray-600 tabular-nums">2.</span>{" "}
+                  your crew, who you build with
+                </li>
+                <li className="text-sm text-gray-500">
+                  <span className="text-gray-600 tabular-nums">3.</span>{" "}
+                  <em className="not-italic text-gray-400">French:</em> raw,
+                  unfiltered
+                </li>
+              </ol>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Bottom gradient for grounding */}
