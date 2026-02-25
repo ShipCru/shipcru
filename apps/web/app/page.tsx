@@ -164,6 +164,9 @@ export default function Home() {
                     <span className="text-gray-600 tabular-nums">3.</span>{" "}
                     a vessel on the open sea.
                   </p>
+                  <p className="mt-1 text-sm italic text-gray-600">
+                    &ldquo;the ship set sail at dawn&rdquo;
+                  </p>
                 </li>
               </ol>
             </div>
