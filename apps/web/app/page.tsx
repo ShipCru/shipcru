@@ -62,7 +62,7 @@ export default function Home() {
 
         {/* Sub-tagline */}
         <p className="mt-6 text-sm text-gray-500">
-          Development tools for teams that ship fast.
+          Where great crews ship product of the highest distinction.
         </p>
 
         {/* Etymology */}
@@ -111,17 +111,11 @@ export default function Home() {
               <ol className="mt-3.5 space-y-1.5 list-none p-0">
                 <li className="text-sm text-gray-500">
                   <span className="text-gray-600 tabular-nums">1.</span>{" "}
-                  a vineyard&thinsp;&mdash;&thinsp;
-                  <em className="not-italic text-gray-400">Grand Cru</em>
+                  the crew you <em className="not-italic text-white/70">ship</em> with
                 </li>
                 <li className="text-sm text-gray-500">
                   <span className="text-gray-600 tabular-nums">2.</span>{" "}
-                  your crew, who you build with
-                </li>
-                <li className="text-sm text-gray-500">
-                  <span className="text-gray-600 tabular-nums">3.</span>{" "}
-                  <em className="not-italic text-gray-400">French:</em> raw,
-                  unfiltered
+                  vintages of the highest distinction
                 </li>
               </ol>
             </div>
