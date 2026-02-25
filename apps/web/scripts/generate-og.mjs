@@ -97,10 +97,10 @@ const shipSvg = `
     <path d="M20 310 Q55 300 90 310 Q125 320 160 310 Q195 300 230 310 Q265 320 300 310 Q335 300 370 310" stroke="white" stroke-width="1" stroke-opacity="0.2" fill="none" />
   </g>
 
-  <!-- Title: Ship -->
-  <text x="390" y="500" font-family="Georgia, 'Times New Roman', serif" font-size="130" font-weight="bold" fill="white" letter-spacing="-2">Ship</text>
-  <!-- Title: Cru -->
-  <text x="720" y="500" font-family="Georgia, 'Times New Roman', serif" font-size="130" font-weight="bold" fill="#A4343E" letter-spacing="-2">Cru</text>
+  <!-- Title: ShipCru -->
+  <text x="600" y="500" font-family="Georgia, 'Times New Roman', serif" font-size="130" font-weight="bold" letter-spacing="-2" text-anchor="middle">
+    <tspan fill="white">Ship</tspan><tspan fill="#A4343E">Cru</tspan>
+  </text>
 
   <!-- Bottom accent line -->
   <rect x="0" y="624" width="${width}" height="6" fill="#A4343E" opacity="0.6" />
