@@ -133,6 +133,22 @@ export default function Home() {
                 Old English <em>scip</em>, of Germanic origin
               </p>
 
+              {/* noun */}
+              <div className="mt-4 flex items-center gap-3">
+                <span className="text-sm italic text-gray-600">noun</span>
+                <div className="h-px flex-1 bg-white/10" />
+              </div>
+              <ol className="mt-2.5 list-none p-0">
+                <li>
+                  <p className="text-base sm:text-lg text-gray-300">
+                    a vessel on the open sea.
+                  </p>
+                  <p className="mt-1 text-sm italic text-gray-600">
+                    &ldquo;the ship set sail at dawn&rdquo;
+                  </p>
+                </li>
+              </ol>
+
               {/* verb */}
               <div className="mt-4 flex items-center gap-3">
                 <span className="text-sm italic text-gray-600">verb</span>
@@ -153,22 +169,6 @@ export default function Home() {
                   </p>
                   <p className="mt-1 text-sm italic text-gray-600">
                     &ldquo;she shipped her career to the next level&rdquo;
-                  </p>
-                </li>
-              </ol>
-
-              {/* noun */}
-              <div className="mt-4 flex items-center gap-3">
-                <span className="text-sm italic text-gray-600">noun</span>
-                <div className="h-px flex-1 bg-white/10" />
-              </div>
-              <ol className="mt-2.5 list-none p-0" start={3}>
-                <li>
-                  <p className="text-base sm:text-lg text-gray-300">
-                    a vessel on the open sea.
-                  </p>
-                  <p className="mt-1 text-sm italic text-gray-600">
-                    &ldquo;the ship set sail at dawn&rdquo;
                   </p>
                 </li>
               </ol>
@@ -202,10 +202,11 @@ export default function Home() {
               <ol className="mt-2.5 space-y-3 list-none p-0">
                 <li>
                   <p className="text-base sm:text-lg text-gray-300">
-                    a team of exceptional quality.
+                    a wine of the most superior grade, or the vineyard
+                    that produces it.
                   </p>
                   <p className="mt-1 text-sm italic text-gray-600">
-                    &ldquo;a crew that ships to production before morning coffee&rdquo;
+                    &ldquo;officially rated at grand cru status&rdquo;
                   </p>
                 </li>
                 <li>
@@ -218,11 +219,10 @@ export default function Home() {
                 </li>
                 <li>
                   <p className="text-base sm:text-lg text-gray-300">
-                    a wine of the most superior grade, or the vineyard
-                    that produces it.
+                    a team of exceptional quality.
                   </p>
                   <p className="mt-1 text-sm italic text-gray-600">
-                    &ldquo;officially rated at grand cru status&rdquo;
+                    &ldquo;a crew that ships to production before morning coffee&rdquo;
                   </p>
                 </li>
               </ol>
