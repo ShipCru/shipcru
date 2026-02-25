@@ -126,6 +126,9 @@ export default function Home() {
                 </span>
                 <span className="text-sm text-gray-600">/SHip/</span>
               </div>
+              <p className="mt-1 text-xs text-gray-700">
+                Old English <em>scip</em>, of Germanic origin
+              </p>
 
               {/* verb */}
               <div className="mt-4 flex items-center gap-3">
@@ -187,6 +190,9 @@ export default function Home() {
                   /kro&#x342;o/
                 </span>
               </div>
+              <p className="mt-1 text-xs text-gray-700">
+                French, from <em>cru</em> &lsquo;growth&rsquo;, past participle of <em>cro&icirc;tre</em>
+              </p>
 
               {/* noun */}
               <div className="mt-4 flex items-center gap-3">
@@ -197,7 +203,7 @@ export default function Home() {
                 <li>
                   <p className="text-base sm:text-lg text-gray-300">
                     <span className="text-gray-600 tabular-nums">1.</span>{" "}
-                    the crew that ships product.
+                    a crew of exceptional quality that ships product.
                   </p>
                   <p className="mt-1 text-sm italic text-gray-600">
                     &ldquo;a crew that ships to production before morning coffee&rdquo;
@@ -215,10 +221,11 @@ export default function Home() {
                 <li>
                   <p className="text-base sm:text-lg text-gray-300">
                     <span className="text-gray-600 tabular-nums">3.</span>{" "}
-                    a vineyard of recognized superior quality.
+                    a wine of the most superior grade, or the vineyard
+                    that produces it.
                   </p>
                   <p className="mt-1 text-sm italic text-gray-600">
-                    &ldquo;a grand cru from Pauillac, Bordeaux&rdquo;
+                    &ldquo;officially rated at grand cru status&rdquo;
                   </p>
                 </li>
               </ol>
