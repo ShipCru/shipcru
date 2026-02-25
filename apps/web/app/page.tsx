@@ -141,7 +141,6 @@ export default function Home() {
               <ol className="mt-2.5 space-y-3 list-none p-0">
                 <li>
                   <p className="text-base sm:text-lg text-gray-300">
-                    <span className="text-gray-600 tabular-nums">1.</span>{" "}
                     to deploy product to production.
                   </p>
                   <p className="mt-1 text-sm italic text-gray-600">
@@ -150,7 +149,6 @@ export default function Home() {
                 </li>
                 <li>
                   <p className="text-base sm:text-lg text-gray-300">
-                    <span className="text-gray-600 tabular-nums">2.</span>{" "}
                     to launch a career forward.
                   </p>
                   <p className="mt-1 text-sm italic text-gray-600">
@@ -167,7 +165,6 @@ export default function Home() {
               <ol className="mt-2.5 list-none p-0" start={3}>
                 <li>
                   <p className="text-base sm:text-lg text-gray-300">
-                    <span className="text-gray-600 tabular-nums">3.</span>{" "}
                     a vessel on the open sea.
                   </p>
                   <p className="mt-1 text-sm italic text-gray-600">
@@ -205,8 +202,7 @@ export default function Home() {
               <ol className="mt-2.5 space-y-3 list-none p-0">
                 <li>
                   <p className="text-base sm:text-lg text-gray-300">
-                    <span className="text-gray-600 tabular-nums">1.</span>{" "}
-                    a crew of exceptional quality that ships product.
+                    a team of exceptional quality.
                   </p>
                   <p className="mt-1 text-sm italic text-gray-600">
                     &ldquo;a crew that ships to production before morning coffee&rdquo;
@@ -214,16 +210,14 @@ export default function Home() {
                 </li>
                 <li>
                   <p className="text-base sm:text-lg text-gray-300">
-                    <span className="text-gray-600 tabular-nums">2.</span>{" "}
                     a group of people who work closely together.
                   </p>
                   <p className="mt-1 text-sm italic text-gray-600">
-                    &ldquo;an engineering cru&rdquo;
+                    &ldquo;an engineering crew&rdquo;
                   </p>
                 </li>
                 <li>
                   <p className="text-base sm:text-lg text-gray-300">
-                    <span className="text-gray-600 tabular-nums">3.</span>{" "}
                     a wine of the most superior grade, or the vineyard
                     that produces it.
                   </p>
