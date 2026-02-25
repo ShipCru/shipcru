@@ -200,14 +200,6 @@ export default function Home() {
                 </li>
                 <li>
                   <p className="text-base sm:text-lg text-gray-300">
-                    a group of people who work closely together.
-                  </p>
-                  <p className="mt-1 text-sm italic text-gray-600">
-                    &ldquo;an engineering crew&rdquo;
-                  </p>
-                </li>
-                <li>
-                  <p className="text-base sm:text-lg text-gray-300">
                     a team of exceptional quality.
                   </p>
                   <p className="mt-1 text-sm italic text-gray-600">
