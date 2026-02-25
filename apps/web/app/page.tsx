@@ -52,16 +52,11 @@ export default function Home() {
           <span className="text-violet-400">Cru</span>
         </h1>
 
-        {/* Tagline */}
-        <p className="mx-auto mt-5 max-w-xl text-xl leading-relaxed text-gray-400">
-          Ship code with your cru.
-        </p>
-
         {/* Subtle divider */}
         <div className="mx-auto mt-10 h-px w-24 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
 
-        {/* Sub-tagline */}
-        <p className="mt-6 text-sm text-gray-500">
+        {/* Tagline */}
+        <p className="mx-auto mt-8 max-w-2xl text-lg sm:text-xl md:text-display-xs leading-relaxed text-gray-400">
           Where great crews ship product of the highest distinction.
         </p>
 
@@ -71,21 +66,21 @@ export default function Home() {
             {/* Ship */}
             <div className="sm:pr-10 sm:text-right text-center">
               <div className="flex items-baseline justify-center sm:justify-end gap-2.5">
-                <span className="text-xl font-semibold text-white tracking-tight">
+                <span className="text-2xl sm:text-3xl font-semibold text-white tracking-tight">
                   ship
                 </span>
-                <span className="text-xs italic text-gray-600">/SHip/</span>
+                <span className="text-sm italic text-gray-600">/SHip/</span>
               </div>
-              <ol className="mt-3.5 space-y-1.5 list-none p-0">
-                <li className="text-sm text-gray-500">
+              <ol className="mt-4 space-y-2 list-none p-0">
+                <li className="text-base sm:text-lg text-gray-500">
                   <span className="text-gray-600 tabular-nums">1.</span>{" "}
                   to deploy code to production
                 </li>
-                <li className="text-sm text-gray-500">
+                <li className="text-base sm:text-lg text-gray-500">
                   <span className="text-gray-600 tabular-nums">2.</span>{" "}
                   to send a product into the world
                 </li>
-                <li className="text-sm text-gray-500">
+                <li className="text-base sm:text-lg text-gray-500">
                   <span className="text-gray-600 tabular-nums">3.</span>{" "}
                   a vessel on the open sea
                 </li>
@@ -101,19 +96,19 @@ export default function Home() {
             {/* Cru */}
             <div className="sm:pl-10 sm:text-left text-center">
               <div className="flex items-baseline justify-center sm:justify-start gap-2.5">
-                <span className="text-xl font-semibold text-violet-400 tracking-tight">
+                <span className="text-2xl sm:text-3xl font-semibold text-violet-400 tracking-tight">
                   cru
                 </span>
-                <span className="text-xs italic text-gray-600">
+                <span className="text-sm italic text-gray-600">
                   /kro&#x342;o/
                 </span>
               </div>
-              <ol className="mt-3.5 space-y-1.5 list-none p-0">
-                <li className="text-sm text-gray-500">
+              <ol className="mt-4 space-y-2 list-none p-0">
+                <li className="text-base sm:text-lg text-gray-500">
                   <span className="text-gray-600 tabular-nums">1.</span>{" "}
                   the crew you <em className="not-italic text-white/70">ship</em> with
                 </li>
-                <li className="text-sm text-gray-500">
+                <li className="text-base sm:text-lg text-gray-500">
                   <span className="text-gray-600 tabular-nums">2.</span>{" "}
                   vintages of the highest distinction
                 </li>
