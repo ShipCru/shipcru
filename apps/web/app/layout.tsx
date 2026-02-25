@@ -3,6 +3,9 @@ import "../styles/globals.css";
 export const metadata = {
   title: "ShipCru",
   description: "Ship code with your cru.",
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({
