@@ -1,15 +1,24 @@
+import type { User } from './payload-types'
+
 import fs from 'fs'
 import path from 'path'
-import { sqliteD1Adapter } from '@payloadcms/db-d1-sqlite'
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
-import { CloudflareContext, getCloudflareContext } from '@opennextjs/cloudflare'
 import { GetPlatformProxyOptions } from 'wrangler'
+import { CloudflareContext, getCloudflareContext } from '@opennextjs/cloudflare'
+import { sqliteD1Adapter } from '@payloadcms/db-d1-sqlite'
+import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { r2Storage } from '@payloadcms/storage-r2'
 
-import { Users } from './collections/Users'
+import { isSuperAdmin } from './access/isSuperAdmin'
 import { Media } from './collections/Media'
+import { Pages } from './collections/Pages'
+import { Tenants } from './collections/Tenants'
+import { Users } from './collections/Users'
+import { SUPPORTED_LOCALES } from './locales'
+import { pluginMultiTenant } from './plugins/multiTenant'
+import { pluginNestedDocs } from './plugins/nestedDocs'
+import { getUserTenantIDs } from './utilities/getUserTenantIDs'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -50,7 +59,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media],
+  collections: [Users, Media, Tenants, Pages],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
@@ -58,11 +67,41 @@ export default buildConfig({
   },
   db: sqliteD1Adapter({ binding: cloudflare.env.D1 }),
   logger: isProduction ? cloudflareLogger : undefined,
+  localization: {
+    locales: SUPPORTED_LOCALES.map((l) => ({ code: l.value, label: l.label })),
+    defaultLocale: 'en',
+    filterAvailableLocales: async ({ req, locales }) => {
+      if (isSuperAdmin(req.user as User | null)) {
+        return locales
+      }
+
+      const tenantIds = getUserTenantIDs(req.user as User | null)
+      if (!tenantIds.length) {
+        return locales
+      }
+
+      const tenants = await req.payload.find({
+        collection: 'tenants',
+        where: { id: { in: tenantIds } },
+        select: { supportedLocales: true },
+        req,
+      })
+
+      const availableLocales = new Set<string>(
+        tenants.docs.flatMap((doc) => doc.supportedLocales ?? []).filter(Boolean),
+      )
+      return availableLocales.size > 0
+        ? locales.filter((l) => availableLocales.has(l.code as string))
+        : locales
+    },
+  },
   plugins: [
     r2Storage({
       bucket: cloudflare.env.R2,
       collections: { media: true },
     }),
+    pluginMultiTenant,
+    pluginNestedDocs,
   ],
 })
 
