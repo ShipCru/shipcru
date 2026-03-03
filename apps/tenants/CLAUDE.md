@@ -952,32 +952,6 @@ export default buildConfig({
 })
 ```
 
-### Creating Plugins
-
-```typescript
-import type { Config, Plugin } from 'payload'
-
-interface MyPluginConfig {
-  collections?: string[]
-  enabled?: boolean
-}
-
-export const myPlugin =
-  (options: MyPluginConfig): Plugin =>
-  (config: Config): Config => ({
-    ...config,
-    collections: config.collections?.map((collection) => {
-      if (options.collections?.includes(collection.slug)) {
-        return {
-          ...collection,
-          fields: [...collection.fields, { name: 'pluginField', type: 'text' }],
-        }
-      }
-      return collection
-    }),
-  })
-```
-
 ## Best Practices
 
 ### Security
@@ -1039,19 +1013,13 @@ For deeper exploration of specific topics, refer to the context files located in
 
 ### Available Context Files
 
-1. **`payload-overview.md`** - High-level architecture and core concepts
-
-   - Payload structure and initialization
-   - Configuration fundamentals
-   - Database adapters overview
-
-2. **`security-critical.md`** - Critical security patterns (⚠️ IMPORTANT)
+1. **`security-critical.md`** - Critical security patterns (⚠️ IMPORTANT)
 
    - Local API access control
    - Transaction safety in hooks
    - Preventing infinite hook loops
 
-3. **`collections.md`** - Collection configurations
+2. **`collections.md`** - Collection configurations
 
    - Basic collection patterns
    - Auth collections with RBAC
@@ -1059,7 +1027,7 @@ For deeper exploration of specific topics, refer to the context files located in
    - Drafts and versioning
    - Globals
 
-4. **`fields.md`** - Field types and patterns
+3. **`fields.md`** - Field types and patterns
 
    - All field types with examples
    - Conditional fields
@@ -1067,13 +1035,13 @@ For deeper exploration of specific topics, refer to the context files located in
    - Field validation
    - Common field patterns
 
-5. **`field-type-guards.md`** - TypeScript field type utilities
+4. **`field-type-guards.md`** - TypeScript field type utilities
 
    - Field type checking utilities
    - Safe type narrowing
    - Runtime field validation
 
-6. **`access-control.md`** - Permission patterns
+5. **`access-control.md`** - Permission patterns
 
    - Collection-level access
    - Field-level access
@@ -1081,48 +1049,41 @@ For deeper exploration of specific topics, refer to the context files located in
    - RBAC patterns
    - Multi-tenant access control
 
-7. **`access-control-advanced.md`** - Complex access patterns
+6. **`access-control-advanced.md`** - Complex access patterns
 
    - Nested document access
    - Cross-collection permissions
    - Dynamic role hierarchies
    - Performance optimization
 
-8. **`hooks.md`** - Lifecycle hooks
+7. **`hooks.md`** - Lifecycle hooks
 
    - Collection hooks
    - Field hooks
    - Hook context patterns
    - Common hook recipes
 
-9. **`queries.md`** - Database operations
+8. **`queries.md`** - Database operations
 
    - Local API usage
    - Query operators
    - Complex queries with AND/OR
    - Performance optimization
 
-10. **`endpoints.md`** - Custom API endpoints
+9. **`endpoints.md`** - Custom API endpoints
 
     - REST endpoint patterns
     - Authentication in endpoints
     - Error handling
     - Route parameters
 
-11. **`adapters.md`** - Database and storage adapters
+10. **`adapters.md`** - Database and storage adapters
 
     - MongoDB, PostgreSQL, SQLite patterns
     - Storage adapter usage (S3, Azure, GCS, etc.)
     - Custom adapter development
 
-12. **`plugin-development.md`** - Creating plugins
-
-    - Plugin architecture
-    - Modifying configuration
-    - Plugin hooks
-    - Best practices
-
-13. **`components.md`** - Custom Components
+11. **`components.md`** - Custom Components
 
     - Component types (Root, Collection, Global, Field)
     - Server vs Client Components

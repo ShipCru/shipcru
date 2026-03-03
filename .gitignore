@@ -1,5 +1,13 @@
 node_modules
 .next
 .vinext
+.open-next
 dist
 .wrangler
+
+# Environment
+.env
+.env.local
+
+# pnpm
+pnpm-debug.log*

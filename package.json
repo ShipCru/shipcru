@@ -1,10 +1,12 @@
 {
   "name": "shipcru",
   "private": true,
-  "workspaces": ["apps/*", "packages/*"],
   "scripts": {
-    "dev": "npm run dev --workspace=apps/web",
-    "build": "npm run build --workspace=apps/web",
-    "deploy": "npm run deploy --workspace=apps/web"
+    "dev": "pnpm --filter @shipcru/web dev",
+    "build": "pnpm --filter @shipcru/web build",
+    "deploy": "pnpm --filter @shipcru/web deploy",
+    "dev:tenants": "pnpm --filter @shipcru/tenants dev",
+    "build:tenants": "pnpm --filter @shipcru/tenants build",
+    "deploy:tenants": "pnpm --filter @shipcru/tenants deploy"
   }
 }
