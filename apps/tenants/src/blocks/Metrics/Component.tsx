@@ -1,7 +1,9 @@
+import type { MetricsBlock as MetricsBlockType } from '@/payload-types'
+
 import { ArrowRight, ZapFast } from '@untitledui/icons'
+
 import { Button } from '@/components/base/buttons/button'
 import { FeaturedIcon } from '@/components/foundations/featured-icon/featured-icon'
-import type { MetricsBlock as MetricsBlockType } from '@/payload-types'
 
 const defaultMetrics = [
   {

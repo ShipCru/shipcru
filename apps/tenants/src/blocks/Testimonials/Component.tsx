@@ -1,6 +1,7 @@
+import type { Media,TestimonialsBlock as TestimonialsBlockType } from '@/payload-types'
+
 import { Avatar } from '@/components/base/avatar/avatar'
 import { VerifiedTick } from '@/components/base/avatar/base-components/verified-tick'
-import type { TestimonialsBlock as TestimonialsBlockType, Media } from '@/payload-types'
 
 const defaultReviews = [
   {

@@ -1,9 +1,9 @@
 import type { Block } from 'payload'
 
-import { HeroSplitImage } from './HeroSplitImage/config'
 import { Blog } from './Blog/config'
-import { Testimonials } from './Testimonials/config'
+import { HeroSplitImage } from './HeroSplitImage/config'
 import { Metrics } from './Metrics/config'
+import { Testimonials } from './Testimonials/config'
 
 export const HERO_BLOCKS: Block[] = [HeroSplitImage]
 

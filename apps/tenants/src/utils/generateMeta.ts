@@ -1,13 +1,11 @@
-import type { Metadata } from 'next'
-
 import type { Media, Page } from '@/payload-types'
+import type { Metadata } from 'next'
 
 import { getServerSideURL } from './getURL'
 import { mergeOpenGraph } from './mergeOpenGraph'
 
 export function generateMeta({ doc }: { doc: Partial<Page> | null }): Metadata {
-  // meta fields are loosely typed since SEO plugin types aren't regenerated yet
-  const meta = (doc as Record<string, any>)?.meta as Record<string, any> | undefined
+  const meta = doc.meta
 
   const ogImage =
     meta?.image && typeof meta.image === 'object' && 'url' in meta.image

@@ -1,14 +1,13 @@
 'use client'
 
 import type { CSSProperties, FC, HTMLAttributes, ReactNode } from 'react'
+
 import React, {
   cloneElement,
   createContext,
   isValidElement,
-  useCallback,
   useContext,
-  useEffect,
-  useState,
+  useMemo,
 } from 'react'
 
 type PaginationPage = {
@@ -52,9 +51,7 @@ const PaginationRoot = ({
   style,
   className,
 }: PaginationRootProps) => {
-  const [pages, setPages] = useState<PaginationItemType[]>([])
-
-  const createPaginationItems = useCallback((): PaginationItemType[] => {
+  const pages = useMemo((): PaginationItemType[] => {
     const items: PaginationItemType[] = []
     const totalPageNumbers = siblingCount * 2 + 5
 
@@ -136,11 +133,6 @@ const PaginationRoot = ({
 
     return items
   }, [total, siblingCount, page])
-
-  useEffect(() => {
-    const paginationItems = createPaginationItems()
-    setPages(paginationItems)
-  }, [createPaginationItems])
 
   const onPageChangeHandler = (newPage: number) => {
     onPageChange?.(newPage)

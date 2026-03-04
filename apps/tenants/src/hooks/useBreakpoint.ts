@@ -30,12 +30,12 @@ export const useBreakpoint = (size: keyof typeof screens) => {
   useEffect(() => {
     const breakpoint = window.matchMedia(`(min-width: ${screens[size]})`);
 
-    setMatches(breakpoint.matches);
-
     const handleChange = (value: MediaQueryListEvent) =>
       setMatches(value.matches);
 
+    // Sync initial value via the listener pattern
     breakpoint.addEventListener("change", handleChange);
+    handleChange({ matches: breakpoint.matches } as MediaQueryListEvent);
     return () => breakpoint.removeEventListener("change", handleChange);
   }, [size]);
 

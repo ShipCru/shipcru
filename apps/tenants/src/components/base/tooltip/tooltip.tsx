@@ -6,12 +6,14 @@ import type {
   TooltipProps as AriaTooltipProps,
   TooltipTriggerComponentProps as AriaTooltipTriggerComponentProps,
 } from 'react-aria-components'
+
 import {
   Button as AriaButton,
   OverlayArrow as AriaOverlayArrow,
   Tooltip as AriaTooltip,
   TooltipTrigger as AriaTooltipTrigger,
 } from 'react-aria-components'
+
 import { cx } from '@/utils/styles/cx'
 
 interface TooltipProps
@@ -114,7 +116,7 @@ export const Tooltip = ({
   )
 }
 
-interface TooltipTriggerProps extends AriaButtonProps {}
+type TooltipTriggerProps = AriaButtonProps
 
 export const TooltipTrigger = ({ children, className, ...buttonProps }: TooltipTriggerProps) => {
   return (

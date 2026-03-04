@@ -11,16 +11,12 @@ function Skeleton({ label, delay }: { label: string; delay: string }) {
 }
 
 async function SlowBlock({ delay, label }: { delay: number; label: string }) {
-  const start = Date.now()
   await new Promise((r) => setTimeout(r, delay))
-  const elapsed = Date.now() - start
 
   return (
     <div className="rounded-lg border border-green-500 bg-green-950 p-6">
       <p className="font-bold text-green-400">{label}</p>
-      <p className="text-sm text-green-300">
-        Resolved in ~{elapsed}ms (server time: {new Date().toISOString()})
-      </p>
+      <p className="text-sm text-green-300">Resolved after ~{delay}ms delay</p>
     </div>
   )
 }

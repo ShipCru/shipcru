@@ -1,5 +1,7 @@
 'use client'
 
+import type { BlogBlock as BlogBlockType, Media } from '@/payload-types'
+
 import { PaginationPageDefault } from '@/components/application/pagination/pagination'
 import { Button } from '@/components/base/buttons/button'
 import { Form } from '@/components/base/form/form'
@@ -8,7 +10,6 @@ import {
   type Article,
   Simple02Vertical,
 } from '@/components/marketing/blog/base-components/blog-cards'
-import type { BlogBlock as BlogBlockType, Media } from '@/payload-types'
 import { useBreakpoint } from '@/hooks/useBreakpoint'
 import { cx } from '@/utils/styles/cx'
 

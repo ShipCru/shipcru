@@ -1,7 +1,8 @@
+import type { Page } from '@/payload-types'
 import type React from 'react'
+
 import { Fragment } from 'react'
 
-import type { Page } from '@/payload-types'
 import { BlogBlock } from './Blog/Component'
 import { HeroSplitImageBlock } from './HeroSplitImage/Component'
 import { MetricsBlock } from './Metrics/Component'
@@ -10,6 +11,7 @@ import { TestimonialsBlock } from './Testimonials/Component'
 type HeroBlock = NonNullable<Page['hero']>[number]
 type LayoutBlock = NonNullable<Page['layout']>[number]
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const blockComponents: Record<string, React.ComponentType<{ data: any }>> = {
   heroSplitImage: HeroSplitImageBlock,
   blog: BlogBlock,

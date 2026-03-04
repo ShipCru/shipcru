@@ -1,7 +1,9 @@
 'use client'
 
 import type { ComponentProps } from 'react'
+
 import { ArrowUpRight } from '@untitledui/icons'
+
 import { Avatar } from '@/components/base/avatar/avatar'
 import { BadgeGroup } from '@/components/base/badges/badge-groups'
 import { cx } from '@/utils/styles/cx'

@@ -2,8 +2,8 @@
 
 import type React from 'react'
 
-import { RefreshRouteOnSave as PayloadLivePreview } from '@payloadcms/live-preview-react'
 import { useRouter } from 'next/navigation'
+import { RefreshRouteOnSave as PayloadLivePreview } from '@payloadcms/live-preview-react'
 
 import { getClientSideURL } from '@/utils/getURL'
 

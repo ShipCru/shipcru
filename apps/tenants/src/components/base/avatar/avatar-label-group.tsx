@@ -1,6 +1,7 @@
 'use client'
 
 import { type ReactNode } from 'react'
+
 import { cx } from '@/utils/styles/cx'
 import { Avatar, type AvatarProps } from './avatar'
 

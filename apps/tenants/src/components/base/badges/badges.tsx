@@ -1,17 +1,19 @@
 'use client'
 
-import type { MouseEventHandler, ReactNode } from 'react'
-import { X as CloseX } from '@untitledui/icons'
-import { Dot } from '@/components/foundations/dot-icon'
-import { cx } from '@/utils/styles/cx'
 import type {
   BadgeColors,
-  BadgeTypeToColorMap,
   BadgeTypes,
+  BadgeTypeToColorMap,
   FlagTypes,
   IconComponentType,
   Sizes,
 } from './badge-types'
+import type { MouseEventHandler, ReactNode } from 'react'
+
+import { X as CloseX } from '@untitledui/icons'
+
+import { Dot } from '@/components/foundations/dot-icon'
+import { cx } from '@/utils/styles/cx'
 import { badgeTypes } from './badge-types'
 
 export const filledColors: Record<

@@ -1,10 +1,12 @@
 'use client'
 
+import type { PaginationRootProps } from './pagination-base'
+
 import { ArrowLeft, ArrowRight } from '@untitledui/icons'
+
 import { Button } from '@/components/base/buttons/button'
 import { useBreakpoint } from '@/hooks/useBreakpoint'
 import { cx } from '@/utils/styles/cx'
-import type { PaginationRootProps } from './pagination-base'
 import { Pagination } from './pagination-base'
 
 interface PaginationProps extends Partial<Omit<PaginationRootProps, 'children'>> {
