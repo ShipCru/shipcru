@@ -18,7 +18,7 @@ import { Users } from './collections/Users'
 import { SUPPORTED_LOCALES } from './locales'
 import { pluginMultiTenant } from './plugins/multiTenant'
 import { pluginNestedDocs } from './plugins/nestedDocs'
-import { getUserTenantIDs } from './utilities/getUserTenantIDs'
+import { getUserTenantIDs } from './utils/getUserTenantIDs'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)

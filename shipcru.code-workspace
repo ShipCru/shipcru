@@ -1,0 +1,17 @@
+{
+  "folders": [
+    {
+      "name": "root",
+      "path": "."
+    },
+    {
+      "name": "tenants",
+      "path": "apps/tenants"
+    },
+    {
+      "name": "web",
+      "path": "apps/web"
+    }
+  ],
+  "settings": {}
+}

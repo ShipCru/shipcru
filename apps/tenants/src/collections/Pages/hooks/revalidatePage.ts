@@ -1,30 +1,44 @@
+import type { Page } from '@/payload-types'
 import type { CollectionAfterChangeHook, CollectionAfterDeleteHook } from 'payload'
 
-// TODO: Implement actual page revalidation (e.g. Next.js revalidatePath)
-export const revalidatePage: CollectionAfterChangeHook = ({
+import { revalidatePath } from 'next/cache'
+
+import { getPathFromBreadcrumbs } from '@/utils/buildUrl'
+
+function revalidateCachedPage(
+  doc: Pick<Page, 'breadcrumbs'>,
+  payload: { logger: { info: (msg: string) => void } },
+): void {
+  const slug = getPathFromBreadcrumbs(doc.breadcrumbs)
+  const path = !slug || slug === 'home' ? '/' : `/${slug}`
+
+  payload.logger.info(`Revalidating page at path: ${path}`)
+  revalidatePath(path)
+}
+
+export const revalidatePage: CollectionAfterChangeHook<Page> = ({
   doc,
   previousDoc,
   req: { payload, context },
 }) => {
   if (!context.disableRevalidate) {
     if (doc._status === 'published') {
-      payload.logger.info(`Revalidating page: ${doc.slug}`)
+      revalidateCachedPage(doc, payload)
     }
 
     if (previousDoc?._status === 'published' && doc._status !== 'published') {
-      payload.logger.info(`Revalidating unpublished page: ${previousDoc.slug}`)
+      revalidateCachedPage(previousDoc, payload)
     }
   }
   return doc
 }
 
-// TODO: Implement actual page revalidation on delete
-export const revalidateDelete: CollectionAfterDeleteHook = ({
+export const revalidateDelete: CollectionAfterDeleteHook<Page> = ({
   doc,
   req: { context, payload },
 }) => {
   if (!context.disableRevalidate) {
-    payload.logger.info(`Revalidating deleted page: ${doc.slug}`)
+    revalidateCachedPage(doc, payload)
   }
 
   return doc

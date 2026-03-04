@@ -208,22 +208,13 @@ export interface Page {
   id: number;
   tenant?: (number | null) | Tenant;
   title: string;
-  content?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
+  hero?: HeroSplitImageBlock[] | null;
+  layout?: (BlogBlock | TestimonialsBlock | MetricsBlock)[] | null;
   publishedAt?: string | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
   slug: string;
   author?: (number | null) | User;
   parent?: (number | null) | Page;
@@ -238,6 +229,103 @@ export interface Page {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroSplitImageBlock".
+ */
+export interface HeroSplitImageBlock {
+  heading: string;
+  description?: string | null;
+  image?: (number | null) | Media;
+  formPlaceholder?: string | null;
+  formButtonLabel?: string | null;
+  formHelperText?: string | null;
+  reviewText?: string | null;
+  reviewRating?: string | null;
+  avatars?:
+    | {
+        image?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'heroSplitImage';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BlogBlock".
+ */
+export interface BlogBlock {
+  label?: string | null;
+  heading: string;
+  description?: string | null;
+  formPlaceholder?: string | null;
+  formButtonLabel?: string | null;
+  articles?:
+    | {
+        title: string;
+        summary?: string | null;
+        href?: string | null;
+        categoryName?: string | null;
+        thumbnail?: (number | null) | Media;
+        publishedAt?: string | null;
+        readingTime?: string | null;
+        authorName?: string | null;
+        authorImage?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'blog';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TestimonialsBlock".
+ */
+export interface TestimonialsBlock {
+  heading: string;
+  description?: string | null;
+  reviews: {
+    quote: string;
+    authorName: string;
+    authorTitle?: string | null;
+    authorImage?: (number | null) | Media;
+    companyName?: string | null;
+    /**
+     * Light mode logo
+     */
+    companyLogo?: (number | null) | Media;
+    /**
+     * Dark mode logo
+     */
+    companyLogoDark?: (number | null) | Media;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'testimonials';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MetricsBlock".
+ */
+export interface MetricsBlock {
+  heading: string;
+  description?: string | null;
+  metrics: {
+    value: string;
+    label: string;
+    description?: string | null;
+    ctaLabel?: string | null;
+    ctaLink?: string | null;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'metrics';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -480,8 +568,20 @@ export interface TenantsSelect<T extends boolean = true> {
 export interface PagesSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
-  content?: T;
+  hero?:
+    | T
+    | {
+        heroSplitImage?: T | HeroSplitImageBlockSelect<T>;
+      };
+  layout?:
+    | T
+    | {
+        blog?: T | BlogBlockSelect<T>;
+        testimonials?: T | TestimonialsBlockSelect<T>;
+        metrics?: T | MetricsBlockSelect<T>;
+      };
   publishedAt?: T;
+  generateSlug?: T;
   slug?: T;
   author?: T;
   parent?: T;
@@ -496,6 +596,97 @@ export interface PagesSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroSplitImageBlock_select".
+ */
+export interface HeroSplitImageBlockSelect<T extends boolean = true> {
+  heading?: T;
+  description?: T;
+  image?: T;
+  formPlaceholder?: T;
+  formButtonLabel?: T;
+  formHelperText?: T;
+  reviewText?: T;
+  reviewRating?: T;
+  avatars?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BlogBlock_select".
+ */
+export interface BlogBlockSelect<T extends boolean = true> {
+  label?: T;
+  heading?: T;
+  description?: T;
+  formPlaceholder?: T;
+  formButtonLabel?: T;
+  articles?:
+    | T
+    | {
+        title?: T;
+        summary?: T;
+        href?: T;
+        categoryName?: T;
+        thumbnail?: T;
+        publishedAt?: T;
+        readingTime?: T;
+        authorName?: T;
+        authorImage?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TestimonialsBlock_select".
+ */
+export interface TestimonialsBlockSelect<T extends boolean = true> {
+  heading?: T;
+  description?: T;
+  reviews?:
+    | T
+    | {
+        quote?: T;
+        authorName?: T;
+        authorTitle?: T;
+        authorImage?: T;
+        companyName?: T;
+        companyLogo?: T;
+        companyLogoDark?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MetricsBlock_select".
+ */
+export interface MetricsBlockSelect<T extends boolean = true> {
+  heading?: T;
+  description?: T;
+  metrics?:
+    | T
+    | {
+        value?: T;
+        label?: T;
+        description?: T;
+        ctaLabel?: T;
+        ctaLink?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

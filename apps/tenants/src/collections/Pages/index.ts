@@ -1,13 +1,17 @@
-import type { CollectionConfig } from 'payload'
-
+import { type CollectionConfig, slugField } from 'payload'
 import { createBreadcrumbsField, createParentField } from '@payloadcms/plugin-nested-docs'
 
 import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
 import { canModify } from '@/access/canModify'
+import { HERO_BLOCKS, LAYOUT_BLOCKS } from '@/blocks'
+import { seo } from '@/lib/fields/seo'
+import { Page } from '@/payload-types'
+import { buildUrl } from '@/utils/buildUrl'
+import { generatePreviewPath } from '@/utils/generatePreviewPath'
 import { deletePageAccess } from './access/deletePage'
 import { populatePublishedAt } from './hooks/populatePublishedAt'
+import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
 import { setAuthor } from './hooks/setAuthor'
-import { revalidatePage, revalidateDelete } from './hooks/revalidatePage'
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
@@ -20,6 +24,32 @@ export const Pages: CollectionConfig = {
   admin: {
     defaultColumns: ['title', 'slug', 'updatedAt', '_status'],
     useAsTitle: 'title',
+    livePreview: {
+      url: ({ data, req }) =>
+        // TODO - change according to multitenancy
+        generatePreviewPath({
+          slug: data?.slug,
+          collection: 'pages',
+          path: buildUrl({
+            collection: 'pages',
+            breadcrumbs: data?.breadcrumbs,
+            absolute: false,
+          }),
+          req,
+        }),
+    },
+    preview: (data, { req }) =>
+      // TODO - change according to multitenancy
+      generatePreviewPath({
+        slug: data?.slug as string,
+        collection: 'pages',
+        path: buildUrl({
+          collection: 'pages',
+          breadcrumbs: data?.breadcrumbs as Page['breadcrumbs'],
+          absolute: false,
+        }),
+        req,
+      }),
   },
   fields: [
     {
@@ -29,9 +59,38 @@ export const Pages: CollectionConfig = {
       localized: true,
     },
     {
-      name: 'content',
-      type: 'richText',
-      localized: true,
+      type: 'tabs',
+      tabs: [
+        {
+          label: 'Hero',
+          fields: [
+            {
+              name: 'hero',
+              type: 'blocks',
+              maxRows: 1,
+              blocks: [...HERO_BLOCKS],
+            },
+          ],
+        },
+        {
+          label: 'Content',
+          fields: [
+            {
+              name: 'layout',
+              type: 'blocks',
+              blocks: [...LAYOUT_BLOCKS],
+              admin: {
+                initCollapsed: true,
+              },
+            },
+          ],
+        },
+        {
+          name: 'meta',
+          label: 'SEO',
+          fields: [...seo()],
+        },
+      ],
     },
     {
       name: 'publishedAt',
@@ -40,16 +99,9 @@ export const Pages: CollectionConfig = {
         position: 'sidebar',
       },
     },
-    {
-      name: 'slug',
-      type: 'text',
-      required: true,
-      localized: true,
-      index: true,
-      admin: {
-        position: 'sidebar',
-      },
-    },
+    slugField({
+      useAsSlug: 'title',
+    }),
     {
       name: 'author',
       type: 'relationship',
