@@ -1,8 +1,8 @@
-import type { Access, Where } from 'payload'
 import type { User } from '@/payload-types'
+import type { Access, Where } from 'payload'
 
 import { isSuperAdmin } from '@/access/isSuperAdmin'
-import { getUserTenantIDs } from '@/utilities/getUserTenantIDs'
+import { getUserTenantIDs } from '@/utils/getUserTenantIDs'
 
 export const deletePageAccess: Access = ({ req }) => {
   if (!req.user) return false

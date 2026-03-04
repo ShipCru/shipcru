@@ -210,6 +210,18 @@ export interface Page {
   title: string;
   hero?: HeroSplitImageBlock[] | null;
   layout?: (BlogBlock | TestimonialsBlock | MetricsBlock)[] | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+    /**
+     * Allow search engines to index this page
+     */
+    robots?: ('index' | 'noindex') | null;
+  };
   publishedAt?: string | null;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
@@ -579,6 +591,14 @@ export interface PagesSelect<T extends boolean = true> {
         blog?: T | BlogBlockSelect<T>;
         testimonials?: T | TestimonialsBlockSelect<T>;
         metrics?: T | MetricsBlockSelect<T>;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+        robots?: T;
       };
   publishedAt?: T;
   generateSlug?: T;

@@ -1,7 +1,7 @@
 import type { CollectionSlug, PayloadRequest } from 'payload'
 
 type Props = {
-  collection: Extract<CollectionSlug, 'pages' | 'news' | 'locations' | 'events'>
+  collection: Extract<CollectionSlug, 'pages'>
   slug: string
   path: string
   req: PayloadRequest

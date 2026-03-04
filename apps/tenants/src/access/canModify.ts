@@ -1,8 +1,8 @@
-import type { AccessArgs } from 'payload'
 import type { User } from '@/payload-types'
+import type { AccessArgs } from 'payload'
 
 import { isSuperAdmin } from '@/access/isSuperAdmin'
-import { getUserTenantIDs } from '@/utilities/getUserTenantIDs'
+import { getUserTenantIDs } from '@/utils/getUserTenantIDs'
 
 export const canModify = ({ req, data }: AccessArgs) => {
   if (!req.user) {

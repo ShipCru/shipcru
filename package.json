@@ -8,5 +8,8 @@
     "dev:tenants": "pnpm --filter @shipcru/tenants dev",
     "build:tenants": "pnpm --filter @shipcru/tenants build",
     "deploy:tenants": "pnpm --filter @shipcru/tenants deploy"
+  },
+  "dependencies": {
+    "@payloadcms/translations": "3.77.0"
   }
 }

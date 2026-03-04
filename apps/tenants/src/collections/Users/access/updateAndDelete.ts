@@ -1,8 +1,8 @@
-import type { Access } from 'payload'
 import type { User } from '@/payload-types'
+import type { Access } from 'payload'
 
 import { isSuperAdmin } from '@/access/isSuperAdmin'
-import { getUserTenantIDs } from '@/utilities/getUserTenantIDs'
+import { getUserTenantIDs } from '@/utils/getUserTenantIDs'
 
 export const updateAndDeleteAccess: Access = ({ req, id }) => {
   if (!req.user) return false

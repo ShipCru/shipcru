@@ -1,8 +1,9 @@
+import type { User } from '@/payload-types'
+
 import { multiTenantPlugin } from '@payloadcms/plugin-multi-tenant'
 
 import { isSuperAdmin } from '@/access/isSuperAdmin'
-import { getUserTenantIDs } from '@/utilities/getUserTenantIDs'
-import type { User } from '@/payload-types'
+import { getUserTenantIDs } from '@/utils/getUserTenantIDs'
 
 export const pluginMultiTenant = multiTenantPlugin({
   collections: {
