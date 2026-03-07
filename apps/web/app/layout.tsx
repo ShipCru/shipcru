@@ -3,7 +3,7 @@ import "../styles/globals.css";
 const siteUrl = "https://shipcru.com";
 const title = "ShipCru";
 const description =
-  "Where the finest crews ship product and launch careers of the highest distinction.";
+  "Where the finest crews launch product and ship careers of the highest distinction.";
 
 export const metadata = {
   title,
@@ -22,7 +22,7 @@ export const metadata = {
         url: "/og.png",
         width: 1200,
         height: 630,
-        alt: "ShipCru — Where the finest crews ship product and launch careers of the highest distinction.",
+        alt: "ShipCru — Where the finest crews launch product and ship careers of the highest distinction.",
       },
     ],
     type: "website",

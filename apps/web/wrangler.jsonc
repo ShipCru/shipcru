@@ -1,6 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "shipcru",
+  "account_id": "4b75627097c57c8449db718e749395eb",
   "routes": [
     { "pattern": "shipcru.com", "custom_domain": true },
     { "pattern": "www.shipcru.com", "custom_domain": true }

@@ -1,10 +1,17 @@
 {
   "name": "shipcru",
   "private": true,
-  "workspaces": ["apps/*", "packages/*"],
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "dev": "npm run dev --workspace=apps/web",
-    "build": "npm run build --workspace=apps/web",
-    "deploy": "npm run deploy --workspace=apps/web"
+    "dev": "dotenv -- npm run dev --workspace=apps/web",
+    "build": "dotenv -- npm run build --workspace=apps/web",
+    "deploy": "dotenv -- npm run deploy --workspace=apps/web",
+    "wrangler": "dotenv -- wrangler --config apps/web/wrangler.jsonc"
+  },
+  "devDependencies": {
+    "dotenv-cli": "^11.0.0"
   }
 }

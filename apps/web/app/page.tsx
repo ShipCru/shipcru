@@ -2,28 +2,43 @@ import { ShipLogo } from "./components/ShipLogo";
 
 export default function Home() {
   return (
-    <main className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-4 py-16 sm:py-20">
-      {/* Layered gradient backdrop */}
+    <main
+      className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-4 py-16 sm:py-20"
+      style={{ backgroundColor: "#1a120d" }}
+    >
+      {/* Wood plank background — blurred, darkened */}
+      <div
+        className="pointer-events-none absolute -inset-4"
+        style={{
+          backgroundImage: "url(/wood-bg.jpg)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          filter: "blur(0.75px) brightness(0.28)",
+        }}
+      />
+
+      {/* Burgundy wine stain on the wood */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
           background: [
-            "radial-gradient(ellipse 80% 60% at 50% 45%, rgba(164, 52, 62, 0.06) 0%, transparent 60%)",
-            "radial-gradient(ellipse 50% 40% at 50% 50%, rgba(140, 40, 50, 0.04) 0%, transparent 50%)",
-            "radial-gradient(circle at 50% 100%, rgba(50, 20, 25, 0.35) 0%, transparent 50%)",
+            "radial-gradient(ellipse 70% 50% at 50% 45%, rgba(164, 52, 62, 0.06) 0%, transparent 60%)",
+            "radial-gradient(ellipse 40% 35% at 45% 50%, rgba(140, 40, 50, 0.04) 0%, transparent 50%)",
+            "radial-gradient(circle at 50% 100%, rgba(80, 25, 30, 0.15) 0%, transparent 45%)",
+            "radial-gradient(ellipse 30% 20% at 55% 55%, rgba(120, 35, 45, 0.03) 0%, transparent 100%)",
           ].join(", "),
         }}
       />
 
-      {/* Grape cluster background — bottom right */}
+      {/* Grape cluster background — centered bottom */}
       <svg
-        className="pointer-events-none absolute bottom-16 right-8 sm:bottom-24 sm:right-16 md:right-24"
+        className="pointer-events-none absolute bottom-8 left-1/2 -translate-x-1/2 sm:bottom-12"
         width="280"
         height="320"
         viewBox="0 0 280 320"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        style={{ opacity: 0.07 }}
+        style={{ opacity: 0.1 }}
       >
         {/* Vine stem */}
         <path
@@ -70,12 +85,12 @@ export default function Home() {
         ))}
       </svg>
 
-      {/* Top fade for depth */}
+      {/* Top fade — dark weathered edge */}
       <div
         className="pointer-events-none absolute inset-x-0 top-0 h-40"
         style={{
           background:
-            "linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, transparent 100%)",
+            "linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, transparent 100%)",
         }}
       />
 
@@ -103,7 +118,7 @@ export default function Home() {
 
           {/* Tagline */}
           <p className="font-display mx-auto mt-5 max-w-2xl text-xl sm:text-2xl md:text-display-sm leading-relaxed text-gray-400">
-            Where the <span className="text-burgundy">finest</span> crews <span className="text-white">ship</span> product and <span className="text-white">launch</span> careers of the highest <span className="text-burgundy">distinction</span>.
+            Where the <span className="text-burgundy">finest crews</span> <span className="text-white">launch</span> product and <span className="text-white">ship</span> careers of the highest <span className="text-burgundy">distinction</span>
           </p>
         </div>
 
