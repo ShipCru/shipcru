@@ -11,8 +11,13 @@ import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { r2Storage } from '@payloadcms/storage-r2'
 
 import { isSuperAdmin } from './access/isSuperAdmin'
+import { ContentVariations } from './collections/ContentVariations'
+import { Industries } from './collections/Industries'
+import { IndustryCategories } from './collections/IndustryCategories'
+import { JobTitles } from './collections/JobTitles'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
+import { Skills } from './collections/Skills'
 import { Tenants } from './collections/Tenants'
 import { Users } from './collections/Users'
 import { SUPPORTED_LOCALES } from './locales'
@@ -62,7 +67,19 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Tenants, Pages],
+  collections: [
+    Users,
+    Media,
+    Tenants,
+    Pages,
+    // Global reference data (not tenant-scoped):
+    IndustryCategories,
+    Industries,
+    JobTitles,
+    Skills,
+    // Template system:
+    ContentVariations,
+  ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
