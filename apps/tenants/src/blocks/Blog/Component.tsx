@@ -11,6 +11,7 @@ import {
   Simple02Vertical,
 } from '@/components/marketing/blog/base-components/blog-cards'
 import { useBreakpoint } from '@/hooks/useBreakpoint'
+import { resolveVariationText } from '@/lib/fields/resolveVariationText'
 import { cx } from '@/utils/styles/cx'
 
 const defaultArticles: Article[] = [
@@ -96,8 +97,7 @@ const defaultArticles: Article[] = [
   {
     id: 'article-6',
     title: 'What is wireframing?',
-    summary:
-      'Introduction to Wireframing and its Principles. Learn from the best in the industry.',
+    summary: 'Introduction to Wireframing and its Principles. Learn from the best in the industry.',
     href: '#',
     category: { name: 'Design', href: '#' },
     thumbnailUrl: 'https://www.untitledui.com/marketing/wireframing-layout.webp',
@@ -112,8 +112,7 @@ const defaultArticles: Article[] = [
   {
     id: 'article-7',
     title: 'How collaboration makes us better designers',
-    summary:
-      'Collaboration can make our teams stronger, and our individual designs better.',
+    summary: 'Collaboration can make our teams stronger, and our individual designs better.',
     href: '#',
     category: { name: 'Design', href: '#' },
     thumbnailUrl: 'https://www.untitledui.com/marketing/two-people.webp',
@@ -144,8 +143,7 @@ const defaultArticles: Article[] = [
   {
     id: 'article-9',
     title: 'Podcast: Creating a better CX Community',
-    summary:
-      "Starting a community doesn't need to be complicated, but how do you get started?",
+    summary: "Starting a community doesn't need to be complicated, but how do you get started?",
     href: '#',
     category: { name: 'Customer Success', href: '#' },
     thumbnailUrl: 'https://www.untitledui.com/marketing/sythesize.webp',
@@ -163,10 +161,11 @@ export const BlogBlock = ({ data }: { data: BlogBlockType }) => {
   const isDesktop = useBreakpoint('lg')
 
   const label = data.label || 'Blog'
-  const heading = data.heading || 'Resource library'
-  const description =
-    data.description ||
-    'Subscribe to learn about new product features, the latest in technology, solutions, and updates.'
+  const heading = resolveVariationText(data.heading, 'Resource library')
+  const description = resolveVariationText(
+    data.description,
+    'Subscribe to learn about new product features, the latest in technology, solutions, and updates.',
+  )
   const formPlaceholder = data.formPlaceholder || 'Enter your email'
   const formButtonLabel = data.formButtonLabel || 'Subscribe'
 

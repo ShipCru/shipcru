@@ -5,6 +5,7 @@ import { Fragment } from 'react'
 import { Avatar } from '@/components/base/avatar/avatar'
 import { Button } from '@/components/base/buttons/button'
 import { Input } from '@/components/base/input/input'
+import { resolveVariationText } from '@/lib/fields/resolveVariationText'
 
 const defaultAvatars = [
   {
@@ -108,10 +109,11 @@ const AvatarsWithReview = ({
 }
 
 export const HeroSplitImageBlock = ({ data }: { data: HeroSplitImageBlockType }) => {
-  const heading = data.heading ?? 'People who care about your growth'
-  const description =
-    data.description ??
-    'Powerful, self-serve product and growth analytics to help you convert, engage, and retain more.'
+  const heading = resolveVariationText(data.heading, 'People who care about your growth')
+  const description = resolveVariationText(
+    data.description,
+    'Powerful, self-serve product and growth analytics to help you convert, engage, and retain more.',
+  )
   const image = typeof data.image === 'object' ? (data.image as Media | null) : null
   const imageSrc = image?.url ?? 'https://www.untitledui.com/images/portraits/person-02'
   const imageAlt = image?.alt ?? 'Portrait'

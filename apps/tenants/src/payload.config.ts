@@ -18,6 +18,8 @@ import { JobTitles } from './collections/JobTitles'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Skills } from './collections/Skills'
+import { TemplateOverrides } from './collections/TemplateOverrides'
+import { TenantPageConfigs } from './collections/TenantPageConfigs'
 import { Tenants } from './collections/Tenants'
 import { Users } from './collections/Users'
 import { DefaultIndustryTemplate } from './globals/DefaultIndustryTemplate'
@@ -82,6 +84,9 @@ export default buildConfig({
     Skills,
     // Template system:
     ContentVariations,
+    // Group C: Template overrides & tenant page configs:
+    TemplateOverrides,
+    TenantPageConfigs,
   ],
   globals: [DefaultIndustryTemplate, DefaultJobTitleTemplate, SuffixVariations],
   editor: lexicalEditor(),

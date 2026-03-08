@@ -76,6 +76,8 @@ export interface Config {
     'job-titles': JobTitle;
     skills: Skill;
     'content-variations': ContentVariation;
+    'template-overrides': TemplateOverride;
+    'tenant-page-configs': TenantPageConfig;
     'payload-kv': PayloadKv;
     'payload-jobs': PayloadJob;
     'payload-locked-documents': PayloadLockedDocument;
@@ -100,6 +102,8 @@ export interface Config {
     'job-titles': JobTitlesSelect<false> | JobTitlesSelect<true>;
     skills: SkillsSelect<false> | SkillsSelect<true>;
     'content-variations': ContentVariationsSelect<false> | ContentVariationsSelect<true>;
+    'template-overrides': TemplateOverridesSelect<false> | TemplateOverridesSelect<true>;
+    'tenant-page-configs': TenantPageConfigsSelect<false> | TenantPageConfigsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -551,6 +555,165 @@ export interface Skill {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "template-overrides".
+ */
+export interface TemplateOverride {
+  id: number;
+  /**
+   * Human-readable label for this override
+   */
+  name: string;
+  /**
+   * Leave empty for a global override
+   */
+  tenant?: (number | null) | Tenant;
+  targetType?: ('industry-category' | 'industry' | 'job-title') | null;
+  targetEntity?:
+    | ({
+        relationTo: 'industry-categories';
+        value: number | IndustryCategory;
+      } | null)
+    | ({
+        relationTo: 'industries';
+        value: number | Industry;
+      } | null)
+    | ({
+        relationTo: 'job-titles';
+        value: number | JobTitle;
+      } | null);
+  sectionOverrides?:
+    | {
+        /**
+         * Which block type this override applies to
+         */
+        sectionBlockType?: ('heroSplitImage' | 'blog' | 'testimonials' | 'metrics') | null;
+        action?: ('hide' | 'override-props') | null;
+        /**
+         * When locked, tenant overrides cannot modify this section.
+         */
+        locked?: boolean | null;
+        /**
+         * Override the section ordering group
+         */
+        sectionGroup?: ('before' | 'test' | 'after') | null;
+        overrides_heroSplitImage?: {
+          /**
+           * Select which fields to override. Only selected fields will be applied during merge.
+           */
+          fieldsToOverride?: ('heading' | 'description' | 'formButtonLabel')[] | null;
+          heading?: {
+            mode?: ('fixed' | 'variation') | null;
+            fixedText?: string | null;
+            variationSet?: (number | null) | ContentVariation;
+          };
+          description?: {
+            mode?: ('fixed' | 'variation') | null;
+            fixedText?: string | null;
+            variationSet?: (number | null) | ContentVariation;
+          };
+          formButtonLabel?: string | null;
+        };
+        overrides_blog?: {
+          /**
+           * Select which fields to override. Only selected fields will be applied during merge.
+           */
+          fieldsToOverride?: ('heading' | 'description')[] | null;
+          heading?: {
+            mode?: ('fixed' | 'variation') | null;
+            fixedText?: string | null;
+            variationSet?: (number | null) | ContentVariation;
+          };
+          description?: {
+            mode?: ('fixed' | 'variation') | null;
+            fixedText?: string | null;
+            variationSet?: (number | null) | ContentVariation;
+          };
+        };
+        overrides_testimonials?: {
+          /**
+           * Select which fields to override. Only selected fields will be applied during merge.
+           */
+          fieldsToOverride?: ('heading' | 'description')[] | null;
+          heading?: {
+            mode?: ('fixed' | 'variation') | null;
+            fixedText?: string | null;
+            variationSet?: (number | null) | ContentVariation;
+          };
+          description?: {
+            mode?: ('fixed' | 'variation') | null;
+            fixedText?: string | null;
+            variationSet?: (number | null) | ContentVariation;
+          };
+        };
+        overrides_metrics?: {
+          /**
+           * Select which fields to override. Only selected fields will be applied during merge.
+           */
+          fieldsToOverride?: ('heading' | 'description')[] | null;
+          heading?: {
+            mode?: ('fixed' | 'variation') | null;
+            fixedText?: string | null;
+            variationSet?: (number | null) | ContentVariation;
+          };
+          description?: {
+            mode?: ('fixed' | 'variation') | null;
+            fixedText?: string | null;
+            variationSet?: (number | null) | ContentVariation;
+          };
+        };
+        /**
+         * JSON escape hatch for overrides not covered by the UI fields. Top-level keys must match block field names.
+         */
+        advancedOverrides?:
+          | {
+              [k: string]: unknown;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tenant-page-configs".
+ */
+export interface TenantPageConfig {
+  id: number;
+  /**
+   * Each tenant can have exactly one page config.
+   */
+  tenant?: (number | null) | Tenant;
+  /**
+   * Controls which industries this tenant generates pages for.
+   */
+  mode?: ('all' | 'include' | 'exclude') | null;
+  /**
+   * Industries to include or exclude based on mode.
+   */
+  industries?: (number | Industry)[] | null;
+  /**
+   * Controls which job titles within the selected industries this tenant serves.
+   */
+  jobTitleMode?: ('all-in-industries' | 'specific' | 'exclude-specific') | null;
+  /**
+   * Specific job titles to include.
+   */
+  jobTitles?: (number | JobTitle)[] | null;
+  /**
+   * Specific job titles to exclude.
+   */
+  excludedJobTitles?: (number | JobTitle)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -700,6 +863,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'content-variations';
         value: number | ContentVariation;
+      } | null)
+    | ({
+        relationTo: 'template-overrides';
+        value: number | TemplateOverride;
+      } | null)
+    | ({
+        relationTo: 'tenant-page-configs';
+        value: number | TenantPageConfig;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -1075,6 +1246,119 @@ export interface ContentVariationsSelect<T extends boolean = true> {
         weight?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "template-overrides_select".
+ */
+export interface TemplateOverridesSelect<T extends boolean = true> {
+  name?: T;
+  tenant?: T;
+  targetType?: T;
+  targetEntity?: T;
+  sectionOverrides?:
+    | T
+    | {
+        sectionBlockType?: T;
+        action?: T;
+        locked?: T;
+        sectionGroup?: T;
+        overrides_heroSplitImage?:
+          | T
+          | {
+              fieldsToOverride?: T;
+              heading?:
+                | T
+                | {
+                    mode?: T;
+                    fixedText?: T;
+                    variationSet?: T;
+                  };
+              description?:
+                | T
+                | {
+                    mode?: T;
+                    fixedText?: T;
+                    variationSet?: T;
+                  };
+              formButtonLabel?: T;
+            };
+        overrides_blog?:
+          | T
+          | {
+              fieldsToOverride?: T;
+              heading?:
+                | T
+                | {
+                    mode?: T;
+                    fixedText?: T;
+                    variationSet?: T;
+                  };
+              description?:
+                | T
+                | {
+                    mode?: T;
+                    fixedText?: T;
+                    variationSet?: T;
+                  };
+            };
+        overrides_testimonials?:
+          | T
+          | {
+              fieldsToOverride?: T;
+              heading?:
+                | T
+                | {
+                    mode?: T;
+                    fixedText?: T;
+                    variationSet?: T;
+                  };
+              description?:
+                | T
+                | {
+                    mode?: T;
+                    fixedText?: T;
+                    variationSet?: T;
+                  };
+            };
+        overrides_metrics?:
+          | T
+          | {
+              fieldsToOverride?: T;
+              heading?:
+                | T
+                | {
+                    mode?: T;
+                    fixedText?: T;
+                    variationSet?: T;
+                  };
+              description?:
+                | T
+                | {
+                    mode?: T;
+                    fixedText?: T;
+                    variationSet?: T;
+                  };
+            };
+        advancedOverrides?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tenant-page-configs_select".
+ */
+export interface TenantPageConfigsSelect<T extends boolean = true> {
+  tenant?: T;
+  mode?: T;
+  industries?: T;
+  jobTitleMode?: T;
+  jobTitles?: T;
+  excludedJobTitles?: T;
   updatedAt?: T;
   createdAt?: T;
 }

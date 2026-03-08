@@ -4,6 +4,7 @@ import { ArrowRight, ZapFast } from '@untitledui/icons'
 
 import { Button } from '@/components/base/buttons/button'
 import { FeaturedIcon } from '@/components/foundations/featured-icon/featured-icon'
+import { resolveVariationText } from '@/lib/fields/resolveVariationText'
 
 const defaultMetrics = [
   {
@@ -37,9 +38,11 @@ const defaultMetrics = [
 ]
 
 export const MetricsBlock = ({ data }: { data: MetricsBlockType }) => {
-  const heading = data.heading || 'Build something great'
-  const description =
-    data.description || 'Everything you need to build modern UI and great products.'
+  const heading = resolveVariationText(data.heading, 'Build something great')
+  const description = resolveVariationText(
+    data.description,
+    'Everything you need to build modern UI and great products.',
+  )
   const metrics = data.metrics?.length ? data.metrics : defaultMetrics
 
   return (
