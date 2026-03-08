@@ -20,6 +20,9 @@ import { Pages } from './collections/Pages'
 import { Skills } from './collections/Skills'
 import { Tenants } from './collections/Tenants'
 import { Users } from './collections/Users'
+import { DefaultIndustryTemplate } from './globals/DefaultIndustryTemplate'
+import { DefaultJobTitleTemplate } from './globals/DefaultJobTitleTemplate'
+import { SuffixVariations } from './globals/SuffixVariations'
 import { SUPPORTED_LOCALES } from './locales'
 import { pluginMultiTenant } from './plugins/multiTenant'
 import { pluginNestedDocs } from './plugins/nestedDocs'
@@ -80,6 +83,7 @@ export default buildConfig({
     // Template system:
     ContentVariations,
   ],
+  globals: [DefaultIndustryTemplate, DefaultJobTitleTemplate, SuffixVariations],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

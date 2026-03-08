@@ -1,22 +1,14 @@
 import type { Block } from 'payload'
 
+import { variationField } from '@/lib/fields/variationField'
+
 export const HeroSplitImage: Block = {
   slug: 'heroSplitImage',
   interfaceName: 'HeroSplitImageBlock',
   labels: { singular: 'Hero Split Image', plural: 'Hero Split Images' },
   fields: [
-    {
-      name: 'heading',
-      type: 'text',
-      required: true,
-      defaultValue: 'People who care about your growth',
-    },
-    {
-      name: 'description',
-      type: 'textarea',
-      defaultValue:
-        'Powerful, self-serve product and growth analytics to help you convert, engage, and retain more.',
-    },
+    variationField('heading', 'Heading'),
+    variationField('description', 'Description'),
     {
       name: 'image',
       type: 'upload',
@@ -31,6 +23,7 @@ export const HeroSplitImage: Block = {
       name: 'formButtonLabel',
       type: 'text',
       defaultValue: 'Get started',
+      custom: { overridable: true },
     },
     {
       name: 'formHelperText',

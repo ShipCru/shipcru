@@ -1,5 +1,8 @@
 import type { Block } from 'payload'
 
+import { sectionGroupField, sectionIdField } from '@/lib/fields/sectionGroupField'
+import { variationField } from '@/lib/fields/variationField'
+
 export const Blog: Block = {
   slug: 'blog',
   interfaceName: 'BlogBlock',
@@ -10,18 +13,8 @@ export const Blog: Block = {
       type: 'text',
       defaultValue: 'Blog',
     },
-    {
-      name: 'heading',
-      type: 'text',
-      required: true,
-      defaultValue: 'Resource library',
-    },
-    {
-      name: 'description',
-      type: 'textarea',
-      defaultValue:
-        'Subscribe to learn about new product features, the latest in technology, solutions, and updates.',
-    },
+    variationField('heading', 'Heading'),
+    variationField('description', 'Description'),
     {
       name: 'formPlaceholder',
       type: 'text',
@@ -40,7 +33,6 @@ export const Blog: Block = {
         {
           name: 'title',
           type: 'text',
-          required: true,
         },
         {
           name: 'summary',
@@ -78,5 +70,7 @@ export const Blog: Block = {
         },
       ],
     },
+    sectionIdField,
+    sectionGroupField,
   ],
 }

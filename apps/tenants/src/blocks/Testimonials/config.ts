@@ -1,25 +1,18 @@
 import type { Block } from 'payload'
 
+import { sectionGroupField, sectionIdField } from '@/lib/fields/sectionGroupField'
+import { variationField } from '@/lib/fields/variationField'
+
 export const Testimonials: Block = {
   slug: 'testimonials',
   interfaceName: 'TestimonialsBlock',
   labels: { singular: 'Testimonials', plural: 'Testimonials' },
   fields: [
-    {
-      name: 'heading',
-      type: 'text',
-      required: true,
-      defaultValue: 'Our reviews',
-    },
-    {
-      name: 'description',
-      type: 'textarea',
-      defaultValue: 'Hear first-hand from our incredible community of customers.',
-    },
+    variationField('heading', 'Heading'),
+    variationField('description', 'Description'),
     {
       name: 'reviews',
       type: 'array',
-      required: true,
       minRows: 1,
       maxRows: 8,
       labels: {
@@ -30,12 +23,10 @@ export const Testimonials: Block = {
         {
           name: 'quote',
           type: 'textarea',
-          required: true,
         },
         {
           name: 'authorName',
           type: 'text',
-          required: true,
         },
         {
           name: 'authorTitle',
@@ -71,5 +62,7 @@ export const Testimonials: Block = {
         },
       ],
     },
+    sectionIdField,
+    sectionGroupField,
   ],
 }

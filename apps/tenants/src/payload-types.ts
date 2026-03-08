@@ -110,8 +110,16 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: ('false' | 'none' | 'null') | false | null | 'en' | 'en'[];
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'default-industry-template': DefaultIndustryTemplate;
+    'default-job-title-template': DefaultJobTitleTemplate;
+    'suffix-variations': SuffixVariation;
+  };
+  globalsSelect: {
+    'default-industry-template': DefaultIndustryTemplateSelect<false> | DefaultIndustryTemplateSelect<true>;
+    'default-job-title-template': DefaultJobTitleTemplateSelect<false> | DefaultJobTitleTemplateSelect<true>;
+    'suffix-variations': SuffixVariationsSelect<false> | SuffixVariationsSelect<true>;
+  };
   locale: 'en';
   user: User;
   jobs: {
@@ -264,8 +272,16 @@ export interface Page {
  * via the `definition` "HeroSplitImageBlock".
  */
 export interface HeroSplitImageBlock {
-  heading: string;
-  description?: string | null;
+  heading?: {
+    mode?: ('fixed' | 'variation') | null;
+    fixedText?: string | null;
+    variationSet?: (number | null) | ContentVariation;
+  };
+  description?: {
+    mode?: ('fixed' | 'variation') | null;
+    fixedText?: string | null;
+    variationSet?: (number | null) | ContentVariation;
+  };
   image?: (number | null) | Media;
   formPlaceholder?: string | null;
   formButtonLabel?: string | null;
@@ -284,17 +300,50 @@ export interface HeroSplitImageBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "content-variations".
+ */
+export interface ContentVariation {
+  id: number;
+  name: string;
+  /**
+   * Auto-generated dot-notation key from name (e.g. hero.title). Uses a beforeValidate hook or slugField-like approach to derive from the name field.
+   */
+  assignmentKey?: string | null;
+  parent?: (number | null) | ContentVariation;
+  options?:
+    | {
+        /**
+         * Supports template variables like {{jobTitle}}, {{industry}}
+         */
+        text?: string | null;
+        weight?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "BlogBlock".
  */
 export interface BlogBlock {
   label?: string | null;
-  heading: string;
-  description?: string | null;
+  heading?: {
+    mode?: ('fixed' | 'variation') | null;
+    fixedText?: string | null;
+    variationSet?: (number | null) | ContentVariation;
+  };
+  description?: {
+    mode?: ('fixed' | 'variation') | null;
+    fixedText?: string | null;
+    variationSet?: (number | null) | ContentVariation;
+  };
   formPlaceholder?: string | null;
   formButtonLabel?: string | null;
   articles?:
     | {
-        title: string;
+        title?: string | null;
         summary?: string | null;
         href?: string | null;
         categoryName?: string | null;
@@ -306,6 +355,14 @@ export interface BlogBlock {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Auto-generated identifier for this section. Used as merge key for template overrides.
+   */
+  sectionId?: string | null;
+  /**
+   * Controls section ordering group. "Test" sections are shuffled for A/B testing.
+   */
+  sectionGroup?: ('before' | 'test' | 'after') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'blog';
@@ -315,24 +372,42 @@ export interface BlogBlock {
  * via the `definition` "TestimonialsBlock".
  */
 export interface TestimonialsBlock {
-  heading: string;
-  description?: string | null;
-  reviews: {
-    quote: string;
-    authorName: string;
-    authorTitle?: string | null;
-    authorImage?: (number | null) | Media;
-    companyName?: string | null;
-    /**
-     * Light mode logo
-     */
-    companyLogo?: (number | null) | Media;
-    /**
-     * Dark mode logo
-     */
-    companyLogoDark?: (number | null) | Media;
-    id?: string | null;
-  }[];
+  heading?: {
+    mode?: ('fixed' | 'variation') | null;
+    fixedText?: string | null;
+    variationSet?: (number | null) | ContentVariation;
+  };
+  description?: {
+    mode?: ('fixed' | 'variation') | null;
+    fixedText?: string | null;
+    variationSet?: (number | null) | ContentVariation;
+  };
+  reviews?:
+    | {
+        quote?: string | null;
+        authorName?: string | null;
+        authorTitle?: string | null;
+        authorImage?: (number | null) | Media;
+        companyName?: string | null;
+        /**
+         * Light mode logo
+         */
+        companyLogo?: (number | null) | Media;
+        /**
+         * Dark mode logo
+         */
+        companyLogoDark?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Auto-generated identifier for this section. Used as merge key for template overrides.
+   */
+  sectionId?: string | null;
+  /**
+   * Controls section ordering group. "Test" sections are shuffled for A/B testing.
+   */
+  sectionGroup?: ('before' | 'test' | 'after') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'testimonials';
@@ -342,16 +417,34 @@ export interface TestimonialsBlock {
  * via the `definition` "MetricsBlock".
  */
 export interface MetricsBlock {
-  heading: string;
-  description?: string | null;
-  metrics: {
-    value: string;
-    label: string;
-    description?: string | null;
-    ctaLabel?: string | null;
-    ctaLink?: string | null;
-    id?: string | null;
-  }[];
+  heading?: {
+    mode?: ('fixed' | 'variation') | null;
+    fixedText?: string | null;
+    variationSet?: (number | null) | ContentVariation;
+  };
+  description?: {
+    mode?: ('fixed' | 'variation') | null;
+    fixedText?: string | null;
+    variationSet?: (number | null) | ContentVariation;
+  };
+  metrics?:
+    | {
+        value?: string | null;
+        label?: string | null;
+        description?: string | null;
+        ctaLabel?: string | null;
+        ctaLink?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Auto-generated identifier for this section. Used as merge key for template overrides.
+   */
+  sectionId?: string | null;
+  /**
+   * Controls section ordering group. "Test" sections are shuffled for A/B testing.
+   */
+  sectionGroup?: ('before' | 'test' | 'after') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'metrics';
@@ -453,31 +546,6 @@ export interface Skill {
   generateSlug?: boolean | null;
   slug: string;
   category?: ('technical' | 'soft' | 'certification') | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "content-variations".
- */
-export interface ContentVariation {
-  id: number;
-  name: string;
-  /**
-   * Auto-generated dot-notation key from name (e.g. hero.title). Uses a beforeValidate hook or slugField-like approach to derive from the name field.
-   */
-  assignmentKey?: string | null;
-  parent?: (number | null) | ContentVariation;
-  options?:
-    | {
-        /**
-         * Supports template variables like {{jobTitle}}, {{industry}}
-         */
-        text?: string | null;
-        weight?: number | null;
-        id?: string | null;
-      }[]
-    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -784,8 +852,20 @@ export interface PagesSelect<T extends boolean = true> {
  * via the `definition` "HeroSplitImageBlock_select".
  */
 export interface HeroSplitImageBlockSelect<T extends boolean = true> {
-  heading?: T;
-  description?: T;
+  heading?:
+    | T
+    | {
+        mode?: T;
+        fixedText?: T;
+        variationSet?: T;
+      };
+  description?:
+    | T
+    | {
+        mode?: T;
+        fixedText?: T;
+        variationSet?: T;
+      };
   image?: T;
   formPlaceholder?: T;
   formButtonLabel?: T;
@@ -807,8 +887,20 @@ export interface HeroSplitImageBlockSelect<T extends boolean = true> {
  */
 export interface BlogBlockSelect<T extends boolean = true> {
   label?: T;
-  heading?: T;
-  description?: T;
+  heading?:
+    | T
+    | {
+        mode?: T;
+        fixedText?: T;
+        variationSet?: T;
+      };
+  description?:
+    | T
+    | {
+        mode?: T;
+        fixedText?: T;
+        variationSet?: T;
+      };
   formPlaceholder?: T;
   formButtonLabel?: T;
   articles?:
@@ -825,6 +917,8 @@ export interface BlogBlockSelect<T extends boolean = true> {
         authorImage?: T;
         id?: T;
       };
+  sectionId?: T;
+  sectionGroup?: T;
   id?: T;
   blockName?: T;
 }
@@ -833,8 +927,20 @@ export interface BlogBlockSelect<T extends boolean = true> {
  * via the `definition` "TestimonialsBlock_select".
  */
 export interface TestimonialsBlockSelect<T extends boolean = true> {
-  heading?: T;
-  description?: T;
+  heading?:
+    | T
+    | {
+        mode?: T;
+        fixedText?: T;
+        variationSet?: T;
+      };
+  description?:
+    | T
+    | {
+        mode?: T;
+        fixedText?: T;
+        variationSet?: T;
+      };
   reviews?:
     | T
     | {
@@ -847,6 +953,8 @@ export interface TestimonialsBlockSelect<T extends boolean = true> {
         companyLogoDark?: T;
         id?: T;
       };
+  sectionId?: T;
+  sectionGroup?: T;
   id?: T;
   blockName?: T;
 }
@@ -855,8 +963,20 @@ export interface TestimonialsBlockSelect<T extends boolean = true> {
  * via the `definition` "MetricsBlock_select".
  */
 export interface MetricsBlockSelect<T extends boolean = true> {
-  heading?: T;
-  description?: T;
+  heading?:
+    | T
+    | {
+        mode?: T;
+        fixedText?: T;
+        variationSet?: T;
+      };
+  description?:
+    | T
+    | {
+        mode?: T;
+        fixedText?: T;
+        variationSet?: T;
+      };
   metrics?:
     | T
     | {
@@ -867,6 +987,8 @@ export interface MetricsBlockSelect<T extends boolean = true> {
         ctaLink?: T;
         id?: T;
       };
+  sectionId?: T;
+  sectionGroup?: T;
   id?: T;
   blockName?: T;
 }
@@ -1026,6 +1148,144 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "default-industry-template".
+ */
+export interface DefaultIndustryTemplate {
+  id: number;
+  hero?: HeroSplitImageBlock[] | null;
+  sections?: (BlogBlock | TestimonialsBlock | MetricsBlock)[] | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "default-job-title-template".
+ */
+export interface DefaultJobTitleTemplate {
+  id: number;
+  hero?: HeroSplitImageBlock[] | null;
+  sections?: (BlogBlock | TestimonialsBlock | MetricsBlock)[] | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "suffix-variations".
+ */
+export interface SuffixVariation {
+  id: number;
+  /**
+   * Adjective words used in suffix generation. Pattern: {adjective}-resume-{builder}-{content}
+   */
+  adjectives?:
+    | {
+        word?: string | null;
+        weight?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Builder words used in suffix generation.
+   */
+  builders?:
+    | {
+        word?: string | null;
+        weight?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Content words used in suffix generation.
+   */
+  contentWords?:
+    | {
+        word?: string | null;
+        weight?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Default number of suffix URLs to generate per page.
+   */
+  defaultSuffixCount?: number | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "default-industry-template_select".
+ */
+export interface DefaultIndustryTemplateSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        heroSplitImage?: T | HeroSplitImageBlockSelect<T>;
+      };
+  sections?:
+    | T
+    | {
+        blog?: T | BlogBlockSelect<T>;
+        testimonials?: T | TestimonialsBlockSelect<T>;
+        metrics?: T | MetricsBlockSelect<T>;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "default-job-title-template_select".
+ */
+export interface DefaultJobTitleTemplateSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        heroSplitImage?: T | HeroSplitImageBlockSelect<T>;
+      };
+  sections?:
+    | T
+    | {
+        blog?: T | BlogBlockSelect<T>;
+        testimonials?: T | TestimonialsBlockSelect<T>;
+        metrics?: T | MetricsBlockSelect<T>;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "suffix-variations_select".
+ */
+export interface SuffixVariationsSelect<T extends boolean = true> {
+  adjectives?:
+    | T
+    | {
+        word?: T;
+        weight?: T;
+        id?: T;
+      };
+  builders?:
+    | T
+    | {
+        word?: T;
+        weight?: T;
+        id?: T;
+      };
+  contentWords?:
+    | T
+    | {
+        word?: T;
+        weight?: T;
+        id?: T;
+      };
+  defaultSuffixCount?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
