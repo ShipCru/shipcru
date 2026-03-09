@@ -2,6 +2,7 @@ import type { GlobalConfig } from 'payload'
 
 import { isSuperAdminAccess } from '@/access/isSuperAdmin'
 import { HERO_BLOCKS, LAYOUT_BLOCKS } from '@/blocks'
+import { autoGenerateSectionIdsHook } from '@/lib/hooks/autoGenerateSectionIdsHook'
 
 export const DefaultJobTitleTemplate: GlobalConfig = {
   slug: 'default-job-title-template',
@@ -10,6 +11,9 @@ export const DefaultJobTitleTemplate: GlobalConfig = {
   access: {
     read: () => true,
     update: isSuperAdminAccess,
+  },
+  hooks: {
+    beforeChange: [autoGenerateSectionIdsHook],
   },
   fields: [
     {
