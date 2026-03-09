@@ -1,4 +1,4 @@
-import type { HeroSplitImageBlock as HeroSplitImageBlockType, Media } from '@/payload-types'
+import type { HeroSplitBlock as HeroSplitBlockType, Media } from '@/payload-types'
 
 import { Fragment } from 'react'
 
@@ -37,7 +37,7 @@ const AvatarsWithReview = ({
   reviewRating,
 }: {
   className?: string
-  avatars?: HeroSplitImageBlockType['avatars']
+  avatars?: HeroSplitBlockType['avatars']
   reviewText?: string | null
   reviewRating?: string | null
 }) => {
@@ -108,7 +108,7 @@ const AvatarsWithReview = ({
   )
 }
 
-export const HeroSplitImageBlock = ({ data }: { data: HeroSplitImageBlockType }) => {
+export const HeroSplitImageBlock = ({ data }: { data: HeroSplitBlockType }) => {
   const heading = resolveVariationText(data.heading, 'People who care about your growth')
   const description = resolveVariationText(
     data.description,

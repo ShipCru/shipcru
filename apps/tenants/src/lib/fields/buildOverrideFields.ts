@@ -31,7 +31,7 @@ export function buildOverrideFields(blocks: Block[]): Field[] {
       }))
 
       return {
-        name: `overrides_${block.slug}`,
+        name: `ovrds_${block.slug}`,
         type: 'group' as const,
         admin: {
           condition: (_: unknown, siblingData: Record<string, unknown>) =>
@@ -43,6 +43,7 @@ export function buildOverrideFields(blocks: Block[]): Field[] {
             name: 'fieldsToOverride',
             type: 'select' as const,
             hasMany: true,
+            dbName: ({ tableName }: { tableName?: string }) => `enum_${tableName}_flds`,
             options: fieldOptions,
             admin: {
               description:

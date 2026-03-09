@@ -65,10 +65,18 @@ export interface ParsedResumeUrl {
   fullSlug: string
 }
 
+import type {
+  AdjectiveFormsConfig,
+  ContentWordFormsConfig,
+  ResumeWordsConfig,
+  VerbFormsConfig,
+} from './resolveWordForms'
+
 /**
  * Context object for template variable substitution.
  */
 export interface SubstitutionContext {
+  // Existing fields (unchanged):
   adjective?: string
   builder?: string
   content?: string
@@ -77,7 +85,18 @@ export interface SubstitutionContext {
   skillSeed: string
   industryName?: string
   jobTitleName?: string
+  // New fields:
+  brandTitle: string
+  resumeWords: ResumeWordsConfig
+  verbForms: VerbFormsConfig
+  adjectiveForms: AdjectiveFormsConfig
+  contentWordForms: ContentWordFormsConfig
+  pageTerms: { pageTerm: string; iSlug: string; jSlug: string }
+  pageData: Record<string, unknown>
 }
+
+// Re-export for convenience
+export type { AdjectiveFormsConfig, ContentWordFormsConfig, ResumeWordsConfig, VerbFormsConfig }
 
 /**
  * Normalized representation of a single section (block) in the template.

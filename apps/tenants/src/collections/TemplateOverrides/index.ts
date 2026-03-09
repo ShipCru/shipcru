@@ -23,6 +23,7 @@ const blockOptions = ALL_BLOCKS.map((b) => ({
 
 export const TemplateOverrides: CollectionConfig = {
   slug: 'template-overrides',
+  dbName: 'tmpl_ovrd',
   admin: {
     useAsTitle: 'name',
     group: 'Templates',
@@ -78,6 +79,7 @@ export const TemplateOverrides: CollectionConfig = {
     {
       name: 'sectionOverrides',
       type: 'array',
+      dbName: ({ tableName }: { tableName?: string }) => `${tableName}_sect_ovrd`,
       labels: { singular: 'Section Override', plural: 'Section Overrides' },
       admin: {
         initCollapsed: true,

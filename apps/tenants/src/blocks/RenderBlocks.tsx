@@ -15,7 +15,7 @@ export type Block = HeroBlock | LayoutBlock
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const blockComponents: Record<Block['blockType'], React.ComponentType<any>> = {
-  heroSplitImage: HeroSplitImageBlock,
+  heroSplit: HeroSplitImageBlock,
   blog: BlogBlock,
   testimonials: TestimonialsBlock,
   metrics: MetricsBlock,

@@ -11,6 +11,7 @@ const ALLOWED_TAGS = [
   'collection_content-variations',
   'collection_template-overrides',
   'collection_tenant-page-configs',
+  'collection_word-form-sets',
 ]
 
 export async function POST(request: Request) {

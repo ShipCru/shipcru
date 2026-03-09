@@ -117,7 +117,7 @@ export async function buildOverrideChain(
  * Maps the raw sectionOverrides from a ResolvedTemplateOverride document into the
  * SectionOverrideEntry shape expected by applyOverrides.
  *
- * This bridges the Payload collection schema (with `overrides_{blockSlug}` groups
+ * This bridges the Payload collection schema (with `ovrds_{blockSlug}` groups
  * and `fieldsToOverride` selects) into the flat SectionOverrideEntry format.
  */
 function mapSectionOverrides(
@@ -131,7 +131,7 @@ function mapSectionOverrides(
     const action = (so.action as 'hide' | 'override-props') ?? 'override-props'
 
     // Extract field overrides from the block-specific override group
-    const overrideGroupKey = `overrides_${blockType}`
+    const overrideGroupKey = `ovrds_${blockType}`
     const overrideGroup = (so[overrideGroupKey] as Record<string, unknown>) ?? {}
     const fieldsToOverride = (overrideGroup.fieldsToOverride as string[]) ?? []
 

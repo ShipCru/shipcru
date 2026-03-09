@@ -22,6 +22,7 @@ import { TemplateOverrides } from './collections/TemplateOverrides'
 import { TenantPageConfigs } from './collections/TenantPageConfigs'
 import { Tenants } from './collections/Tenants'
 import { Users } from './collections/Users'
+import { WordFormSets } from './collections/WordFormSets'
 import { DefaultIndustryTemplate } from './globals/DefaultIndustryTemplate'
 import { DefaultJobTitleTemplate } from './globals/DefaultJobTitleTemplate'
 import { SuffixVariations } from './globals/SuffixVariations'
@@ -84,6 +85,7 @@ export default buildConfig({
     Skills,
     // Template system:
     ContentVariations,
+    WordFormSets,
     // Group C: Template overrides & tenant page configs:
     TemplateOverrides,
     TenantPageConfigs,
@@ -94,7 +96,7 @@ export default buildConfig({
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
-  db: sqliteD1Adapter({ binding: cloudflare.env.D1 }),
+  db: sqliteD1Adapter({ binding: cloudflare.env.D1, push: false }),
   logger: isProduction ? cloudflareLogger : undefined,
   localization: {
     locales: SUPPORTED_LOCALES.map((l) => ({ code: l.value, label: l.label })),

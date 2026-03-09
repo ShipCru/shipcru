@@ -7,6 +7,7 @@ import { createGlobalRevalidationHook } from '@/lib/resume-pages/hooks/revalidat
 
 export const DefaultIndustryTemplate: GlobalConfig = {
   slug: 'default-industry-template',
+  dbName: 'industry_template',
   label: 'Default Industry Template',
   admin: { group: 'Templates' },
   access: {

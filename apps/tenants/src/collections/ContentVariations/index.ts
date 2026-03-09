@@ -78,7 +78,9 @@ export const ContentVariations: CollectionConfig = {
           name: 'text',
           type: 'textarea',
           admin: {
-            description: 'Supports template variables like {{jobTitle}}, {{industry}}',
+            components: {
+              Description: '/components/TemplateVariableReference#TemplateVariableReference',
+            },
           },
         },
         {

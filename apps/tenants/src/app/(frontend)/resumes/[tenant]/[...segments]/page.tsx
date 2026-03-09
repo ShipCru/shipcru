@@ -1,4 +1,9 @@
-import type { SectionConfig, VariationFieldValue, VariationInput } from '@/lib/resume-pages/types'
+import type {
+  SectionConfig,
+  SubstitutionContext,
+  VariationFieldValue,
+  VariationInput,
+} from '@/lib/resume-pages/types'
 import type { Metadata } from 'next'
 
 import { notFound } from 'next/navigation'
@@ -8,6 +13,7 @@ import config from '@payload-config'
 
 import { type Block, RenderBlocks, RenderHero } from '@/blocks/RenderBlocks'
 import { getCachedVariationSets } from '@/collections/ContentVariations/queries/getVariationSets'
+import { getCachedWordFormSets } from '@/collections/WordFormSets/queries/getWordFormSets'
 import { getCachedDefaultTemplate as getCachedIndustryTemplate } from '@/globals/DefaultIndustryTemplate/queries/getDefaultTemplate'
 import { getCachedDefaultTemplate as getCachedJobTitleTemplate } from '@/globals/DefaultJobTitleTemplate/queries/getDefaultTemplate'
 import { getCachedSuffixWords } from '@/globals/SuffixVariations/queries/getSuffixWords'
@@ -18,6 +24,12 @@ import { normalizeBlock } from '@/lib/resume-pages/normalizeBlock'
 import { orderSections } from '@/lib/resume-pages/orderSections'
 import { parseResumeUrl } from '@/lib/resume-pages/parseResumeUrl'
 import { resolveVariationField } from '@/lib/resume-pages/resolveVariations'
+import {
+  resolveAdjectiveForms,
+  resolveContentWordForms,
+  resolveResumeWords,
+  resolveVerbForms,
+} from '@/lib/resume-pages/resolveWordForms'
 import { substituteVariables } from '@/lib/resume-pages/substituteVariables'
 import { validateEntity } from '@/lib/resume-pages/validateEntity'
 import { resolveTenantBySlug } from '@/utils/resolveTenant'
@@ -50,7 +62,7 @@ export default async function ResumePage({ params }: PageProps) {
   const getCachedTemplate =
     parsed.type === 'industry' ? getCachedIndustryTemplate : getCachedJobTitleTemplate
 
-  const [defaultTemplate, overrideChain, variationSets] = await Promise.all([
+  const [defaultTemplate, overrideChain, variationSets, wordFormSets] = await Promise.all([
     getCachedTemplate(),
     buildOverrideChain(payload, {
       entityType: parsed.type,
@@ -60,6 +72,7 @@ export default async function ResumePage({ params }: PageProps) {
       tenantId: tenant.id,
     }),
     getCachedVariationSets(),
+    getCachedWordFormSets(),
   ])
 
   // Normalize template into SectionConfig objects
@@ -89,7 +102,7 @@ export default async function ResumePage({ params }: PageProps) {
   )
 
   // Substitute template variables
-  const substitutionContext = {
+  const substitutionContext: SubstitutionContext = {
     adjective: parsed.adjective,
     builder: parsed.builder,
     content: parsed.content,
@@ -97,6 +110,22 @@ export default async function ResumePage({ params }: PageProps) {
     skillSeed: `${tenant.slug}.${parsed.contentSeed || parsed.industrySlug}.skills`,
     industryName: entity.industryName,
     jobTitleName: entity.jobTitleName,
+    brandTitle: process.env.NEXT_PUBLIC_BRAND_TITLE || tenant.name,
+    resumeWords: resolveResumeWords(wordFormSets, 'resume', tenant.id),
+    verbForms: resolveVerbForms(wordFormSets, parsed.builder || '', tenant.id),
+    adjectiveForms: resolveAdjectiveForms(wordFormSets, parsed.adjective || '', tenant.id),
+    contentWordForms: resolveContentWordForms(wordFormSets, parsed.content || '', tenant.id),
+    pageTerms: {
+      pageTerm: parsed.type === 'job-title' ? entity.jobTitleName || '' : entity.industryName || '',
+      iSlug: parsed.industrySlug,
+      jSlug: parsed.jobTitleSlug || '',
+    },
+    pageData: {
+      industry: { name: entity.industryName, slug: parsed.industrySlug },
+      ...(parsed.type === 'job-title' && entity.jobTitleName
+        ? { jobTitle: { name: entity.jobTitleName, slug: parsed.jobTitleSlug } }
+        : {}),
+    },
   }
 
   const substitutedHero = resolvedHero ? substituteSection(resolvedHero, substitutionContext) : null

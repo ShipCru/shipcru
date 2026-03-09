@@ -13,7 +13,7 @@ interface ReferenceCheck {
  * relationship to `content-variations`).
  *
  * The generated field paths match the structure created by `buildOverrideFields`:
- *   `sectionOverrides.overrides_<blockSlug>.<fieldName>.variationSet`
+ *   `sectionOverrides.ovrds_<blockSlug>.<fieldName>.variationSet`
  */
 export function buildVariationReferenceChecks(blocks: Block[]): ReferenceCheck[] {
   const checks: ReferenceCheck[] = []
@@ -32,7 +32,7 @@ export function buildVariationReferenceChecks(blocks: Block[]): ReferenceCheck[]
     for (const f of overridableVariationFields) {
       checks.push({
         collection: 'template-overrides',
-        field: `sectionOverrides.overrides_${block.slug}.${f.name}.variationSet`,
+        field: `sectionOverrides.ovrds_${block.slug}.${f.name}.variationSet`,
       })
     }
   }

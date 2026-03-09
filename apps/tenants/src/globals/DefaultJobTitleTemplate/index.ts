@@ -7,6 +7,7 @@ import { createGlobalRevalidationHook } from '@/lib/resume-pages/hooks/revalidat
 
 export const DefaultJobTitleTemplate: GlobalConfig = {
   slug: 'default-job-title-template',
+  dbName: 'job_title_template',
   label: 'Default Job Title Template',
   admin: { group: 'Templates' },
   access: {

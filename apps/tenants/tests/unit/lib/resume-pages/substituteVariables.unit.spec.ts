@@ -8,6 +8,92 @@ import {
   substituteVariables,
 } from '@/lib/resume-pages/substituteVariables'
 
+/** Minimal context with all required fields — use for tests that don't care about new fields */
+function minimalCtx(overrides: Partial<SubstitutionContext> = {}): SubstitutionContext {
+  return {
+    skills: [],
+    skillSeed: 'seed',
+    brandTitle: '',
+    resumeWords: {
+      singular: 'resume',
+      plural: 'resumes',
+      capitalized: 'Resume',
+      abbreviated: 'resume',
+      abbreviatedCapitalized: 'Resume',
+      pluralCapitalized: 'Resumes',
+      pluralAbbreviated: 'resumes',
+      pluralAbbreviatedCapitalized: 'Resumes',
+    },
+    verbForms: {
+      singular: '',
+      capitalized: '',
+      worder: '',
+      worderCapitalized: '',
+      wording: '',
+      wordingCapitalized: '',
+      past: '',
+      pastCapitalized: '',
+    },
+    adjectiveForms: { singular: '', capitalized: '', adverb: '', adverbCapitalized: '' },
+    contentWordForms: { singular: '', plural: '', capitalized: '', pluralCapitalized: '' },
+    pageTerms: { pageTerm: '', iSlug: '', jSlug: '' },
+    pageData: {},
+    ...overrides,
+  }
+}
+
+const baseCtx: SubstitutionContext = {
+  adjective: 'best',
+  builder: 'creator',
+  content: 'content',
+  skills: ['JavaScript', 'React', 'Node.js', 'TypeScript'],
+  skillSeed: 'test-seed',
+  industryName: 'Technology',
+  jobTitleName: 'Software Engineer',
+  brandTitle: 'Rocket Resume',
+  resumeWords: {
+    singular: 'resume',
+    plural: 'resumes',
+    capitalized: 'Resume',
+    abbreviated: 'resume',
+    abbreviatedCapitalized: 'Resume',
+    pluralCapitalized: 'Resumes',
+    pluralAbbreviated: 'resumes',
+    pluralAbbreviatedCapitalized: 'Resumes',
+  },
+  verbForms: {
+    singular: 'create',
+    capitalized: 'Create',
+    worder: 'creator',
+    worderCapitalized: 'Creator',
+    wording: 'creating',
+    wordingCapitalized: 'Creating',
+    past: 'created',
+    pastCapitalized: 'Created',
+  },
+  adjectiveForms: {
+    singular: 'best',
+    capitalized: 'Best',
+    adverb: 'better',
+    adverbCapitalized: 'Better',
+  },
+  contentWordForms: {
+    singular: 'content',
+    plural: 'content',
+    capitalized: 'Content',
+    pluralCapitalized: 'Content',
+  },
+  pageTerms: {
+    pageTerm: 'Technology Software Engineer',
+    iSlug: 'technology',
+    jSlug: 'software-engineer',
+  },
+  pageData: {
+    industry: { name: 'Technology', slug: 'technology' },
+    jobTitle: { name: 'Software Engineer', slug: 'software-engineer' },
+  },
+}
+
 describe('BUILDER_TO_VERB mapping', () => {
   it('maps creator to create', () => {
     expect(BUILDER_TO_VERB['creator']).toBe('create')
@@ -69,16 +155,6 @@ describe('selectSkills', () => {
 })
 
 describe('substituteVariables', () => {
-  const baseCtx: SubstitutionContext = {
-    adjective: 'best',
-    builder: 'creator',
-    content: 'content',
-    skills: ['JavaScript', 'React', 'Node.js', 'TypeScript'],
-    skillSeed: 'test-seed',
-    industryName: 'Technology',
-    jobTitleName: 'Software Engineer',
-  }
-
   it('replaces $(adjective)', () => {
     expect(substituteVariables('The $(adjective) resume', baseCtx)).toBe('The best resume')
   })
@@ -123,25 +199,23 @@ describe('substituteVariables', () => {
     expect(substituteVariables('Browse $(resumeWords.plural)', baseCtx)).toBe('Browse resumes')
   })
 
-  it('replaces {skill1} and {skill2} with deterministically selected skills', () => {
-    const result = substituteVariables('Skills: {skill1} and {skill2}', baseCtx)
-    // We can't know which skills are selected without running the RNG,
-    // but we know they must be from the original list
+  it('replaces {{skill1}} and {{skill2}} with deterministically selected skills', () => {
+    const result = substituteVariables('Skills: {{skill1}} and {{skill2}}', baseCtx)
     const selectedSkills = selectSkills(baseCtx.skills, baseCtx.skillSeed, 2)
     expect(result).toBe(`Skills: ${selectedSkills[0]} and ${selectedSkills[1]}`)
   })
 
-  it('replaces {industryName}', () => {
-    expect(substituteVariables('Industry: {industryName}', baseCtx)).toBe('Industry: Technology')
+  it('replaces {{industryName}}', () => {
+    expect(substituteVariables('Industry: {{industryName}}', baseCtx)).toBe('Industry: Technology')
   })
 
-  it('replaces {jobTitleName}', () => {
-    expect(substituteVariables('Title: {jobTitleName}', baseCtx)).toBe('Title: Software Engineer')
+  it('replaces {{jobTitleName}}', () => {
+    expect(substituteVariables('Title: {{jobTitleName}}', baseCtx)).toBe('Title: Software Engineer')
   })
 
-  it('replaces multiple variables in one string', () => {
+  it('replaces multiple variables in one string mixing both syntaxes', () => {
     const result = substituteVariables(
-      '$(adjective.capitalized) {jobTitleName} $(resumeWords.singular) $(builderWords)',
+      '$(adjective.capitalized) {{jobTitleName}} $(resumeWords.singular) $(builderWords)',
       baseCtx,
     )
     expect(result).toBe('Best Software Engineer resume creator')
@@ -149,37 +223,237 @@ describe('substituteVariables', () => {
 
   describe('empty/missing values', () => {
     it('resolves missing adjective to empty and cleans up whitespace', () => {
-      const ctx: SubstitutionContext = {
-        skills: [],
-        skillSeed: 'seed',
-      }
-      const result = substituteVariables('The $(adjective) resume', ctx)
+      const result = substituteVariables('The $(adjective) resume', minimalCtx())
       expect(result).toBe('The resume')
     })
 
-    it('resolves {skill1} to empty when no skills exist and cleans whitespace', () => {
-      const ctx: SubstitutionContext = {
-        adjective: 'best',
-        builder: 'creator',
-        content: 'content',
-        skills: [],
-        skillSeed: 'seed',
-      }
-      const result = substituteVariables('Use {skill1} for resumes', ctx)
+    it('resolves {{skill1}} to empty when no skills exist and cleans whitespace', () => {
+      const result = substituteVariables(
+        'Use {{skill1}} for resumes',
+        minimalCtx({
+          adjective: 'best',
+          builder: 'creator',
+          content: 'content',
+        }),
+      )
       expect(result).toBe('Use for resumes')
     })
 
     it('handles industry pages gracefully (no suffix values)', () => {
-      const ctx: SubstitutionContext = {
-        skills: [],
-        skillSeed: '',
-        industryName: 'Healthcare',
-      }
       const result = substituteVariables(
-        '$(adjective.capitalized) {industryName} $(resumeWords.plural)',
-        ctx,
+        '$(adjective.capitalized) {{industryName}} $(resumeWords.plural)',
+        minimalCtx({ industryName: 'Healthcare' }),
       )
       expect(result).toBe('Healthcare resumes')
     })
+  })
+})
+
+describe('brand variables', () => {
+  it('replaces $(brand.title)', () => {
+    expect(substituteVariables('Welcome to $(brand.title)', baseCtx)).toBe(
+      'Welcome to Rocket Resume',
+    )
+  })
+})
+
+describe('expanded resumeWords', () => {
+  it('replaces $(resumeWords.capitalized)', () => {
+    expect(substituteVariables('$(resumeWords.capitalized) Guide', baseCtx)).toBe('Resume Guide')
+  })
+
+  it('replaces $(resumeWords.abbreviated)', () => {
+    expect(substituteVariables('Your $(resumeWords.abbreviated)', baseCtx)).toBe('Your resume')
+  })
+
+  it('replaces $(resumeWords.pluralCapitalized)', () => {
+    expect(substituteVariables('Browse $(resumeWords.pluralCapitalized)', baseCtx)).toBe(
+      'Browse Resumes',
+    )
+  })
+
+  it('replaces $(resumeWords.abbreviatedCapitalized)', () => {
+    expect(substituteVariables('$(resumeWords.abbreviatedCapitalized) Tips', baseCtx)).toBe(
+      'Resume Tips',
+    )
+  })
+
+  it('replaces $(resumeWords.pluralAbbreviated)', () => {
+    expect(substituteVariables('All $(resumeWords.pluralAbbreviated)', baseCtx)).toBe('All resumes')
+  })
+
+  it('replaces $(resumeWords.pluralAbbreviatedCapitalized)', () => {
+    expect(substituteVariables('$(resumeWords.pluralAbbreviatedCapitalized) Here', baseCtx)).toBe(
+      'Resumes Here',
+    )
+  })
+})
+
+describe('expanded verbWords', () => {
+  it('replaces $(verbWords.singular)', () => {
+    expect(substituteVariables('$(verbWords.singular) a resume', baseCtx)).toBe('create a resume')
+  })
+
+  it('replaces $(verbWords.worder)', () => {
+    expect(substituteVariables('Resume $(verbWords.worder)', baseCtx)).toBe('Resume creator')
+  })
+
+  it('replaces $(verbWords.worderCapitalized)', () => {
+    expect(substituteVariables('$(verbWords.worderCapitalized) Tool', baseCtx)).toBe('Creator Tool')
+  })
+
+  it('replaces $(verbWords.wording)', () => {
+    expect(substituteVariables('$(verbWords.wording) resumes', baseCtx)).toBe('creating resumes')
+  })
+
+  it('replaces $(verbWords.wordingCapitalized)', () => {
+    expect(substituteVariables('$(verbWords.wordingCapitalized) Resumes', baseCtx)).toBe(
+      'Creating Resumes',
+    )
+  })
+
+  it('replaces $(verbWords.past)', () => {
+    expect(substituteVariables('Resume $(verbWords.past)', baseCtx)).toBe('Resume created')
+  })
+
+  it('replaces $(verbWords.pastCapitalized)', () => {
+    expect(substituteVariables('$(verbWords.pastCapitalized) with AI', baseCtx)).toBe(
+      'Created with AI',
+    )
+  })
+})
+
+describe('adjectiveWords', () => {
+  it('replaces $(adjectiveWords.singular)', () => {
+    expect(substituteVariables('$(adjectiveWords.singular) resume', baseCtx)).toBe('best resume')
+  })
+
+  it('replaces $(adjectiveWords.capitalized)', () => {
+    expect(substituteVariables('$(adjectiveWords.capitalized) Resume', baseCtx)).toBe('Best Resume')
+  })
+
+  it('replaces $(adjectiveWords.adverb)', () => {
+    expect(substituteVariables('Do it $(adjectiveWords.adverb)', baseCtx)).toBe('Do it better')
+  })
+
+  it('replaces $(adjectiveWords.adverbCapitalized)', () => {
+    expect(substituteVariables('$(adjectiveWords.adverbCapitalized) Results', baseCtx)).toBe(
+      'Better Results',
+    )
+  })
+})
+
+describe('expanded contentWords', () => {
+  it('replaces $(contentWords.singular)', () => {
+    expect(substituteVariables('A $(contentWords.singular)', baseCtx)).toBe('A content')
+  })
+
+  it('replaces $(contentWords.plural)', () => {
+    const ctx: SubstitutionContext = {
+      ...baseCtx,
+      content: 'templates',
+      contentWordForms: {
+        singular: 'template',
+        plural: 'templates',
+        capitalized: 'Template',
+        pluralCapitalized: 'Templates',
+      },
+    }
+    expect(substituteVariables('Browse $(contentWords.plural)', ctx)).toBe('Browse templates')
+  })
+
+  it('replaces $(contentWords.pluralCapitalized)', () => {
+    const ctx: SubstitutionContext = {
+      ...baseCtx,
+      content: 'templates',
+      contentWordForms: {
+        singular: 'template',
+        plural: 'templates',
+        capitalized: 'Template',
+        pluralCapitalized: 'Templates',
+      },
+    }
+    expect(substituteVariables('$(contentWords.pluralCapitalized) Page', ctx)).toBe(
+      'Templates Page',
+    )
+  })
+})
+
+describe('pageTerms', () => {
+  it('replaces $(pageTerms.pageTerm)', () => {
+    expect(substituteVariables('About $(pageTerms.pageTerm)', baseCtx)).toBe(
+      'About Technology Software Engineer',
+    )
+  })
+
+  it('replaces $(pageTerms.iSlug)', () => {
+    expect(substituteVariables('Slug: $(pageTerms.iSlug)', baseCtx)).toBe('Slug: technology')
+  })
+
+  it('replaces $(pageTerms.jSlug)', () => {
+    expect(substituteVariables('Job: $(pageTerms.jSlug)', baseCtx)).toBe('Job: software-engineer')
+  })
+})
+
+describe('pageData dynamic bag', () => {
+  it('resolves $(pageData.industry.name)', () => {
+    expect(substituteVariables('In $(pageData.industry.name)', baseCtx)).toBe('In Technology')
+  })
+
+  it('resolves $(pageData.industry.slug)', () => {
+    expect(substituteVariables('$(pageData.industry.slug)', baseCtx)).toBe('technology')
+  })
+
+  it('resolves $(pageData.jobTitle.name)', () => {
+    expect(substituteVariables('$(pageData.jobTitle.name)', baseCtx)).toBe('Software Engineer')
+  })
+
+  it('resolves missing pageData path to empty', () => {
+    expect(substituteVariables('$(pageData.missing.path)', baseCtx)).toBe('')
+  })
+})
+
+describe('{{...}} syntax', () => {
+  it('resolves the same variables as $()', () => {
+    expect(substituteVariables('{{adjective}}', baseCtx)).toBe('best')
+    expect(substituteVariables('{{adjective.capitalized}}', baseCtx)).toBe('Best')
+    expect(substituteVariables('{{brand.title}}', baseCtx)).toBe('Rocket Resume')
+    expect(substituteVariables('{{resumeWords.plural}}', baseCtx)).toBe('resumes')
+    expect(substituteVariables('{{verbWords.wording}}', baseCtx)).toBe('creating')
+    expect(substituteVariables('{{pageTerms.iSlug}}', baseCtx)).toBe('technology')
+  })
+
+  it('supports modifiers', () => {
+    expect(substituteVariables('{{brand.title:nbsp}}', baseCtx)).toBe('Rocket\u00a0Resume')
+  })
+
+  it('resolves pageData paths', () => {
+    expect(substituteVariables('{{pageData.industry.name}}', baseCtx)).toBe('Technology')
+  })
+})
+
+describe('modifiers', () => {
+  it('applies :capitalizeFirstLetter', () => {
+    expect(substituteVariables('$(pageData.industry.name:capitalizeFirstLetter)', baseCtx)).toBe(
+      'Technology',
+    )
+  })
+
+  it('applies :nbsp', () => {
+    expect(substituteVariables('$(brand.title:nbsp)', baseCtx)).toBe('Rocket\u00a0Resume')
+  })
+
+  it('applies :formatCurrency{USD}', () => {
+    const ctx: SubstitutionContext = {
+      ...baseCtx,
+      pageData: { ...baseCtx.pageData, salary: 75000 },
+    }
+    expect(substituteVariables('$(pageData.salary:formatCurrency{USD})', ctx)).toBe('$75,000.00')
+  })
+
+  it('chains modifiers', () => {
+    expect(substituteVariables('$(brand.title:capitalizeFirstLetter:nbsp)', baseCtx)).toBe(
+      'Rocket\u00a0Resume',
+    )
   })
 })

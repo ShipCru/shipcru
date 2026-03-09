@@ -76,6 +76,7 @@ export interface Config {
     'job-titles': JobTitle;
     skills: Skill;
     'content-variations': ContentVariation;
+    'word-form-sets': WordFormSet;
     'template-overrides': TemplateOverride;
     'tenant-page-configs': TenantPageConfig;
     'payload-kv': PayloadKv;
@@ -102,6 +103,7 @@ export interface Config {
     'job-titles': JobTitlesSelect<false> | JobTitlesSelect<true>;
     skills: SkillsSelect<false> | SkillsSelect<true>;
     'content-variations': ContentVariationsSelect<false> | ContentVariationsSelect<true>;
+    'word-form-sets': WordFormSetsSelect<false> | WordFormSetsSelect<true>;
     'template-overrides': TemplateOverridesSelect<false> | TemplateOverridesSelect<true>;
     'tenant-page-configs': TenantPageConfigsSelect<false> | TenantPageConfigsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -237,7 +239,7 @@ export interface Page {
   id: number;
   tenant?: (number | null) | Tenant;
   title: string;
-  hero?: HeroSplitImageBlock[] | null;
+  hero?: HeroSplitBlock[] | null;
   layout?: (BlogBlock | TestimonialsBlock | MetricsBlock)[] | null;
   meta?: {
     title?: string | null;
@@ -273,9 +275,9 @@ export interface Page {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "HeroSplitImageBlock".
+ * via the `definition` "HeroSplitBlock".
  */
-export interface HeroSplitImageBlock {
+export interface HeroSplitBlock {
   heading?: {
     mode?: ('fixed' | 'variation') | null;
     fixedText?: string | null;
@@ -300,7 +302,7 @@ export interface HeroSplitImageBlock {
     | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: 'heroSplitImage';
+  blockType: 'heroSplit';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -316,9 +318,6 @@ export interface ContentVariation {
   parent?: (number | null) | ContentVariation;
   options?:
     | {
-        /**
-         * Supports template variables like {{jobTitle}}, {{industry}}
-         */
         text?: string | null;
         weight?: number | null;
         id?: string | null;
@@ -555,6 +554,120 @@ export interface Skill {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "word-form-sets".
+ */
+export interface WordFormSet {
+  id: number;
+  name: string;
+  /**
+   * Which category of word forms this entry defines
+   */
+  type: 'resumeWord' | 'verb' | 'adjective' | 'contentWord';
+  /**
+   * Leave empty for a global default. Set to override for a specific tenant.
+   */
+  tenant?: (number | null) | Tenant;
+  /**
+   * e.g., "resume", "CV", "curriculum vitae"
+   */
+  rw_singular?: string | null;
+  /**
+   * e.g., "resumes", "CVs", "curricula vitae"
+   */
+  rw_plural?: string | null;
+  /**
+   * e.g., "Resume", "CV", "Curriculum Vitae"
+   */
+  rw_capitalized?: string | null;
+  /**
+   * e.g., "resume", "CV"
+   */
+  rw_abbreviated?: string | null;
+  /**
+   * e.g., "Resume", "CV"
+   */
+  rw_abbreviatedCapitalized?: string | null;
+  /**
+   * e.g., "Resumes", "CVs"
+   */
+  rw_pluralCapitalized?: string | null;
+  /**
+   * e.g., "resumes", "CVs"
+   */
+  rw_pluralAbbreviated?: string | null;
+  /**
+   * e.g., "Resumes", "CVs"
+   */
+  rw_pluralAbbreviatedCapitalized?: string | null;
+  /**
+   * The URL suffix word, e.g., "creator", "builder", "maker"
+   */
+  v_worder?: string | null;
+  /**
+   * e.g., "create", "build", "make"
+   */
+  v_singular?: string | null;
+  /**
+   * e.g., "Create", "Build"
+   */
+  v_capitalized?: string | null;
+  /**
+   * e.g., "Creator", "Builder"
+   */
+  v_worderCapitalized?: string | null;
+  /**
+   * e.g., "creating", "building"
+   */
+  v_wording?: string | null;
+  /**
+   * e.g., "Creating", "Building"
+   */
+  v_wordingCapitalized?: string | null;
+  /**
+   * e.g., "created", "built", "wrote"
+   */
+  v_past?: string | null;
+  /**
+   * e.g., "Created", "Built"
+   */
+  v_pastCapitalized?: string | null;
+  /**
+   * e.g., "best", "professional", "simple"
+   */
+  adj_singular?: string | null;
+  /**
+   * e.g., "Best", "Professional"
+   */
+  adj_capitalized?: string | null;
+  /**
+   * e.g., "better", "professionally", "easier"
+   */
+  adj_adverb?: string | null;
+  /**
+   * e.g., "Better", "Professionally"
+   */
+  adj_adverbCapitalized?: string | null;
+  /**
+   * e.g., "template", "example", "content"
+   */
+  cw_singular?: string | null;
+  /**
+   * e.g., "templates", "examples", "content" (same for uncountable)
+   */
+  cw_plural?: string | null;
+  /**
+   * e.g., "Template", "Content"
+   */
+  cw_capitalized?: string | null;
+  /**
+   * e.g., "Templates", "Content"
+   */
+  cw_pluralCapitalized?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "template-overrides".
  */
 export interface TemplateOverride {
@@ -586,7 +699,7 @@ export interface TemplateOverride {
         /**
          * Which block type this override applies to
          */
-        sectionBlockType?: ('heroSplitImage' | 'blog' | 'testimonials' | 'metrics') | null;
+        sectionBlockType?: ('heroSplit' | 'blog' | 'testimonials' | 'metrics') | null;
         action?: ('hide' | 'override-props') | null;
         /**
          * When locked, tenant overrides cannot modify this section.
@@ -596,7 +709,7 @@ export interface TemplateOverride {
          * Override the section ordering group
          */
         sectionGroup?: ('before' | 'test' | 'after') | null;
-        overrides_heroSplitImage?: {
+        ovrds_heroSplit?: {
           /**
            * Select which fields to override. Only selected fields will be applied during merge.
            */
@@ -613,7 +726,7 @@ export interface TemplateOverride {
           };
           formButtonLabel?: string | null;
         };
-        overrides_blog?: {
+        ovrds_blog?: {
           /**
            * Select which fields to override. Only selected fields will be applied during merge.
            */
@@ -629,7 +742,7 @@ export interface TemplateOverride {
             variationSet?: (number | null) | ContentVariation;
           };
         };
-        overrides_testimonials?: {
+        ovrds_testimonials?: {
           /**
            * Select which fields to override. Only selected fields will be applied during merge.
            */
@@ -645,7 +758,7 @@ export interface TemplateOverride {
             variationSet?: (number | null) | ContentVariation;
           };
         };
-        overrides_metrics?: {
+        ovrds_metrics?: {
           /**
            * Select which fields to override. Only selected fields will be applied during merge.
            */
@@ -865,6 +978,10 @@ export interface PayloadLockedDocument {
         value: number | ContentVariation;
       } | null)
     | ({
+        relationTo: 'word-form-sets';
+        value: number | WordFormSet;
+      } | null)
+    | ({
         relationTo: 'template-overrides';
         value: number | TemplateOverride;
       } | null)
@@ -984,7 +1101,7 @@ export interface PagesSelect<T extends boolean = true> {
   hero?:
     | T
     | {
-        heroSplitImage?: T | HeroSplitImageBlockSelect<T>;
+        heroSplit?: T | HeroSplitBlockSelect<T>;
       };
   layout?:
     | T
@@ -1020,9 +1137,9 @@ export interface PagesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "HeroSplitImageBlock_select".
+ * via the `definition` "HeroSplitBlock_select".
  */
-export interface HeroSplitImageBlockSelect<T extends boolean = true> {
+export interface HeroSplitBlockSelect<T extends boolean = true> {
   heading?:
     | T
     | {
@@ -1251,6 +1368,41 @@ export interface ContentVariationsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "word-form-sets_select".
+ */
+export interface WordFormSetsSelect<T extends boolean = true> {
+  name?: T;
+  type?: T;
+  tenant?: T;
+  rw_singular?: T;
+  rw_plural?: T;
+  rw_capitalized?: T;
+  rw_abbreviated?: T;
+  rw_abbreviatedCapitalized?: T;
+  rw_pluralCapitalized?: T;
+  rw_pluralAbbreviated?: T;
+  rw_pluralAbbreviatedCapitalized?: T;
+  v_worder?: T;
+  v_singular?: T;
+  v_capitalized?: T;
+  v_worderCapitalized?: T;
+  v_wording?: T;
+  v_wordingCapitalized?: T;
+  v_past?: T;
+  v_pastCapitalized?: T;
+  adj_singular?: T;
+  adj_capitalized?: T;
+  adj_adverb?: T;
+  adj_adverbCapitalized?: T;
+  cw_singular?: T;
+  cw_plural?: T;
+  cw_capitalized?: T;
+  cw_pluralCapitalized?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "template-overrides_select".
  */
 export interface TemplateOverridesSelect<T extends boolean = true> {
@@ -1265,7 +1417,7 @@ export interface TemplateOverridesSelect<T extends boolean = true> {
         action?: T;
         locked?: T;
         sectionGroup?: T;
-        overrides_heroSplitImage?:
+        ovrds_heroSplit?:
           | T
           | {
               fieldsToOverride?: T;
@@ -1285,7 +1437,7 @@ export interface TemplateOverridesSelect<T extends boolean = true> {
                   };
               formButtonLabel?: T;
             };
-        overrides_blog?:
+        ovrds_blog?:
           | T
           | {
               fieldsToOverride?: T;
@@ -1304,7 +1456,7 @@ export interface TemplateOverridesSelect<T extends boolean = true> {
                     variationSet?: T;
                   };
             };
-        overrides_testimonials?:
+        ovrds_testimonials?:
           | T
           | {
               fieldsToOverride?: T;
@@ -1323,7 +1475,7 @@ export interface TemplateOverridesSelect<T extends boolean = true> {
                     variationSet?: T;
                   };
             };
-        overrides_metrics?:
+        ovrds_metrics?:
           | T
           | {
               fieldsToOverride?: T;
@@ -1439,7 +1591,7 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface DefaultIndustryTemplate {
   id: number;
-  hero?: HeroSplitImageBlock[] | null;
+  hero?: HeroSplitBlock[] | null;
   sections?: (BlogBlock | TestimonialsBlock | MetricsBlock)[] | null;
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -1450,7 +1602,7 @@ export interface DefaultIndustryTemplate {
  */
 export interface DefaultJobTitleTemplate {
   id: number;
-  hero?: HeroSplitImageBlock[] | null;
+  hero?: HeroSplitBlock[] | null;
   sections?: (BlogBlock | TestimonialsBlock | MetricsBlock)[] | null;
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -1506,7 +1658,7 @@ export interface DefaultIndustryTemplateSelect<T extends boolean = true> {
   hero?:
     | T
     | {
-        heroSplitImage?: T | HeroSplitImageBlockSelect<T>;
+        heroSplit?: T | HeroSplitBlockSelect<T>;
       };
   sections?:
     | T
@@ -1527,7 +1679,7 @@ export interface DefaultJobTitleTemplateSelect<T extends boolean = true> {
   hero?:
     | T
     | {
-        heroSplitImage?: T | HeroSplitImageBlockSelect<T>;
+        heroSplit?: T | HeroSplitBlockSelect<T>;
       };
   sections?:
     | T

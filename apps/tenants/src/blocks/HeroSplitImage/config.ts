@@ -3,8 +3,8 @@ import type { Block } from 'payload'
 import { variationField } from '@/lib/fields/variationField'
 
 export const HeroSplitImage: Block = {
-  slug: 'heroSplitImage',
-  interfaceName: 'HeroSplitImageBlock',
+  slug: 'heroSplit',
+  interfaceName: 'HeroSplitBlock',
   labels: { singular: 'Hero Split Image', plural: 'Hero Split Images' },
   fields: [
     variationField('heading', 'Heading'),

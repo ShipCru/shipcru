@@ -18,7 +18,12 @@ export const variationField = (name: string, label: string): Field => ({
     {
       name: 'fixedText',
       type: 'textarea',
-      admin: { condition: (_, siblingData) => siblingData?.mode === 'fixed' },
+      admin: {
+        condition: (_, siblingData) => siblingData?.mode === 'fixed',
+        components: {
+          Description: '/components/TemplateVariableReference#TemplateVariableReference',
+        },
+      },
     },
     {
       name: 'variationSet',
