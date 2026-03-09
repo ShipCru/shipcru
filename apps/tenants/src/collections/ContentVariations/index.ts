@@ -1,7 +1,15 @@
 import type { CollectionConfig } from 'payload'
 
 import { superAdminCrud } from '@/access/superAdminCrud'
-import { preventReferencedDeletion } from '@/hooks/preventReferencedDeletion'
+import { HERO_BLOCKS, LAYOUT_BLOCKS } from '@/blocks'
+import { buildVariationReferenceChecks } from '@/lib/hooks/buildVariationReferenceChecks'
+import { preventReferencedDeletion } from '@/lib/resume-pages/hooks/preventReferencedDeletion'
+import {
+  createCollectionDeleteRevalidationHook,
+  createCollectionRevalidationHook,
+} from '@/lib/resume-pages/hooks/revalidateResumeData'
+
+const ALL_BLOCKS = [...HERO_BLOCKS, ...LAYOUT_BLOCKS]
 
 export const ContentVariations: CollectionConfig = {
   slug: 'content-variations',
@@ -13,11 +21,17 @@ export const ContentVariations: CollectionConfig = {
     listSearchableFields: ['name', 'assignmentKey'],
   },
   hooks: {
+    afterChange: [createCollectionRevalidationHook('content-variations')],
+    afterDelete: [createCollectionDeleteRevalidationHook('content-variations')],
     beforeValidate: [
       ({ data, operation }) => {
         // Auto-generate assignmentKey from name using dot-notation style:
         // "Hero Title" → "hero.title", "Testimonials Heading" → "testimonials.heading"
-        if ((operation === 'create' || operation === 'update') && data?.name && !data.assignmentKey) {
+        if (
+          (operation === 'create' || operation === 'update') &&
+          data?.name &&
+          !data.assignmentKey
+        ) {
           data.assignmentKey = data.name
             .toLowerCase()
             .replace(/[^a-z0-9\s.]/g, '')
@@ -27,15 +41,7 @@ export const ContentVariations: CollectionConfig = {
         return data
       },
     ],
-    beforeDelete: [
-      preventReferencedDeletion([
-        // These collections don't exist yet -- they will be created in Group B.
-        // The hook will query them at runtime; Payload won't error if the
-        // collections don't exist at config-parse time. Once Group B lands,
-        // uncomment or update these references:
-        // { collection: 'template-overrides', field: 'sectionOverrides.overrides.variationSet' },
-      ]),
-    ],
+    beforeDelete: [preventReferencedDeletion(buildVariationReferenceChecks(ALL_BLOCKS))],
   },
   fields: [
     {

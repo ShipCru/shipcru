@@ -3,6 +3,7 @@ import type { GlobalConfig } from 'payload'
 import { isSuperAdminAccess } from '@/access/isSuperAdmin'
 import { HERO_BLOCKS, LAYOUT_BLOCKS } from '@/blocks'
 import { autoGenerateSectionIdsHook } from '@/lib/hooks/autoGenerateSectionIdsHook'
+import { createGlobalRevalidationHook } from '@/lib/resume-pages/hooks/revalidateResumeData'
 
 export const DefaultJobTitleTemplate: GlobalConfig = {
   slug: 'default-job-title-template',
@@ -14,6 +15,7 @@ export const DefaultJobTitleTemplate: GlobalConfig = {
   },
   hooks: {
     beforeChange: [autoGenerateSectionIdsHook],
+    afterChange: [createGlobalRevalidationHook('default-job-title-template')],
   },
   fields: [
     {

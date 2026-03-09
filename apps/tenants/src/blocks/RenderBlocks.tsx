@@ -11,15 +11,17 @@ import { TestimonialsBlock } from './Testimonials/Component'
 type HeroBlock = NonNullable<Page['hero']>[number]
 type LayoutBlock = NonNullable<Page['layout']>[number]
 
+export type Block = HeroBlock | LayoutBlock
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const blockComponents: Record<string, React.ComponentType<{ data: any }>> = {
+const blockComponents: Record<Block['blockType'], React.ComponentType<any>> = {
   heroSplitImage: HeroSplitImageBlock,
   blog: BlogBlock,
   testimonials: TestimonialsBlock,
   metrics: MetricsBlock,
 }
 
-export const RenderBlocks: React.FC<{ blocks: LayoutBlock[] }> = ({ blocks }) => {
+export const RenderBlocks: React.FC<{ blocks: Block[] }> = ({ blocks }) => {
   if (!blocks?.length) return null
 
   return (
@@ -33,7 +35,7 @@ export const RenderBlocks: React.FC<{ blocks: LayoutBlock[] }> = ({ blocks }) =>
   )
 }
 
-export const RenderHero: React.FC<{ blocks: HeroBlock[] }> = ({ blocks }) => {
+export const RenderHero: React.FC<{ blocks: Block[] }> = ({ blocks }) => {
   if (!blocks?.length) return null
 
   const block = blocks[0]

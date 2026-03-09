@@ -3,9 +3,7 @@ import type { CollectionBeforeDeleteHook, CollectionSlug } from 'payload'
 import { APIError } from 'payload'
 
 interface ReferenceCheck {
-  /** The collection slug to search for references in */
   collection: string
-  /** The field path that holds the reference (dot-notation for nested fields) */
   field: string
 }
 

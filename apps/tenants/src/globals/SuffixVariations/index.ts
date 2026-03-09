@@ -1,6 +1,7 @@
 import type { GlobalConfig } from 'payload'
 
 import { isSuperAdminAccess } from '@/access/isSuperAdmin'
+import { createGlobalRevalidationHook } from '@/lib/resume-pages/hooks/revalidateResumeData'
 
 const weightedWordFields = [
   {
@@ -22,6 +23,9 @@ export const SuffixVariations: GlobalConfig = {
   access: {
     read: () => true,
     update: isSuperAdminAccess,
+  },
+  hooks: {
+    afterChange: [createGlobalRevalidationHook('suffix-variations')],
   },
   fields: [
     {

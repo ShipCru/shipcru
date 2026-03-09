@@ -2,7 +2,16 @@ import { revalidateTag } from 'next/cache'
 
 export const dynamic = 'force-dynamic'
 
-const ALLOWED_TAGS = ['fetch-ts', 'unstable-ts']
+const ALLOWED_TAGS = [
+  'fetch-ts',
+  'unstable-ts',
+  'global_suffix-variations',
+  'global_default-industry-template',
+  'global_default-job-title-template',
+  'collection_content-variations',
+  'collection_template-overrides',
+  'collection_tenant-page-configs',
+]
 
 export async function POST(request: Request) {
   try {

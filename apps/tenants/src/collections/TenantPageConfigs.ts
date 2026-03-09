@@ -2,6 +2,10 @@ import type { CollectionConfig } from 'payload'
 
 import { isSuperAdminAccess } from '@/access/isSuperAdmin'
 import { tenantAdminAccess } from '@/access/tenantAdminAccess'
+import {
+  createCollectionDeleteRevalidationHook,
+  createCollectionRevalidationHook,
+} from '@/lib/resume-pages/hooks/revalidateResumeData'
 
 export const TenantPageConfigs: CollectionConfig = {
   slug: 'tenant-page-configs',
@@ -14,6 +18,10 @@ export const TenantPageConfigs: CollectionConfig = {
     read: tenantAdminAccess,
     update: tenantAdminAccess,
     delete: isSuperAdminAccess,
+  },
+  hooks: {
+    afterChange: [createCollectionRevalidationHook('tenant-page-configs')],
+    afterDelete: [createCollectionDeleteRevalidationHook('tenant-page-configs')],
   },
   fields: [
     {

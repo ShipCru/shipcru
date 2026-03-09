@@ -6,6 +6,10 @@ import { isSuperAdmin, isSuperAdminAccess } from '@/access/isSuperAdmin'
 import { tenantAdminAccess } from '@/access/tenantAdminAccess'
 import { HERO_BLOCKS, LAYOUT_BLOCKS } from '@/blocks'
 import { buildOverrideFields } from '@/lib/fields/buildOverrideFields'
+import {
+  createCollectionDeleteRevalidationHook,
+  createCollectionRevalidationHook,
+} from '@/lib/resume-pages/hooks/revalidateResumeData'
 import { blockFieldNames } from './blockFieldNames'
 import { preventDuplicateOverride } from './hooks/preventDuplicateOverride'
 import { suggestFieldName } from './levenshtein'
@@ -33,6 +37,8 @@ export const TemplateOverrides: CollectionConfig = {
   },
   hooks: {
     beforeValidate: [preventDuplicateOverride],
+    afterChange: [createCollectionRevalidationHook('template-overrides')],
+    afterDelete: [createCollectionDeleteRevalidationHook('template-overrides')],
   },
   fields: [
     // --- Targeting Fields ---
