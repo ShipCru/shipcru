@@ -160,14 +160,13 @@ const defaultArticles: Article[] = [
 export const BlogBlock = ({ data }: { data: BlogBlockType }) => {
   const isDesktop = useBreakpoint('lg')
 
-  const label = data.label || 'Blog'
   const heading = resolveVariationText(data.heading, 'Resource library')
   const description = resolveVariationText(
     data.description,
     'Subscribe to learn about new product features, the latest in technology, solutions, and updates.',
   )
-  const formPlaceholder = data.formPlaceholder || 'Enter your email'
-  const formButtonLabel = data.formButtonLabel || 'Subscribe'
+  const formPlaceholder = data.formPlaceholder
+  const formButtonLabel = data.formButtonLabel
 
   const articles: Article[] =
     data.articles && data.articles.length > 0
@@ -201,43 +200,50 @@ export const BlogBlock = ({ data }: { data: BlogBlockType }) => {
       <section className="bg-secondary pt-16 pb-32 md:pt-24 md:pb-40">
         <div className="mx-auto max-w-container px-4 md:px-8">
           <div className="mx-auto flex w-full max-w-3xl flex-col items-center text-center">
-            <span className="text-sm font-semibold text-brand-secondary md:text-md">{label}</span>
+            {data.label && (
+              <span className="text-sm font-semibold text-brand-secondary md:text-md">
+                {data.label}
+              </span>
+            )}
             <h2 className="mt-3 text-display-md font-semibold text-primary md:text-display-lg">
               {heading}
             </h2>
             <p className="mt-4 text-lg text-tertiary md:mt-6 md:text-xl">{description}</p>
-            <Form
-              onSubmit={(e) => {
-                e.preventDefault()
-                const formData = Object.fromEntries(new FormData(e.currentTarget))
-                console.log('Form data:', formData)
-              }}
-              className="mt-8 grid w-full grid-cols-1 items-start gap-4 sm:mt-12 sm:w-auto sm:grid-cols-[345px_max-content]"
-            >
-              <div className="flex flex-col gap-1.5 text-start">
-                <Input
-                  isRequired
-                  size="md"
-                  name="email"
-                  type="email"
-                  placeholder={formPlaceholder}
-                  wrapperClassName="py-0.5"
-                />
-                <span className="flex w-full text-sm text-tertiary">
-                  We care about your data in our&nbsp;
-                  <a
-                    href="#"
-                    className="rounded-xs underline underline-offset-3 outline-focus-ring focus-visible:outline-2 focus-visible:outline-offset-2"
-                  >
-                    privacy policy
-                  </a>
-                  .
-                </span>
-              </div>
-              <Button type="submit" size="xl">
-                {formButtonLabel}
-              </Button>
-            </Form>
+
+            {formButtonLabel && (
+              <Form
+                onSubmit={(e) => {
+                  e.preventDefault()
+                  const formData = Object.fromEntries(new FormData(e.currentTarget))
+                  console.log('Form data:', formData)
+                }}
+                className="mt-8 grid w-full grid-cols-1 items-start gap-4 sm:mt-12 sm:w-auto sm:grid-cols-[345px_max-content]"
+              >
+                <div className="flex flex-col gap-1.5 text-start">
+                  <Input
+                    isRequired
+                    size="md"
+                    name="email"
+                    type="email"
+                    placeholder={formPlaceholder}
+                    wrapperClassName="py-0.5"
+                  />
+                  <span className="flex w-full text-sm text-tertiary">
+                    We care about your data in our&nbsp;
+                    <a
+                      href="#"
+                      className="rounded-xs underline underline-offset-3 outline-focus-ring focus-visible:outline-2 focus-visible:outline-offset-2"
+                    >
+                      privacy policy
+                    </a>
+                    .
+                  </span>
+                </div>
+                <Button type="submit" size="xl">
+                  {formButtonLabel}
+                </Button>
+              </Form>
+            )}
           </div>
         </div>
       </section>

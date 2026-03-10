@@ -1,4 +1,5 @@
 import type { ResolvedTemplateOverride } from './types'
+import { TARGET_TYPE_TO_RELATION } from './types'
 import type { Payload } from 'payload'
 
 /**
@@ -18,9 +19,7 @@ const TARGET_TYPE_PRIORITY = ['industry-category', 'industry', 'job-title'] as c
  *
  * Within the same tier (global vs tenant) and target type, order is stable.
  */
-export function sortOverrides(
-  docs: ResolvedTemplateOverride[],
-): ResolvedTemplateOverride[] {
+export function sortOverrides(docs: ResolvedTemplateOverride[]): ResolvedTemplateOverride[] {
   return [...docs].sort((a, b) => {
     // Global overrides come before tenant overrides
     const aIsTenant = a.tenant != null ? 1 : 0
@@ -88,7 +87,8 @@ export async function buildOverrideChain(
           or: scopes.map((scope) => ({
             and: [
               { targetType: { equals: scope.targetType } },
-              { targetEntity: { equals: scope.targetEntity } },
+              { 'targetEntity.value': { equals: scope.targetEntity } },
+              { 'targetEntity.relationTo': { equals: TARGET_TYPE_TO_RELATION[scope.targetType] } },
             ],
           })),
         },

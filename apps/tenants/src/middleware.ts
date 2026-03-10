@@ -33,9 +33,7 @@ export function middleware(request: NextRequest) {
   if (!pathname.startsWith('/resumes/')) return NextResponse.next()
 
   const host = request.headers.get('host') || ''
-  const tenantSlug = getTenantSlugFromHost(host)
-    || process.env.DEFAULT_TENANT_SLUG
-    || null
+  const tenantSlug = getTenantSlugFromHost(host) || process.env.DEFAULT_TENANT_SLUG || null
 
   if (!tenantSlug) {
     // No tenant resolved -- let the route handle 404

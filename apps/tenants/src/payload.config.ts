@@ -76,7 +76,6 @@ export default buildConfig({
   collections: [
     Users,
     Media,
-    Tenants,
     Pages,
     // Global reference data (not tenant-scoped):
     IndustryCategories,
@@ -88,6 +87,7 @@ export default buildConfig({
     WordFormSets,
     // Group C: Template overrides & tenant page configs:
     TemplateOverrides,
+    Tenants,
     TenantPageConfigs,
   ],
   globals: [DefaultIndustryTemplate, DefaultJobTitleTemplate, SuffixVariations],

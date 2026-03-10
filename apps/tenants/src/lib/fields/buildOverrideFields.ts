@@ -19,8 +19,7 @@ export function buildOverrideFields(blocks: Block[]): Field[] {
   return blocks
     .map((block) => {
       const overridableFields = block.fields.filter(
-        (f): f is FieldWithLabel =>
-          fieldAffectsData(f) && Boolean(f.custom?.overridable),
+        (f): f is FieldWithLabel => fieldAffectsData(f) && Boolean(f.custom?.overridable),
       )
 
       if (!overridableFields.length) return null
@@ -31,6 +30,7 @@ export function buildOverrideFields(blocks: Block[]): Field[] {
       }))
 
       return {
+        label: `Overrides for ${block.labels.singular}`,
         name: `ovrds_${block.slug}`,
         type: 'group' as const,
         admin: {

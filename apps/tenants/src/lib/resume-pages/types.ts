@@ -1,3 +1,13 @@
+/**
+ * Maps targetType select values to their polymorphic relationTo collection slugs.
+ * Used by template-overrides filterOptions and buildOverrideChain queries.
+ */
+export const TARGET_TYPE_TO_RELATION: Record<string, string> = {
+  'industry-category': 'industry-categories',
+  industry: 'industries',
+  'job-title': 'job-titles',
+}
+
 /** A single option within a variation set */
 export interface VariationOption {
   text: string
@@ -27,8 +37,8 @@ export interface VariationInput {
   tenantSlug: string
   /** Full content seed (e.g., the third URL path segment for job-title pages, or industry slug) */
   contentSeed: string
-  /** Pre-loaded variation sets keyed by assignmentKey */
-  variationSets: Map<string, VariationSet>
+  /** Pre-loaded variation sets keyed by assignmentKey (and also by stringified doc ID) */
+  variationSets: Record<string, VariationSet>
   /** Skills associated with the entity (empty array for industry pages) */
   entitySkills: string[]
 }

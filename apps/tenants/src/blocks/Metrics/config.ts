@@ -1,5 +1,6 @@
 import type { Block } from 'payload'
 
+import { icon } from '@/lib/fields/icon'
 import { sectionGroupField, sectionIdField } from '@/lib/fields/sectionGroupField'
 import { variationField } from '@/lib/fields/variationField'
 
@@ -17,11 +18,7 @@ export const Metrics: Block = {
       maxRows: 6,
       labels: { singular: 'Metric', plural: 'Metrics' },
       fields: [
-        {
-          name: 'value',
-          type: 'text',
-          localized: true,
-        },
+        icon(),
         {
           name: 'label',
           type: 'text',

@@ -102,7 +102,7 @@ export function TemplateVariableReference() {
                 :nbsp
               </code>{' '}
               <code className="font-mono text-[0.85em] px-1 rounded-sm bg-(--theme-elevation-100) text-(--theme-text)">
-                :capitalizeFirstLetter
+                :capitalize
               </code>{' '}
               <code className="font-mono text-[0.85em] px-1 rounded-sm bg-(--theme-elevation-100) text-(--theme-text)">
                 {':formatCurrency{USD}'}

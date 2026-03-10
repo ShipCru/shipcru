@@ -15,6 +15,7 @@ export const Tenants: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'slug', 'domain'],
+    group: 'Tenants',
   },
   fields: [
     {

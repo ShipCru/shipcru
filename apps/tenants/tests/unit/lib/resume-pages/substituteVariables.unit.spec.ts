@@ -433,8 +433,8 @@ describe('{{...}} syntax', () => {
 })
 
 describe('modifiers', () => {
-  it('applies :capitalizeFirstLetter', () => {
-    expect(substituteVariables('$(pageData.industry.name:capitalizeFirstLetter)', baseCtx)).toBe(
+  it('applies :capitalize', () => {
+    expect(substituteVariables('$(pageData.industry.name:capitalize)', baseCtx)).toBe(
       'Technology',
     )
   })
@@ -452,7 +452,7 @@ describe('modifiers', () => {
   })
 
   it('chains modifiers', () => {
-    expect(substituteVariables('$(brand.title:capitalizeFirstLetter:nbsp)', baseCtx)).toBe(
+    expect(substituteVariables('$(brand.title:capitalize:nbsp)', baseCtx)).toBe(
       'Rocket\u00a0Resume',
     )
   })

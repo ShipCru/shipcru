@@ -12,16 +12,21 @@ export interface VariationSet {
 }
 
 /**
- * Raw query — loads all content variation sets into a Map keyed by assignmentKey.
+ * Raw query — loads all content variation sets into a Record keyed by assignmentKey.
+ * Also indexes each set by its document ID (stringified) so that relationship
+ * references (number IDs from depth-0 queries) can be resolved.
+ *
+ * Returns a plain Record (not a Map) because unstable_cache serialises via JSON
+ * and Maps become empty objects after serialisation.
  */
-export async function getVariationSets(payload: Payload): Promise<Map<string, VariationSet>> {
+export async function getVariationSets(payload: Payload) {
   const result = await payload.find({
     collection: 'content-variations',
     limit: 0,
     depth: 0,
   })
 
-  const map = new Map<string, VariationSet>()
+  const record: Record<string, VariationSet> = {}
   for (const doc of result.docs) {
     const key = doc.assignmentKey
     if (!key) continue
@@ -32,17 +37,20 @@ export async function getVariationSets(payload: Payload): Promise<Map<string, Va
     })
 
     if (options.length > 0) {
-      map.set(key, { assignmentKey: key, options })
+      const entry: VariationSet = { assignmentKey: key, options }
+      record[key] = entry
+      // Also index by document ID so relationship references resolve correctly
+      record[String(doc.id)] = entry
     }
   }
-  return map
+  return record
 }
 
 /**
  * Cached version.
  */
 export const getCachedVariationSets = unstable_cache(
-  async (): Promise<Map<string, VariationSet>> => {
+  async () => {
     const payload = await getPayload({ config })
     return getVariationSets(payload)
   },

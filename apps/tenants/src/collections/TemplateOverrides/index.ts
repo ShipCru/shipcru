@@ -10,6 +10,7 @@ import {
   createCollectionDeleteRevalidationHook,
   createCollectionRevalidationHook,
 } from '@/lib/resume-pages/hooks/revalidateResumeData'
+import { TARGET_TYPE_TO_RELATION } from '@/lib/resume-pages/types'
 import { blockFieldNames } from './blockFieldNames'
 import { preventDuplicateOverride } from './hooks/preventDuplicateOverride'
 import { suggestFieldName } from './levenshtein'
@@ -73,6 +74,14 @@ export const TemplateOverrides: CollectionConfig = {
       name: 'targetEntity',
       type: 'relationship',
       relationTo: ['industry-categories', 'industries', 'job-titles'],
+      filterOptions: ({ relationTo, siblingData }) => {
+        const targetType = (siblingData as Record<string, unknown>)?.targetType as string
+        if (!targetType) return true
+
+        // Only show results from the collection matching the selected targetType
+        if (TARGET_TYPE_TO_RELATION[targetType] !== relationTo) return false
+        return true
+      },
     },
 
     // --- Section Overrides Array ---
@@ -83,6 +92,10 @@ export const TemplateOverrides: CollectionConfig = {
       labels: { singular: 'Section Override', plural: 'Section Overrides' },
       admin: {
         initCollapsed: true,
+        components: {
+          RowLabel:
+            '@/components/admin/SectionOverrideRowLabel#SectionOverrideRowLabel',
+        },
       },
       fields: [
         {

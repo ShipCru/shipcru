@@ -33,7 +33,7 @@ export const WordFormSets: CollectionConfig = {
   slug: 'word-form-sets',
   admin: {
     useAsTitle: 'name',
-    group: 'Template Variables',
+    group: 'Dictionary',
     defaultColumns: ['name', 'type', 'tenant'],
     listSearchableFields: ['name'],
     components: {

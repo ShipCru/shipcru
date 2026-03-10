@@ -21,9 +21,9 @@ describe('parseVariableExpression', () => {
   })
 
   it('parses a variable with multiple modifiers', () => {
-    const result = parseVariableExpression('pageData.industry.name:capitalizeFirstLetter:nbsp')
+    const result = parseVariableExpression('pageData.industry.name:capitalize:nbsp')
     expect(result.variable).toBe('pageData.industry.name')
-    expect(result.modifiers).toEqual([{ name: 'capitalizeFirstLetter' }, { name: 'nbsp' }])
+    expect(result.modifiers).toEqual([{ name: 'capitalize' }, { name: 'nbsp' }])
   })
 
   it('parses a parameterized modifier', () => {
@@ -40,13 +40,13 @@ describe('parseVariableExpression', () => {
 })
 
 describe('applyModifiers', () => {
-  it('capitalizeFirstLetter capitalizes the first letter', () => {
-    const result = applyModifiers('healthcare', [{ name: 'capitalizeFirstLetter' }])
+  it('capitalize capitalizes the first letter', () => {
+    const result = applyModifiers('healthcare', [{ name: 'capitalize' }])
     expect(result).toBe('Healthcare')
   })
 
-  it('capitalizeFirstLetter handles empty string', () => {
-    expect(applyModifiers('', [{ name: 'capitalizeFirstLetter' }])).toBe('')
+  it('capitalize handles empty string', () => {
+    expect(applyModifiers('', [{ name: 'capitalize' }])).toBe('')
   })
 
   it('nbsp replaces spaces with non-breaking spaces', () => {
@@ -61,7 +61,7 @@ describe('applyModifiers', () => {
 
   it('chains multiple modifiers left to right', () => {
     const result = applyModifiers('rocket resume', [
-      { name: 'capitalizeFirstLetter' },
+      { name: 'capitalize' },
       { name: 'nbsp' },
     ])
     expect(result).toBe('Rocket\u00a0resume')

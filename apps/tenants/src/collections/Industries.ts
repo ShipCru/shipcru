@@ -25,9 +25,6 @@ export const Industries: CollectionConfig = {
               required: true,
               localized: true,
             },
-            slugField({
-              useAsSlug: 'name',
-            }),
             {
               name: 'category',
               type: 'relationship',
@@ -56,5 +53,8 @@ export const Industries: CollectionConfig = {
         },
       ],
     },
+    slugField({
+      useAsSlug: 'name',
+    }),
   ],
 }

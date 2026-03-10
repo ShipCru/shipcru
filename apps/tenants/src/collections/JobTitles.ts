@@ -25,9 +25,6 @@ export const JobTitles: CollectionConfig = {
               required: true,
               localized: true,
             },
-            slugField({
-              useAsSlug: 'name',
-            }),
             {
               name: 'industries',
               type: 'relationship',
@@ -48,6 +45,19 @@ export const JobTitles: CollectionConfig = {
           fields: [...seo()],
         },
       ],
+    },
+    slugField({
+      useAsSlug: 'name',
+    }),
+    {
+      name: 'exampleUrls',
+      type: 'ui',
+      admin: {
+        position: 'sidebar',
+        components: {
+          Field: '/components/admin/ExampleUrls#ExampleUrls',
+        },
+      },
     },
   ],
 }

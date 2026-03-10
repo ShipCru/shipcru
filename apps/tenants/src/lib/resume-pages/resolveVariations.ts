@@ -33,8 +33,13 @@ export function resolveVariationField(
   const { tenantSlug, contentSeed, variationSets, entitySkills } = context
   const hasSkills = entitySkills.length > 0
 
-  // Look up by assignmentKey (the variationSet field stores the assignmentKey string)
-  const set = field.variationSet ? variationSets.get(field.variationSet) : undefined
+  // Resolve the variationSet reference to a lookup key.
+  // The value can be:
+  //  - a string (assignmentKey, if stored directly)
+  //  - a number (Payload relationship ID at depth 0)
+  //  - a populated object with { id, assignmentKey } (at depth > 0)
+  const lookupKey = resolveVariationSetKey(field.variationSet)
+  const set = lookupKey ? variationSets[lookupKey] : undefined
 
   if (!set) {
     // Fallback: if the variation set is not found, use fixedText
@@ -46,4 +51,22 @@ export function resolveVariationField(
   const rng = seedrandom(seed)
 
   return weightedSelect(filteredOptions, rng)
+}
+
+/**
+ * Extracts a lookup key from a variationSet field value.
+ * Handles three forms:
+ *  - string: used as-is (assignmentKey)
+ *  - number: stringified (Payload document ID from depth-0 queries)
+ *  - object: extracts assignmentKey, falls back to stringified id
+ */
+function resolveVariationSetKey(ref: unknown): string | undefined {
+  if (typeof ref === 'string') return ref
+  if (typeof ref === 'number') return String(ref)
+  if (typeof ref === 'object' && ref !== null) {
+    const obj = ref as Record<string, unknown>
+    if (typeof obj.assignmentKey === 'string') return obj.assignmentKey
+    if (obj.id != null) return String(obj.id)
+  }
+  return undefined
 }

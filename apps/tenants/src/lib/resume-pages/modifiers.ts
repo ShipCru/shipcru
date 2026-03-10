@@ -9,7 +9,7 @@ export interface ParsedVariable {
 }
 
 /**
- * Parses a variable expression like "brand.title:nbsp:capitalizeFirstLetter"
+ * Parses a variable expression like "brand.title:nbsp:capitalize"
  * or "pageData.salary:formatCurrency{USD}" into variable + modifiers.
  */
 export function parseVariableExpression(expr: string): ParsedVariable {
@@ -46,7 +46,7 @@ export function parseVariableExpression(expr: string): ParsedVariable {
 type ModifierFn = (value: string, arg?: string) => string
 
 const MODIFIER_REGISTRY: Record<string, ModifierFn> = {
-  capitalizeFirstLetter: (value) => (value ? value.charAt(0).toUpperCase() + value.slice(1) : ''),
+  capitalize: (value) => (value ? value.charAt(0).toUpperCase() + value.slice(1) : ''),
   nbsp: (value) => value.replace(/ /g, '\u00a0'),
   formatCurrency: (value, arg) => {
     const num = Number(value)
