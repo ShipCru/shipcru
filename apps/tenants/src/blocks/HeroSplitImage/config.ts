@@ -15,39 +15,55 @@ export const HeroSplitImage: Block = {
       relationTo: 'media',
     },
     {
-      name: 'formPlaceholder',
-      type: 'text',
-      defaultValue: 'Enter your email',
-    },
-    {
-      name: 'formButtonLabel',
-      type: 'text',
-      defaultValue: 'Get started',
-      custom: { overridable: true },
-    },
-    {
-      name: 'formHelperText',
-      type: 'text',
-      defaultValue: 'We care about your data in our privacy policy.',
-    },
-    {
-      name: 'reviewText',
-      type: 'text',
-      defaultValue: 'from 200+ reviews',
-    },
-    {
-      name: 'reviewRating',
-      type: 'text',
-      defaultValue: '5.0',
-    },
-    {
-      name: 'avatars',
-      type: 'array',
+      name: 'form',
+      type: 'group',
       fields: [
         {
-          name: 'image',
-          type: 'upload',
-          relationTo: 'media',
+          name: 'placeholder',
+          type: 'text',
+          localized: true,
+          defaultValue: 'Enter your email',
+        },
+        {
+          name: 'buttonLabel',
+          type: 'text',
+          localized: true,
+          defaultValue: 'Get started',
+          custom: { overridable: true },
+        },
+        {
+          name: 'helperText',
+          type: 'text',
+          localized: true,
+          defaultValue: 'We care about your data in our privacy policy.',
+        },
+      ],
+    },
+    {
+      name: 'review',
+      type: 'group',
+      fields: [
+        {
+          name: 'text',
+          type: 'text',
+          localized: true,
+          defaultValue: 'from 200+ reviews',
+        },
+        {
+          name: 'rating',
+          type: 'text',
+          defaultValue: '5.0',
+        },
+        {
+          name: 'avatars',
+          type: 'array',
+          fields: [
+            {
+              name: 'image',
+              type: 'upload',
+              relationTo: 'media',
+            },
+          ],
         },
       ],
     },

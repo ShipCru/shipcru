@@ -96,7 +96,7 @@ export default buildConfig({
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
-  db: sqliteD1Adapter({ binding: cloudflare.env.D1, push: false }),
+  db: sqliteD1Adapter({ binding: cloudflare.env.D1 }),
   logger: isProduction ? cloudflareLogger : undefined,
   localization: {
     locales: SUPPORTED_LOCALES.map((l) => ({ code: l.value, label: l.label })),

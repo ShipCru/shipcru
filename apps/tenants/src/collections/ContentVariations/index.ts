@@ -77,6 +77,7 @@ export const ContentVariations: CollectionConfig = {
         {
           name: 'text',
           type: 'textarea',
+          localized: true,
           admin: {
             components: {
               Description: '/components/TemplateVariableReference#TemplateVariableReference',

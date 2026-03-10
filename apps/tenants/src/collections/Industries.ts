@@ -23,6 +23,7 @@ export const Industries: CollectionConfig = {
               name: 'name',
               type: 'text',
               required: true,
+              localized: true,
             },
             slugField({
               useAsSlug: 'name',
@@ -38,6 +39,7 @@ export const Industries: CollectionConfig = {
             {
               name: 'description',
               type: 'textarea',
+              localized: true,
             },
             {
               name: 'jobTitles',

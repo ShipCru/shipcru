@@ -18,9 +18,18 @@ import { getSuffixWords } from '@/globals/SuffixVariations/queries/getSuffixWord
 describe('getSuffixWords', () => {
   it('returns structured suffix word lists from global', async () => {
     const mockGlobal = {
-      adjectives: [{ word: 'best' }, { word: 'top' }],
-      builders: [{ word: 'creator' }, { word: 'builder' }],
-      contentWords: [{ word: 'content' }, { word: 'ideas' }],
+      adjectives: [
+        { wordFormSet: { type: 'adjective', adj_singular: 'best' } },
+        { wordFormSet: { type: 'adjective', adj_singular: 'top' } },
+      ],
+      builders: [
+        { wordFormSet: { type: 'verb', v_worder: 'creator' } },
+        { wordFormSet: { type: 'verb', v_worder: 'builder' } },
+      ],
+      contentWords: [
+        { wordFormSet: { type: 'contentWord', cw_plural: 'content' } },
+        { wordFormSet: { type: 'contentWord', cw_plural: 'ideas' } },
+      ],
     }
     const mockPayload = {
       findGlobal: async () => mockGlobal,

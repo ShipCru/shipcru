@@ -11,6 +11,7 @@ export const Blog: Block = {
     {
       name: 'label',
       type: 'text',
+      localized: true,
       defaultValue: 'Blog',
     },
     variationField('heading', 'Heading'),
@@ -18,11 +19,13 @@ export const Blog: Block = {
     {
       name: 'formPlaceholder',
       type: 'text',
+      localized: true,
       defaultValue: 'Enter your email',
     },
     {
       name: 'formButtonLabel',
       type: 'text',
+      localized: true,
       defaultValue: 'Subscribe',
     },
     {
@@ -33,10 +36,12 @@ export const Blog: Block = {
         {
           name: 'title',
           type: 'text',
+          localized: true,
         },
         {
           name: 'summary',
           type: 'textarea',
+          localized: true,
         },
         {
           name: 'href',
@@ -45,6 +50,7 @@ export const Blog: Block = {
         {
           name: 'categoryName',
           type: 'text',
+          localized: true,
         },
         {
           name: 'thumbnail',
@@ -58,10 +64,12 @@ export const Blog: Block = {
         {
           name: 'readingTime',
           type: 'text',
+          localized: true,
         },
         {
           name: 'authorName',
           type: 'text',
+          localized: true,
         },
         {
           name: 'authorImage',

@@ -37,7 +37,7 @@ const AvatarsWithReview = ({
   reviewRating,
 }: {
   className?: string
-  avatars?: HeroSplitBlockType['avatars']
+  avatars?: HeroSplitBlockType['review']['avatars']
   reviewText?: string | null
   reviewRating?: string | null
 }) => {
@@ -117,13 +117,23 @@ export const HeroSplitImageBlock = ({ data }: { data: HeroSplitBlockType }) => {
   const image = typeof data.image === 'object' ? (data.image as Media | null) : null
   const imageSrc = image?.url ?? 'https://www.untitledui.com/images/portraits/person-02'
   const imageAlt = image?.alt ?? 'Portrait'
-  const formPlaceholder = data.formPlaceholder ?? 'Enter your email'
-  const formButtonLabel = data.formButtonLabel ?? 'Get started'
-  const formHelperText = data.formHelperText ?? 'We care about your data in our privacy policy.'
+  const formPlaceholder = data.form?.placeholder ?? 'Enter your email'
+  const formButtonLabel = data.form?.buttonLabel ?? 'Get started'
+  const formHelperText = data.form?.helperText ?? 'We care about your data in our privacy policy.'
 
   return (
     <Fragment>
-      <section className="bg-white py-16 md:pb-24">
+      <section
+        className="relative py-16 md:pb-24 overflow-hidden"
+        style={{
+          background: `
+            radial-gradient(ellipse 80% 60% at 15% 60%, rgba(255, 237, 213, 0.4) 0%, transparent 70%),
+            radial-gradient(ellipse 60% 80% at 85% 30%, rgba(219, 234, 254, 0.5) 0%, transparent 70%),
+            radial-gradient(ellipse 50% 50% at 50% 0%, rgba(243, 232, 255, 0.3) 0%, transparent 60%),
+            linear-gradient(180deg, #fefefe 0%, #f9fafb 100%)
+          `,
+        }}
+      >
         <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-16 px-4 md:px-8 lg:grid-cols-2 lg:gap-8">
           <div className="flex max-w-3xl flex-col items-start lg:pr-8">
             <h1 className="text-4xl font-semibold text-gray-900 md:text-5xl lg:text-6xl">
@@ -133,44 +143,46 @@ export const HeroSplitImageBlock = ({ data }: { data: HeroSplitBlockType }) => {
               {description}
             </p>
 
-            <form
-              action="#"
-              className="mt-8 flex w-full flex-col items-stretch gap-4 md:mt-12 md:max-w-[480px] md:flex-row md:items-start"
-            >
-              <div className="flex flex-1 flex-col gap-1.5 py-0.5">
-                <Input
-                  isRequired
-                  name="email"
-                  type="email"
-                  size="md"
-                  placeholder={formPlaceholder}
-                  hint={
-                    formHelperText.includes('privacy policy') ? (
-                      <>
-                        {formHelperText.split('privacy policy')[0]}
-                        <a
-                          href="#"
-                          className="rounded-xs underline underline-offset-3 outline-focus-ring focus-visible:outline-2 focus-visible:outline-offset-2"
-                        >
-                          privacy policy
-                        </a>
-                        {formHelperText.split('privacy policy')[1]}
-                      </>
-                    ) : (
-                      formHelperText
-                    )
-                  }
-                />
-              </div>
-              <Button type="submit" color="primary" size="lg" className="shrink-0">
-                {formButtonLabel}
-              </Button>
-            </form>
+            {data.form?.buttonLabel && (
+              <form
+                action="#"
+                className="mt-8 flex w-full flex-col items-stretch gap-4 md:mt-12 md:max-w-[480px] md:flex-row md:items-start"
+              >
+                <div className="flex flex-1 flex-col gap-1.5 py-0.5">
+                  <Input
+                    isRequired
+                    name="email"
+                    type="email"
+                    size="md"
+                    placeholder={formPlaceholder}
+                    hint={
+                      formHelperText.includes('privacy policy') ? (
+                        <>
+                          {formHelperText.split('privacy policy')[0]}
+                          <a
+                            href="#"
+                            className="rounded-xs underline underline-offset-3 outline-focus-ring focus-visible:outline-2 focus-visible:outline-offset-2"
+                          >
+                            privacy policy
+                          </a>
+                          {formHelperText.split('privacy policy')[1]}
+                        </>
+                      ) : (
+                        formHelperText
+                      )
+                    }
+                  />
+                </div>
+                <Button type="submit" color="primary" size="lg" className="shrink-0">
+                  {formButtonLabel}
+                </Button>
+              </form>
+            )}
             <AvatarsWithReview
               className="mt-8 md:mt-12"
-              avatars={data?.avatars}
-              reviewText={data?.reviewText}
-              reviewRating={data?.reviewRating}
+              avatars={data?.review?.avatars}
+              reviewText={data?.review?.text}
+              reviewRating={data?.review?.rating}
             />
           </div>
 

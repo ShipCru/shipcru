@@ -1,20 +1,25 @@
-import type { GlobalConfig } from 'payload'
+import type { Field, GlobalConfig } from 'payload'
 
 import { isSuperAdminAccess } from '@/access/isSuperAdmin'
 import { createGlobalRevalidationHook } from '@/lib/resume-pages/hooks/revalidateResumeData'
 
-const weightedWordFields = [
-  {
-    name: 'word',
-    type: 'text' as const,
-  },
-  {
-    name: 'weight',
-    type: 'number' as const,
-    defaultValue: 1,
-    min: 1,
-  },
-]
+function weightedWordFormSetFields(wordFormSetType: string): Field[] {
+  return [
+    {
+      name: 'wordFormSet',
+      type: 'relationship',
+      relationTo: 'word-form-sets',
+      required: true,
+      filterOptions: { type: { equals: wordFormSetType } },
+    },
+    {
+      name: 'weight',
+      type: 'number',
+      defaultValue: 1,
+      min: 1,
+    },
+  ]
+}
 
 export const SuffixVariations: GlobalConfig = {
   slug: 'suffix-variations',
@@ -32,16 +37,17 @@ export const SuffixVariations: GlobalConfig = {
       name: 'adjectives',
       type: 'array',
       labels: { singular: 'Adjective', plural: 'Adjectives' },
-      fields: weightedWordFields,
+      fields: weightedWordFormSetFields('adjective'),
       admin: {
-        description: 'Adjective words used in suffix generation. Pattern: {adjective}-resume-{builder}-{content}',
+        description:
+          'Adjective words used in suffix generation. Pattern: {adjective}-resume-{builder}-{content}',
       },
     },
     {
       name: 'builders',
       type: 'array',
       labels: { singular: 'Builder', plural: 'Builders' },
-      fields: weightedWordFields,
+      fields: weightedWordFormSetFields('verb'),
       admin: {
         description: 'Builder words used in suffix generation.',
       },
@@ -50,7 +56,7 @@ export const SuffixVariations: GlobalConfig = {
       name: 'contentWords',
       type: 'array',
       labels: { singular: 'Content Word', plural: 'Content Words' },
-      fields: weightedWordFields,
+      fields: weightedWordFormSetFields('contentWord'),
       admin: {
         description: 'Content words used in suffix generation.',
       },

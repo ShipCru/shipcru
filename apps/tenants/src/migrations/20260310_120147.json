@@ -430,7 +430,7 @@
           "name": "alt",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
         "updated_at": {
@@ -698,8 +698,8 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
-    "pages_blocks_hero_split_avatars": {
-      "name": "pages_blocks_hero_split_avatars",
+    "pages_blocks_hero_split_review_avatars": {
+      "name": "pages_blocks_hero_split_review_avatars",
       "columns": {
         "_order": {
           "name": "_order",
@@ -731,22 +731,22 @@
         }
       },
       "indexes": {
-        "pages_blocks_hero_split_avatars_order_idx": {
-          "name": "pages_blocks_hero_split_avatars_order_idx",
+        "pages_blocks_hero_split_review_avatars_order_idx": {
+          "name": "pages_blocks_hero_split_review_avatars_order_idx",
           "columns": [
             "_order"
           ],
           "isUnique": false
         },
-        "pages_blocks_hero_split_avatars_parent_id_idx": {
-          "name": "pages_blocks_hero_split_avatars_parent_id_idx",
+        "pages_blocks_hero_split_review_avatars_parent_id_idx": {
+          "name": "pages_blocks_hero_split_review_avatars_parent_id_idx",
           "columns": [
             "_parent_id"
           ],
           "isUnique": false
         },
-        "pages_blocks_hero_split_avatars_image_idx": {
-          "name": "pages_blocks_hero_split_avatars_image_idx",
+        "pages_blocks_hero_split_review_avatars_image_idx": {
+          "name": "pages_blocks_hero_split_review_avatars_image_idx",
           "columns": [
             "image_id"
           ],
@@ -754,9 +754,9 @@
         }
       },
       "foreignKeys": {
-        "pages_blocks_hero_split_avatars_image_id_media_id_fk": {
-          "name": "pages_blocks_hero_split_avatars_image_id_media_id_fk",
-          "tableFrom": "pages_blocks_hero_split_avatars",
+        "pages_blocks_hero_split_review_avatars_image_id_media_id_fk": {
+          "name": "pages_blocks_hero_split_review_avatars_image_id_media_id_fk",
+          "tableFrom": "pages_blocks_hero_split_review_avatars",
           "tableTo": "media",
           "columnsFrom": [
             "image_id"
@@ -767,9 +767,9 @@
           "onDelete": "set null",
           "onUpdate": "no action"
         },
-        "pages_blocks_hero_split_avatars_parent_id_fk": {
-          "name": "pages_blocks_hero_split_avatars_parent_id_fk",
-          "tableFrom": "pages_blocks_hero_split_avatars",
+        "pages_blocks_hero_split_review_avatars_parent_id_fk": {
+          "name": "pages_blocks_hero_split_review_avatars_parent_id_fk",
+          "tableFrom": "pages_blocks_hero_split_review_avatars",
           "tableTo": "pages_blocks_hero_split",
           "columnsFrom": [
             "_parent_id"
@@ -824,13 +824,6 @@
           "autoincrement": false,
           "default": "'fixed'"
         },
-        "heading_fixed_text": {
-          "name": "heading_fixed_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
         "heading_variation_set_id": {
           "name": "heading_variation_set_id",
           "type": "integer",
@@ -846,13 +839,6 @@
           "autoincrement": false,
           "default": "'fixed'"
         },
-        "description_fixed_text": {
-          "name": "description_fixed_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
         "description_variation_set_id": {
           "name": "description_variation_set_id",
           "type": "integer",
@@ -866,38 +852,6 @@
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
-        },
-        "form_placeholder": {
-          "name": "form_placeholder",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "'Enter your email'"
-        },
-        "form_button_label": {
-          "name": "form_button_label",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "'Get started'"
-        },
-        "form_helper_text": {
-          "name": "form_helper_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "'We care about your data in our privacy policy.'"
-        },
-        "review_text": {
-          "name": "review_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "'from 200+ reviews'"
         },
         "review_rating": {
           "name": "review_rating",
@@ -1017,6 +971,106 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
+    "pages_blocks_hero_split_locales": {
+      "name": "pages_blocks_hero_split_locales",
+      "columns": {
+        "heading_fixed_text": {
+          "name": "heading_fixed_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "description_fixed_text": {
+          "name": "description_fixed_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "form_placeholder": {
+          "name": "form_placeholder",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'Enter your email'"
+        },
+        "form_button_label": {
+          "name": "form_button_label",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'Get started'"
+        },
+        "form_helper_text": {
+          "name": "form_helper_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'We care about your data in our privacy policy.'"
+        },
+        "review_text": {
+          "name": "review_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'from 200+ reviews'"
+        },
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_locale": {
+          "name": "_locale",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "pages_blocks_hero_split_locales_locale_parent_id_unique": {
+          "name": "pages_blocks_hero_split_locales_locale_parent_id_unique",
+          "columns": [
+            "_locale",
+            "_parent_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "pages_blocks_hero_split_locales_parent_id_fk": {
+          "name": "pages_blocks_hero_split_locales_parent_id_fk",
+          "tableFrom": "pages_blocks_hero_split_locales",
+          "tableTo": "pages_blocks_hero_split",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "pages_blocks_blog_articles": {
       "name": "pages_blocks_blog_articles",
       "columns": {
@@ -1041,29 +1095,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "title": {
-          "name": "title",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "summary": {
-          "name": "summary",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
         "href": {
           "name": "href",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "category_name": {
-          "name": "category_name",
           "type": "text",
           "primaryKey": false,
           "notNull": false,
@@ -1078,20 +1111,6 @@
         },
         "published_at": {
           "name": "published_at",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "reading_time": {
-          "name": "reading_time",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "author_name": {
-          "name": "author_name",
           "type": "text",
           "primaryKey": false,
           "notNull": false,
@@ -1180,6 +1199,95 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
+    "pages_blocks_blog_articles_locales": {
+      "name": "pages_blocks_blog_articles_locales",
+      "columns": {
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "summary": {
+          "name": "summary",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "category_name": {
+          "name": "category_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "reading_time": {
+          "name": "reading_time",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "author_name": {
+          "name": "author_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_locale": {
+          "name": "_locale",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "pages_blocks_blog_articles_locales_locale_parent_id_unique": {
+          "name": "pages_blocks_blog_articles_locales_locale_parent_id_unique",
+          "columns": [
+            "_locale",
+            "_parent_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "pages_blocks_blog_articles_locales_parent_id_fk": {
+          "name": "pages_blocks_blog_articles_locales_parent_id_fk",
+          "tableFrom": "pages_blocks_blog_articles_locales",
+          "tableTo": "pages_blocks_blog_articles",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "pages_blocks_blog": {
       "name": "pages_blocks_blog",
       "columns": {
@@ -1211,14 +1319,6 @@
           "notNull": true,
           "autoincrement": false
         },
-        "label": {
-          "name": "label",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "'Blog'"
-        },
         "heading_mode": {
           "name": "heading_mode",
           "type": "text",
@@ -1226,13 +1326,6 @@
           "notNull": false,
           "autoincrement": false,
           "default": "'fixed'"
-        },
-        "heading_fixed_text": {
-          "name": "heading_fixed_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
         },
         "heading_variation_set_id": {
           "name": "heading_variation_set_id",
@@ -1249,35 +1342,12 @@
           "autoincrement": false,
           "default": "'fixed'"
         },
-        "description_fixed_text": {
-          "name": "description_fixed_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
         "description_variation_set_id": {
           "name": "description_variation_set_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
-        },
-        "form_placeholder": {
-          "name": "form_placeholder",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "'Enter your email'"
-        },
-        "form_button_label": {
-          "name": "form_button_label",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "'Subscribe'"
         },
         "section_id": {
           "name": "section_id",
@@ -1384,6 +1454,98 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
+    "pages_blocks_blog_locales": {
+      "name": "pages_blocks_blog_locales",
+      "columns": {
+        "label": {
+          "name": "label",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'Blog'"
+        },
+        "heading_fixed_text": {
+          "name": "heading_fixed_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "description_fixed_text": {
+          "name": "description_fixed_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "form_placeholder": {
+          "name": "form_placeholder",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'Enter your email'"
+        },
+        "form_button_label": {
+          "name": "form_button_label",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'Subscribe'"
+        },
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_locale": {
+          "name": "_locale",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "pages_blocks_blog_locales_locale_parent_id_unique": {
+          "name": "pages_blocks_blog_locales_locale_parent_id_unique",
+          "columns": [
+            "_locale",
+            "_parent_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "pages_blocks_blog_locales_parent_id_fk": {
+          "name": "pages_blocks_blog_locales_parent_id_fk",
+          "tableFrom": "pages_blocks_blog_locales",
+          "tableTo": "pages_blocks_blog",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "pages_blocks_testimonials_reviews": {
       "name": "pages_blocks_testimonials_reviews",
       "columns": {
@@ -1406,27 +1568,6 @@
           "type": "text",
           "primaryKey": true,
           "notNull": true,
-          "autoincrement": false
-        },
-        "quote": {
-          "name": "quote",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "author_name": {
-          "name": "author_name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "author_title": {
-          "name": "author_title",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
           "autoincrement": false
         },
         "author_image_id": {
@@ -1553,6 +1694,81 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
+    "pages_blocks_testimonials_reviews_locales": {
+      "name": "pages_blocks_testimonials_reviews_locales",
+      "columns": {
+        "quote": {
+          "name": "quote",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "author_name": {
+          "name": "author_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "author_title": {
+          "name": "author_title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_locale": {
+          "name": "_locale",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "pages_blocks_testimonials_reviews_locales_locale_parent_id_u": {
+          "name": "pages_blocks_testimonials_reviews_locales_locale_parent_id_u",
+          "columns": [
+            "_locale",
+            "_parent_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "pages_blocks_testimonials_reviews_locales_parent_id_fk": {
+          "name": "pages_blocks_testimonials_reviews_locales_parent_id_fk",
+          "tableFrom": "pages_blocks_testimonials_reviews_locales",
+          "tableTo": "pages_blocks_testimonials_reviews",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "pages_blocks_testimonials": {
       "name": "pages_blocks_testimonials",
       "columns": {
@@ -1592,13 +1808,6 @@
           "autoincrement": false,
           "default": "'fixed'"
         },
-        "heading_fixed_text": {
-          "name": "heading_fixed_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
         "heading_variation_set_id": {
           "name": "heading_variation_set_id",
           "type": "integer",
@@ -1613,13 +1822,6 @@
           "notNull": false,
           "autoincrement": false,
           "default": "'fixed'"
-        },
-        "description_fixed_text": {
-          "name": "description_fixed_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
         },
         "description_variation_set_id": {
           "name": "description_variation_set_id",
@@ -1733,6 +1935,74 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
+    "pages_blocks_testimonials_locales": {
+      "name": "pages_blocks_testimonials_locales",
+      "columns": {
+        "heading_fixed_text": {
+          "name": "heading_fixed_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "description_fixed_text": {
+          "name": "description_fixed_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_locale": {
+          "name": "_locale",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "pages_blocks_testimonials_locales_locale_parent_id_unique": {
+          "name": "pages_blocks_testimonials_locales_locale_parent_id_unique",
+          "columns": [
+            "_locale",
+            "_parent_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "pages_blocks_testimonials_locales_parent_id_fk": {
+          "name": "pages_blocks_testimonials_locales_parent_id_fk",
+          "tableFrom": "pages_blocks_testimonials_locales",
+          "tableTo": "pages_blocks_testimonials",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "pages_blocks_metrics_metrics": {
       "name": "pages_blocks_metrics_metrics",
       "columns": {
@@ -1755,34 +2025,6 @@
           "type": "text",
           "primaryKey": true,
           "notNull": true,
-          "autoincrement": false
-        },
-        "value": {
-          "name": "value",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "label": {
-          "name": "label",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "description": {
-          "name": "description",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "cta_label": {
-          "name": "cta_label",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
           "autoincrement": false
         },
         "cta_link": {
@@ -1814,6 +2056,88 @@
           "name": "pages_blocks_metrics_metrics_parent_id_fk",
           "tableFrom": "pages_blocks_metrics_metrics",
           "tableTo": "pages_blocks_metrics",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "pages_blocks_metrics_metrics_locales": {
+      "name": "pages_blocks_metrics_metrics_locales",
+      "columns": {
+        "value": {
+          "name": "value",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "label": {
+          "name": "label",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "cta_label": {
+          "name": "cta_label",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_locale": {
+          "name": "_locale",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "pages_blocks_metrics_metrics_locales_locale_parent_id_unique": {
+          "name": "pages_blocks_metrics_metrics_locales_locale_parent_id_unique",
+          "columns": [
+            "_locale",
+            "_parent_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "pages_blocks_metrics_metrics_locales_parent_id_fk": {
+          "name": "pages_blocks_metrics_metrics_locales_parent_id_fk",
+          "tableFrom": "pages_blocks_metrics_metrics_locales",
+          "tableTo": "pages_blocks_metrics_metrics",
           "columnsFrom": [
             "_parent_id"
           ],
@@ -1867,13 +2191,6 @@
           "autoincrement": false,
           "default": "'fixed'"
         },
-        "heading_fixed_text": {
-          "name": "heading_fixed_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
         "heading_variation_set_id": {
           "name": "heading_variation_set_id",
           "type": "integer",
@@ -1888,13 +2205,6 @@
           "notNull": false,
           "autoincrement": false,
           "default": "'fixed'"
-        },
-        "description_fixed_text": {
-          "name": "description_fixed_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
         },
         "description_variation_set_id": {
           "name": "description_variation_set_id",
@@ -1994,6 +2304,74 @@
           "name": "pages_blocks_metrics_parent_id_fk",
           "tableFrom": "pages_blocks_metrics",
           "tableTo": "pages",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "pages_blocks_metrics_locales": {
+      "name": "pages_blocks_metrics_locales",
+      "columns": {
+        "heading_fixed_text": {
+          "name": "heading_fixed_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "description_fixed_text": {
+          "name": "description_fixed_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_locale": {
+          "name": "_locale",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "pages_blocks_metrics_locales_locale_parent_id_unique": {
+          "name": "pages_blocks_metrics_locales_locale_parent_id_unique",
+          "columns": [
+            "_locale",
+            "_parent_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "pages_blocks_metrics_locales_parent_id_fk": {
+          "name": "pages_blocks_metrics_locales_parent_id_fk",
+          "tableFrom": "pages_blocks_metrics_locales",
+          "tableTo": "pages_blocks_metrics",
           "columnsFrom": [
             "_parent_id"
           ],
@@ -2408,8 +2786,8 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
-    "_pages_v_blocks_hero_split_avatars": {
-      "name": "_pages_v_blocks_hero_split_avatars",
+    "_pages_v_blocks_hero_split_review_avatars": {
+      "name": "_pages_v_blocks_hero_split_review_avatars",
       "columns": {
         "_order": {
           "name": "_order",
@@ -2448,22 +2826,22 @@
         }
       },
       "indexes": {
-        "_pages_v_blocks_hero_split_avatars_order_idx": {
-          "name": "_pages_v_blocks_hero_split_avatars_order_idx",
+        "_pages_v_blocks_hero_split_review_avatars_order_idx": {
+          "name": "_pages_v_blocks_hero_split_review_avatars_order_idx",
           "columns": [
             "_order"
           ],
           "isUnique": false
         },
-        "_pages_v_blocks_hero_split_avatars_parent_id_idx": {
-          "name": "_pages_v_blocks_hero_split_avatars_parent_id_idx",
+        "_pages_v_blocks_hero_split_review_avatars_parent_id_idx": {
+          "name": "_pages_v_blocks_hero_split_review_avatars_parent_id_idx",
           "columns": [
             "_parent_id"
           ],
           "isUnique": false
         },
-        "_pages_v_blocks_hero_split_avatars_image_idx": {
-          "name": "_pages_v_blocks_hero_split_avatars_image_idx",
+        "_pages_v_blocks_hero_split_review_avatars_image_idx": {
+          "name": "_pages_v_blocks_hero_split_review_avatars_image_idx",
           "columns": [
             "image_id"
           ],
@@ -2471,9 +2849,9 @@
         }
       },
       "foreignKeys": {
-        "_pages_v_blocks_hero_split_avatars_image_id_media_id_fk": {
-          "name": "_pages_v_blocks_hero_split_avatars_image_id_media_id_fk",
-          "tableFrom": "_pages_v_blocks_hero_split_avatars",
+        "_pages_v_blocks_hero_split_review_avatars_image_id_media_id_fk": {
+          "name": "_pages_v_blocks_hero_split_review_avatars_image_id_media_id_fk",
+          "tableFrom": "_pages_v_blocks_hero_split_review_avatars",
           "tableTo": "media",
           "columnsFrom": [
             "image_id"
@@ -2484,9 +2862,9 @@
           "onDelete": "set null",
           "onUpdate": "no action"
         },
-        "_pages_v_blocks_hero_split_avatars_parent_id_fk": {
-          "name": "_pages_v_blocks_hero_split_avatars_parent_id_fk",
-          "tableFrom": "_pages_v_blocks_hero_split_avatars",
+        "_pages_v_blocks_hero_split_review_avatars_parent_id_fk": {
+          "name": "_pages_v_blocks_hero_split_review_avatars_parent_id_fk",
+          "tableFrom": "_pages_v_blocks_hero_split_review_avatars",
           "tableTo": "_pages_v_blocks_hero_split",
           "columnsFrom": [
             "_parent_id"
@@ -2541,13 +2919,6 @@
           "autoincrement": false,
           "default": "'fixed'"
         },
-        "heading_fixed_text": {
-          "name": "heading_fixed_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
         "heading_variation_set_id": {
           "name": "heading_variation_set_id",
           "type": "integer",
@@ -2563,13 +2934,6 @@
           "autoincrement": false,
           "default": "'fixed'"
         },
-        "description_fixed_text": {
-          "name": "description_fixed_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
         "description_variation_set_id": {
           "name": "description_variation_set_id",
           "type": "integer",
@@ -2583,38 +2947,6 @@
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
-        },
-        "form_placeholder": {
-          "name": "form_placeholder",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "'Enter your email'"
-        },
-        "form_button_label": {
-          "name": "form_button_label",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "'Get started'"
-        },
-        "form_helper_text": {
-          "name": "form_helper_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "'We care about your data in our privacy policy.'"
-        },
-        "review_text": {
-          "name": "review_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "'from 200+ reviews'"
         },
         "review_rating": {
           "name": "review_rating",
@@ -2741,6 +3073,106 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
+    "_pages_v_blocks_hero_split_locales": {
+      "name": "_pages_v_blocks_hero_split_locales",
+      "columns": {
+        "heading_fixed_text": {
+          "name": "heading_fixed_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "description_fixed_text": {
+          "name": "description_fixed_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "form_placeholder": {
+          "name": "form_placeholder",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'Enter your email'"
+        },
+        "form_button_label": {
+          "name": "form_button_label",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'Get started'"
+        },
+        "form_helper_text": {
+          "name": "form_helper_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'We care about your data in our privacy policy.'"
+        },
+        "review_text": {
+          "name": "review_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'from 200+ reviews'"
+        },
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_locale": {
+          "name": "_locale",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "_pages_v_blocks_hero_split_locales_locale_parent_id_unique": {
+          "name": "_pages_v_blocks_hero_split_locales_locale_parent_id_unique",
+          "columns": [
+            "_locale",
+            "_parent_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "_pages_v_blocks_hero_split_locales_parent_id_fk": {
+          "name": "_pages_v_blocks_hero_split_locales_parent_id_fk",
+          "tableFrom": "_pages_v_blocks_hero_split_locales",
+          "tableTo": "_pages_v_blocks_hero_split",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "_pages_v_blocks_blog_articles": {
       "name": "_pages_v_blocks_blog_articles",
       "columns": {
@@ -2765,29 +3197,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "title": {
-          "name": "title",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "summary": {
-          "name": "summary",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
         "href": {
           "name": "href",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "category_name": {
-          "name": "category_name",
           "type": "text",
           "primaryKey": false,
           "notNull": false,
@@ -2802,20 +3213,6 @@
         },
         "published_at": {
           "name": "published_at",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "reading_time": {
-          "name": "reading_time",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "author_name": {
-          "name": "author_name",
           "type": "text",
           "primaryKey": false,
           "notNull": false,
@@ -2911,6 +3308,95 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
+    "_pages_v_blocks_blog_articles_locales": {
+      "name": "_pages_v_blocks_blog_articles_locales",
+      "columns": {
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "summary": {
+          "name": "summary",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "category_name": {
+          "name": "category_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "reading_time": {
+          "name": "reading_time",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "author_name": {
+          "name": "author_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_locale": {
+          "name": "_locale",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "_pages_v_blocks_blog_articles_locales_locale_parent_id_uniqu": {
+          "name": "_pages_v_blocks_blog_articles_locales_locale_parent_id_uniqu",
+          "columns": [
+            "_locale",
+            "_parent_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "_pages_v_blocks_blog_articles_locales_parent_id_fk": {
+          "name": "_pages_v_blocks_blog_articles_locales_parent_id_fk",
+          "tableFrom": "_pages_v_blocks_blog_articles_locales",
+          "tableTo": "_pages_v_blocks_blog_articles",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "_pages_v_blocks_blog": {
       "name": "_pages_v_blocks_blog",
       "columns": {
@@ -2942,14 +3428,6 @@
           "notNull": true,
           "autoincrement": false
         },
-        "label": {
-          "name": "label",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "'Blog'"
-        },
         "heading_mode": {
           "name": "heading_mode",
           "type": "text",
@@ -2957,13 +3435,6 @@
           "notNull": false,
           "autoincrement": false,
           "default": "'fixed'"
-        },
-        "heading_fixed_text": {
-          "name": "heading_fixed_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
         },
         "heading_variation_set_id": {
           "name": "heading_variation_set_id",
@@ -2980,35 +3451,12 @@
           "autoincrement": false,
           "default": "'fixed'"
         },
-        "description_fixed_text": {
-          "name": "description_fixed_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
         "description_variation_set_id": {
           "name": "description_variation_set_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
-        },
-        "form_placeholder": {
-          "name": "form_placeholder",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "'Enter your email'"
-        },
-        "form_button_label": {
-          "name": "form_button_label",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "'Subscribe'"
         },
         "section_id": {
           "name": "section_id",
@@ -3122,6 +3570,98 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
+    "_pages_v_blocks_blog_locales": {
+      "name": "_pages_v_blocks_blog_locales",
+      "columns": {
+        "label": {
+          "name": "label",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'Blog'"
+        },
+        "heading_fixed_text": {
+          "name": "heading_fixed_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "description_fixed_text": {
+          "name": "description_fixed_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "form_placeholder": {
+          "name": "form_placeholder",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'Enter your email'"
+        },
+        "form_button_label": {
+          "name": "form_button_label",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'Subscribe'"
+        },
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_locale": {
+          "name": "_locale",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "_pages_v_blocks_blog_locales_locale_parent_id_unique": {
+          "name": "_pages_v_blocks_blog_locales_locale_parent_id_unique",
+          "columns": [
+            "_locale",
+            "_parent_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "_pages_v_blocks_blog_locales_parent_id_fk": {
+          "name": "_pages_v_blocks_blog_locales_parent_id_fk",
+          "tableFrom": "_pages_v_blocks_blog_locales",
+          "tableTo": "_pages_v_blocks_blog",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "_pages_v_blocks_testimonials_reviews": {
       "name": "_pages_v_blocks_testimonials_reviews",
       "columns": {
@@ -3144,27 +3684,6 @@
           "type": "integer",
           "primaryKey": true,
           "notNull": true,
-          "autoincrement": false
-        },
-        "quote": {
-          "name": "quote",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "author_name": {
-          "name": "author_name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "author_title": {
-          "name": "author_title",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
           "autoincrement": false
         },
         "author_image_id": {
@@ -3298,6 +3817,81 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
+    "_pages_v_blocks_testimonials_reviews_locales": {
+      "name": "_pages_v_blocks_testimonials_reviews_locales",
+      "columns": {
+        "quote": {
+          "name": "quote",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "author_name": {
+          "name": "author_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "author_title": {
+          "name": "author_title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_locale": {
+          "name": "_locale",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "_pages_v_blocks_testimonials_reviews_locales_locale_parent_i": {
+          "name": "_pages_v_blocks_testimonials_reviews_locales_locale_parent_i",
+          "columns": [
+            "_locale",
+            "_parent_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "_pages_v_blocks_testimonials_reviews_locales_parent_id_fk": {
+          "name": "_pages_v_blocks_testimonials_reviews_locales_parent_id_fk",
+          "tableFrom": "_pages_v_blocks_testimonials_reviews_locales",
+          "tableTo": "_pages_v_blocks_testimonials_reviews",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "_pages_v_blocks_testimonials": {
       "name": "_pages_v_blocks_testimonials",
       "columns": {
@@ -3337,13 +3931,6 @@
           "autoincrement": false,
           "default": "'fixed'"
         },
-        "heading_fixed_text": {
-          "name": "heading_fixed_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
         "heading_variation_set_id": {
           "name": "heading_variation_set_id",
           "type": "integer",
@@ -3358,13 +3945,6 @@
           "notNull": false,
           "autoincrement": false,
           "default": "'fixed'"
-        },
-        "description_fixed_text": {
-          "name": "description_fixed_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
         },
         "description_variation_set_id": {
           "name": "description_variation_set_id",
@@ -3485,6 +4065,74 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
+    "_pages_v_blocks_testimonials_locales": {
+      "name": "_pages_v_blocks_testimonials_locales",
+      "columns": {
+        "heading_fixed_text": {
+          "name": "heading_fixed_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "description_fixed_text": {
+          "name": "description_fixed_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_locale": {
+          "name": "_locale",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "_pages_v_blocks_testimonials_locales_locale_parent_id_unique": {
+          "name": "_pages_v_blocks_testimonials_locales_locale_parent_id_unique",
+          "columns": [
+            "_locale",
+            "_parent_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "_pages_v_blocks_testimonials_locales_parent_id_fk": {
+          "name": "_pages_v_blocks_testimonials_locales_parent_id_fk",
+          "tableFrom": "_pages_v_blocks_testimonials_locales",
+          "tableTo": "_pages_v_blocks_testimonials",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "_pages_v_blocks_metrics_metrics": {
       "name": "_pages_v_blocks_metrics_metrics",
       "columns": {
@@ -3507,34 +4155,6 @@
           "type": "integer",
           "primaryKey": true,
           "notNull": true,
-          "autoincrement": false
-        },
-        "value": {
-          "name": "value",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "label": {
-          "name": "label",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "description": {
-          "name": "description",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "cta_label": {
-          "name": "cta_label",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
           "autoincrement": false
         },
         "cta_link": {
@@ -3573,6 +4193,88 @@
           "name": "_pages_v_blocks_metrics_metrics_parent_id_fk",
           "tableFrom": "_pages_v_blocks_metrics_metrics",
           "tableTo": "_pages_v_blocks_metrics",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "_pages_v_blocks_metrics_metrics_locales": {
+      "name": "_pages_v_blocks_metrics_metrics_locales",
+      "columns": {
+        "value": {
+          "name": "value",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "label": {
+          "name": "label",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "cta_label": {
+          "name": "cta_label",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_locale": {
+          "name": "_locale",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "_pages_v_blocks_metrics_metrics_locales_locale_parent_id_uni": {
+          "name": "_pages_v_blocks_metrics_metrics_locales_locale_parent_id_uni",
+          "columns": [
+            "_locale",
+            "_parent_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "_pages_v_blocks_metrics_metrics_locales_parent_id_fk": {
+          "name": "_pages_v_blocks_metrics_metrics_locales_parent_id_fk",
+          "tableFrom": "_pages_v_blocks_metrics_metrics_locales",
+          "tableTo": "_pages_v_blocks_metrics_metrics",
           "columnsFrom": [
             "_parent_id"
           ],
@@ -3626,13 +4328,6 @@
           "autoincrement": false,
           "default": "'fixed'"
         },
-        "heading_fixed_text": {
-          "name": "heading_fixed_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
         "heading_variation_set_id": {
           "name": "heading_variation_set_id",
           "type": "integer",
@@ -3647,13 +4342,6 @@
           "notNull": false,
           "autoincrement": false,
           "default": "'fixed'"
-        },
-        "description_fixed_text": {
-          "name": "description_fixed_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
         },
         "description_variation_set_id": {
           "name": "description_variation_set_id",
@@ -3760,6 +4448,74 @@
           "name": "_pages_v_blocks_metrics_parent_id_fk",
           "tableFrom": "_pages_v_blocks_metrics",
           "tableTo": "_pages_v",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "_pages_v_blocks_metrics_locales": {
+      "name": "_pages_v_blocks_metrics_locales",
+      "columns": {
+        "heading_fixed_text": {
+          "name": "heading_fixed_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "description_fixed_text": {
+          "name": "description_fixed_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_locale": {
+          "name": "_locale",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "_pages_v_blocks_metrics_locales_locale_parent_id_unique": {
+          "name": "_pages_v_blocks_metrics_locales_locale_parent_id_unique",
+          "columns": [
+            "_locale",
+            "_parent_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "_pages_v_blocks_metrics_locales_parent_id_fk": {
+          "name": "_pages_v_blocks_metrics_locales_parent_id_fk",
+          "tableFrom": "_pages_v_blocks_metrics_locales",
+          "tableTo": "_pages_v_blocks_metrics",
           "columnsFrom": [
             "_parent_id"
           ],
@@ -4288,13 +5044,6 @@
           "notNull": true,
           "autoincrement": false
         },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
         "generate_slug": {
           "name": "generate_slug",
           "type": "integer",
@@ -4308,13 +5057,6 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false
-        },
-        "description": {
-          "name": "description",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
           "autoincrement": false
         },
         "updated_at": {
@@ -4362,9 +5104,23 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
-    "industries": {
-      "name": "industries",
+    "industry_categories_locales": {
+      "name": "industry_categories_locales",
       "columns": {
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
         "id": {
           "name": "id",
           "type": "integer",
@@ -4372,10 +5128,57 @@
           "notNull": true,
           "autoincrement": false
         },
-        "name": {
-          "name": "name",
+        "_locale": {
+          "name": "_locale",
           "type": "text",
           "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "industry_categories_locales_locale_parent_id_unique": {
+          "name": "industry_categories_locales_locale_parent_id_unique",
+          "columns": [
+            "_locale",
+            "_parent_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "industry_categories_locales_parent_id_fk": {
+          "name": "industry_categories_locales_parent_id_fk",
+          "tableFrom": "industry_categories_locales",
+          "tableTo": "industry_categories",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "industries": {
+      "name": "industries",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
           "notNull": true,
           "autoincrement": false
         },
@@ -4397,13 +5200,6 @@
         "category_id": {
           "name": "category_id",
           "type": "integer",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "description": {
-          "name": "description",
-          "type": "text",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -4485,6 +5281,20 @@
     "industries_locales": {
       "name": "industries_locales",
       "columns": {
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
         "meta_title": {
           "name": "meta_title",
           "type": "text",
@@ -4588,13 +5398,6 @@
           "notNull": true,
           "autoincrement": false
         },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
         "generate_slug": {
           "name": "generate_slug",
           "type": "integer",
@@ -4666,6 +5469,13 @@
     "job_titles_locales": {
       "name": "job_titles_locales",
       "columns": {
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
         "meta_title": {
           "name": "meta_title",
           "type": "text",
@@ -4897,13 +5707,6 @@
           "notNull": true,
           "autoincrement": false
         },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
         "generate_slug": {
           "name": "generate_slug",
           "type": "integer",
@@ -4944,13 +5747,6 @@
         }
       },
       "indexes": {
-        "skills_name_idx": {
-          "name": "skills_name_idx",
-          "columns": [
-            "name"
-          ],
-          "isUnique": true
-        },
         "skills_slug_idx": {
           "name": "skills_slug_idx",
           "columns": [
@@ -4978,6 +5774,75 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
+    "skills_locales": {
+      "name": "skills_locales",
+      "columns": {
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_locale": {
+          "name": "_locale",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "skills_name_idx": {
+          "name": "skills_name_idx",
+          "columns": [
+            "name",
+            "_locale"
+          ],
+          "isUnique": true
+        },
+        "skills_locales_locale_parent_id_unique": {
+          "name": "skills_locales_locale_parent_id_unique",
+          "columns": [
+            "_locale",
+            "_parent_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "skills_locales_parent_id_fk": {
+          "name": "skills_locales_parent_id_fk",
+          "tableFrom": "skills_locales",
+          "tableTo": "skills",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "content_variations_options": {
       "name": "content_variations_options",
       "columns": {
@@ -5000,13 +5865,6 @@
           "type": "text",
           "primaryKey": true,
           "notNull": true,
-          "autoincrement": false
-        },
-        "text": {
-          "name": "text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
           "autoincrement": false
         },
         "weight": {
@@ -5039,6 +5897,67 @@
           "name": "content_variations_options_parent_id_fk",
           "tableFrom": "content_variations_options",
           "tableTo": "content_variations",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "content_variations_options_locales": {
+      "name": "content_variations_options_locales",
+      "columns": {
+        "text": {
+          "name": "text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_locale": {
+          "name": "_locale",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "content_variations_options_locales_locale_parent_id_unique": {
+          "name": "content_variations_options_locales_locale_parent_id_unique",
+          "columns": [
+            "_locale",
+            "_parent_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "content_variations_options_locales_parent_id_fk": {
+          "name": "content_variations_options_locales_parent_id_fk",
+          "tableFrom": "content_variations_options_locales",
+          "tableTo": "content_variations_options",
           "columnsFrom": [
             "_parent_id"
           ],
@@ -5181,6 +6100,68 @@
           "notNull": false,
           "autoincrement": false
         },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))"
+        }
+      },
+      "indexes": {
+        "word_form_sets_tenant_idx": {
+          "name": "word_form_sets_tenant_idx",
+          "columns": [
+            "tenant_id"
+          ],
+          "isUnique": false
+        },
+        "word_form_sets_updated_at_idx": {
+          "name": "word_form_sets_updated_at_idx",
+          "columns": [
+            "updated_at"
+          ],
+          "isUnique": false
+        },
+        "word_form_sets_created_at_idx": {
+          "name": "word_form_sets_created_at_idx",
+          "columns": [
+            "created_at"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "word_form_sets_tenant_id_tenants_id_fk": {
+          "name": "word_form_sets_tenant_id_tenants_id_fk",
+          "tableFrom": "word_form_sets",
+          "tableTo": "tenants",
+          "columnsFrom": [
+            "tenant_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "word_form_sets_locales": {
+      "name": "word_form_sets_locales",
+      "columns": {
         "rw_singular": {
           "name": "rw_singular",
           "type": "text",
@@ -5349,58 +6330,50 @@
           "notNull": false,
           "autoincrement": false
         },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "text",
-          "primaryKey": false,
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
           "notNull": true,
-          "autoincrement": false,
-          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))"
+          "autoincrement": false
         },
-        "created_at": {
-          "name": "created_at",
+        "_locale": {
+          "name": "_locale",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
-          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))"
+          "autoincrement": false
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
         }
       },
       "indexes": {
-        "word_form_sets_tenant_idx": {
-          "name": "word_form_sets_tenant_idx",
+        "word_form_sets_locales_locale_parent_id_unique": {
+          "name": "word_form_sets_locales_locale_parent_id_unique",
           "columns": [
-            "tenant_id"
+            "_locale",
+            "_parent_id"
           ],
-          "isUnique": false
-        },
-        "word_form_sets_updated_at_idx": {
-          "name": "word_form_sets_updated_at_idx",
-          "columns": [
-            "updated_at"
-          ],
-          "isUnique": false
-        },
-        "word_form_sets_created_at_idx": {
-          "name": "word_form_sets_created_at_idx",
-          "columns": [
-            "created_at"
-          ],
-          "isUnique": false
+          "isUnique": true
         }
       },
       "foreignKeys": {
-        "word_form_sets_tenant_id_tenants_id_fk": {
-          "name": "word_form_sets_tenant_id_tenants_id_fk",
-          "tableFrom": "word_form_sets",
-          "tableTo": "tenants",
+        "word_form_sets_locales_parent_id_fk": {
+          "name": "word_form_sets_locales_parent_id_fk",
+          "tableFrom": "word_form_sets_locales",
+          "tableTo": "word_form_sets",
           "columnsFrom": [
-            "tenant_id"
+            "_parent_id"
           ],
           "columnsTo": [
             "id"
           ],
-          "onDelete": "set null",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -5738,13 +6711,6 @@
           "autoincrement": false,
           "default": "'fixed'"
         },
-        "ovrds_herosplit_heading_fixed_text": {
-          "name": "ovrds_herosplit_heading_fixed_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
         "ovrds_herosplit_heading_variation_set_id": {
           "name": "ovrds_herosplit_heading_variation_set_id",
           "type": "integer",
@@ -5760,27 +6726,12 @@
           "autoincrement": false,
           "default": "'fixed'"
         },
-        "ovrds_herosplit_description_fixed_text": {
-          "name": "ovrds_herosplit_description_fixed_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
         "ovrds_herosplit_description_variation_set_id": {
           "name": "ovrds_herosplit_description_variation_set_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
-        },
-        "ovrds_herosplit_form_button_label": {
-          "name": "ovrds_herosplit_form_button_label",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "'Get started'"
         },
         "ovrds_blog_heading_mode": {
           "name": "ovrds_blog_heading_mode",
@@ -5789,13 +6740,6 @@
           "notNull": false,
           "autoincrement": false,
           "default": "'fixed'"
-        },
-        "ovrds_blog_heading_fixed_text": {
-          "name": "ovrds_blog_heading_fixed_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
         },
         "ovrds_blog_heading_variation_set_id": {
           "name": "ovrds_blog_heading_variation_set_id",
@@ -5812,13 +6756,6 @@
           "autoincrement": false,
           "default": "'fixed'"
         },
-        "ovrds_blog_description_fixed_text": {
-          "name": "ovrds_blog_description_fixed_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
         "ovrds_blog_description_variation_set_id": {
           "name": "ovrds_blog_description_variation_set_id",
           "type": "integer",
@@ -5833,13 +6770,6 @@
           "notNull": false,
           "autoincrement": false,
           "default": "'fixed'"
-        },
-        "ovrds_testimonials_heading_fixed_text": {
-          "name": "ovrds_testimonials_heading_fixed_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
         },
         "ovrds_testimonials_heading_variation_set_id": {
           "name": "ovrds_testimonials_heading_variation_set_id",
@@ -5856,13 +6786,6 @@
           "autoincrement": false,
           "default": "'fixed'"
         },
-        "ovrds_testimonials_description_fixed_text": {
-          "name": "ovrds_testimonials_description_fixed_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
         "ovrds_testimonials_description_variation_set_id": {
           "name": "ovrds_testimonials_description_variation_set_id",
           "type": "integer",
@@ -5878,13 +6801,6 @@
           "autoincrement": false,
           "default": "'fixed'"
         },
-        "ovrds_metrics_heading_fixed_text": {
-          "name": "ovrds_metrics_heading_fixed_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
         "ovrds_metrics_heading_variation_set_id": {
           "name": "ovrds_metrics_heading_variation_set_id",
           "type": "integer",
@@ -5899,13 +6815,6 @@
           "notNull": false,
           "autoincrement": false,
           "default": "'fixed'"
-        },
-        "ovrds_metrics_description_fixed_text": {
-          "name": "ovrds_metrics_description_fixed_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
         },
         "ovrds_metrics_description_variation_set_id": {
           "name": "ovrds_metrics_description_variation_set_id",
@@ -6103,6 +7012,116 @@
           "name": "tmpl_ovrd_sect_ovrd_parent_id_fk",
           "tableFrom": "tmpl_ovrd_sect_ovrd",
           "tableTo": "tmpl_ovrd",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "tmpl_ovrd_sect_ovrd_locales": {
+      "name": "tmpl_ovrd_sect_ovrd_locales",
+      "columns": {
+        "ovrds_herosplit_heading_fixed_text": {
+          "name": "ovrds_herosplit_heading_fixed_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "ovrds_herosplit_description_fixed_text": {
+          "name": "ovrds_herosplit_description_fixed_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "ovrds_blog_heading_fixed_text": {
+          "name": "ovrds_blog_heading_fixed_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "ovrds_blog_description_fixed_text": {
+          "name": "ovrds_blog_description_fixed_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "ovrds_testimonials_heading_fixed_text": {
+          "name": "ovrds_testimonials_heading_fixed_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "ovrds_testimonials_description_fixed_text": {
+          "name": "ovrds_testimonials_description_fixed_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "ovrds_metrics_heading_fixed_text": {
+          "name": "ovrds_metrics_heading_fixed_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "ovrds_metrics_description_fixed_text": {
+          "name": "ovrds_metrics_description_fixed_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_locale": {
+          "name": "_locale",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "tmpl_ovrd_sect_ovrd_locales_locale_parent_id_unique": {
+          "name": "tmpl_ovrd_sect_ovrd_locales_locale_parent_id_unique",
+          "columns": [
+            "_locale",
+            "_parent_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "tmpl_ovrd_sect_ovrd_locales_parent_id_fk": {
+          "name": "tmpl_ovrd_sect_ovrd_locales_parent_id_fk",
+          "tableFrom": "tmpl_ovrd_sect_ovrd_locales",
+          "tableTo": "tmpl_ovrd_sect_ovrd",
           "columnsFrom": [
             "_parent_id"
           ],
@@ -7593,8 +8612,8 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
-    "industry_template_blocks_hero_split_avatars": {
-      "name": "industry_template_blocks_hero_split_avatars",
+    "industry_template_blocks_hero_split_review_avatars": {
+      "name": "industry_template_blocks_hero_split_review_avatars",
       "columns": {
         "_order": {
           "name": "_order",
@@ -7626,22 +8645,22 @@
         }
       },
       "indexes": {
-        "industry_template_blocks_hero_split_avatars_order_idx": {
-          "name": "industry_template_blocks_hero_split_avatars_order_idx",
+        "industry_template_blocks_hero_split_review_avatars_order_idx": {
+          "name": "industry_template_blocks_hero_split_review_avatars_order_idx",
           "columns": [
             "_order"
           ],
           "isUnique": false
         },
-        "industry_template_blocks_hero_split_avatars_parent_id_idx": {
-          "name": "industry_template_blocks_hero_split_avatars_parent_id_idx",
+        "industry_template_blocks_hero_split_review_avatars_parent_id_idx": {
+          "name": "industry_template_blocks_hero_split_review_avatars_parent_id_idx",
           "columns": [
             "_parent_id"
           ],
           "isUnique": false
         },
-        "industry_template_blocks_hero_split_avatars_image_idx": {
-          "name": "industry_template_blocks_hero_split_avatars_image_idx",
+        "industry_template_blocks_hero_split_review_avatars_image_idx": {
+          "name": "industry_template_blocks_hero_split_review_avatars_image_idx",
           "columns": [
             "image_id"
           ],
@@ -7649,9 +8668,9 @@
         }
       },
       "foreignKeys": {
-        "industry_template_blocks_hero_split_avatars_image_id_media_id_fk": {
-          "name": "industry_template_blocks_hero_split_avatars_image_id_media_id_fk",
-          "tableFrom": "industry_template_blocks_hero_split_avatars",
+        "industry_template_blocks_hero_split_review_avatars_image_id_media_id_fk": {
+          "name": "industry_template_blocks_hero_split_review_avatars_image_id_media_id_fk",
+          "tableFrom": "industry_template_blocks_hero_split_review_avatars",
           "tableTo": "media",
           "columnsFrom": [
             "image_id"
@@ -7662,9 +8681,9 @@
           "onDelete": "set null",
           "onUpdate": "no action"
         },
-        "industry_template_blocks_hero_split_avatars_parent_id_fk": {
-          "name": "industry_template_blocks_hero_split_avatars_parent_id_fk",
-          "tableFrom": "industry_template_blocks_hero_split_avatars",
+        "industry_template_blocks_hero_split_review_avatars_parent_id_fk": {
+          "name": "industry_template_blocks_hero_split_review_avatars_parent_id_fk",
+          "tableFrom": "industry_template_blocks_hero_split_review_avatars",
           "tableTo": "industry_template_blocks_hero_split",
           "columnsFrom": [
             "_parent_id"
@@ -7719,13 +8738,6 @@
           "autoincrement": false,
           "default": "'fixed'"
         },
-        "heading_fixed_text": {
-          "name": "heading_fixed_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
         "heading_variation_set_id": {
           "name": "heading_variation_set_id",
           "type": "integer",
@@ -7741,13 +8753,6 @@
           "autoincrement": false,
           "default": "'fixed'"
         },
-        "description_fixed_text": {
-          "name": "description_fixed_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
         "description_variation_set_id": {
           "name": "description_variation_set_id",
           "type": "integer",
@@ -7761,38 +8766,6 @@
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
-        },
-        "form_placeholder": {
-          "name": "form_placeholder",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "'Enter your email'"
-        },
-        "form_button_label": {
-          "name": "form_button_label",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "'Get started'"
-        },
-        "form_helper_text": {
-          "name": "form_helper_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "'We care about your data in our privacy policy.'"
-        },
-        "review_text": {
-          "name": "review_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "'from 200+ reviews'"
         },
         "review_rating": {
           "name": "review_rating",
@@ -7912,6 +8885,106 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
+    "industry_template_blocks_hero_split_locales": {
+      "name": "industry_template_blocks_hero_split_locales",
+      "columns": {
+        "heading_fixed_text": {
+          "name": "heading_fixed_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "description_fixed_text": {
+          "name": "description_fixed_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "form_placeholder": {
+          "name": "form_placeholder",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'Enter your email'"
+        },
+        "form_button_label": {
+          "name": "form_button_label",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'Get started'"
+        },
+        "form_helper_text": {
+          "name": "form_helper_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'We care about your data in our privacy policy.'"
+        },
+        "review_text": {
+          "name": "review_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'from 200+ reviews'"
+        },
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_locale": {
+          "name": "_locale",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "industry_template_blocks_hero_split_locales_locale_parent_id": {
+          "name": "industry_template_blocks_hero_split_locales_locale_parent_id",
+          "columns": [
+            "_locale",
+            "_parent_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "industry_template_blocks_hero_split_locales_parent_id_fk": {
+          "name": "industry_template_blocks_hero_split_locales_parent_id_fk",
+          "tableFrom": "industry_template_blocks_hero_split_locales",
+          "tableTo": "industry_template_blocks_hero_split",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "industry_template_blocks_blog_articles": {
       "name": "industry_template_blocks_blog_articles",
       "columns": {
@@ -7936,29 +9009,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "title": {
-          "name": "title",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "summary": {
-          "name": "summary",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
         "href": {
           "name": "href",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "category_name": {
-          "name": "category_name",
           "type": "text",
           "primaryKey": false,
           "notNull": false,
@@ -7973,20 +9025,6 @@
         },
         "published_at": {
           "name": "published_at",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "reading_time": {
-          "name": "reading_time",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "author_name": {
-          "name": "author_name",
           "type": "text",
           "primaryKey": false,
           "notNull": false,
@@ -8075,6 +9113,95 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
+    "industry_template_blocks_blog_articles_locales": {
+      "name": "industry_template_blocks_blog_articles_locales",
+      "columns": {
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "summary": {
+          "name": "summary",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "category_name": {
+          "name": "category_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "reading_time": {
+          "name": "reading_time",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "author_name": {
+          "name": "author_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_locale": {
+          "name": "_locale",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "industry_template_blocks_blog_articles_locales_locale_parent": {
+          "name": "industry_template_blocks_blog_articles_locales_locale_parent",
+          "columns": [
+            "_locale",
+            "_parent_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "industry_template_blocks_blog_articles_locales_parent_id_fk": {
+          "name": "industry_template_blocks_blog_articles_locales_parent_id_fk",
+          "tableFrom": "industry_template_blocks_blog_articles_locales",
+          "tableTo": "industry_template_blocks_blog_articles",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "industry_template_blocks_blog": {
       "name": "industry_template_blocks_blog",
       "columns": {
@@ -8106,14 +9233,6 @@
           "notNull": true,
           "autoincrement": false
         },
-        "label": {
-          "name": "label",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "'Blog'"
-        },
         "heading_mode": {
           "name": "heading_mode",
           "type": "text",
@@ -8121,13 +9240,6 @@
           "notNull": false,
           "autoincrement": false,
           "default": "'fixed'"
-        },
-        "heading_fixed_text": {
-          "name": "heading_fixed_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
         },
         "heading_variation_set_id": {
           "name": "heading_variation_set_id",
@@ -8144,35 +9256,12 @@
           "autoincrement": false,
           "default": "'fixed'"
         },
-        "description_fixed_text": {
-          "name": "description_fixed_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
         "description_variation_set_id": {
           "name": "description_variation_set_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
-        },
-        "form_placeholder": {
-          "name": "form_placeholder",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "'Enter your email'"
-        },
-        "form_button_label": {
-          "name": "form_button_label",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "'Subscribe'"
         },
         "section_id": {
           "name": "section_id",
@@ -8279,6 +9368,98 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
+    "industry_template_blocks_blog_locales": {
+      "name": "industry_template_blocks_blog_locales",
+      "columns": {
+        "label": {
+          "name": "label",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'Blog'"
+        },
+        "heading_fixed_text": {
+          "name": "heading_fixed_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "description_fixed_text": {
+          "name": "description_fixed_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "form_placeholder": {
+          "name": "form_placeholder",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'Enter your email'"
+        },
+        "form_button_label": {
+          "name": "form_button_label",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'Subscribe'"
+        },
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_locale": {
+          "name": "_locale",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "industry_template_blocks_blog_locales_locale_parent_id_uniqu": {
+          "name": "industry_template_blocks_blog_locales_locale_parent_id_uniqu",
+          "columns": [
+            "_locale",
+            "_parent_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "industry_template_blocks_blog_locales_parent_id_fk": {
+          "name": "industry_template_blocks_blog_locales_parent_id_fk",
+          "tableFrom": "industry_template_blocks_blog_locales",
+          "tableTo": "industry_template_blocks_blog",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "industry_template_blocks_testimonials_reviews": {
       "name": "industry_template_blocks_testimonials_reviews",
       "columns": {
@@ -8301,27 +9482,6 @@
           "type": "text",
           "primaryKey": true,
           "notNull": true,
-          "autoincrement": false
-        },
-        "quote": {
-          "name": "quote",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "author_name": {
-          "name": "author_name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "author_title": {
-          "name": "author_title",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
           "autoincrement": false
         },
         "author_image_id": {
@@ -8448,6 +9608,81 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
+    "industry_template_blocks_testimonials_reviews_locales": {
+      "name": "industry_template_blocks_testimonials_reviews_locales",
+      "columns": {
+        "quote": {
+          "name": "quote",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "author_name": {
+          "name": "author_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "author_title": {
+          "name": "author_title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_locale": {
+          "name": "_locale",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "industry_template_blocks_testimonials_reviews_locales_locale": {
+          "name": "industry_template_blocks_testimonials_reviews_locales_locale",
+          "columns": [
+            "_locale",
+            "_parent_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "industry_template_blocks_testimonials_reviews_locales_par_fk": {
+          "name": "industry_template_blocks_testimonials_reviews_locales_par_fk",
+          "tableFrom": "industry_template_blocks_testimonials_reviews_locales",
+          "tableTo": "industry_template_blocks_testimonials_reviews",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "industry_template_blocks_testimonials": {
       "name": "industry_template_blocks_testimonials",
       "columns": {
@@ -8487,13 +9722,6 @@
           "autoincrement": false,
           "default": "'fixed'"
         },
-        "heading_fixed_text": {
-          "name": "heading_fixed_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
         "heading_variation_set_id": {
           "name": "heading_variation_set_id",
           "type": "integer",
@@ -8508,13 +9736,6 @@
           "notNull": false,
           "autoincrement": false,
           "default": "'fixed'"
-        },
-        "description_fixed_text": {
-          "name": "description_fixed_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
         },
         "description_variation_set_id": {
           "name": "description_variation_set_id",
@@ -8628,6 +9849,74 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
+    "industry_template_blocks_testimonials_locales": {
+      "name": "industry_template_blocks_testimonials_locales",
+      "columns": {
+        "heading_fixed_text": {
+          "name": "heading_fixed_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "description_fixed_text": {
+          "name": "description_fixed_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_locale": {
+          "name": "_locale",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "industry_template_blocks_testimonials_locales_locale_parent_": {
+          "name": "industry_template_blocks_testimonials_locales_locale_parent_",
+          "columns": [
+            "_locale",
+            "_parent_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "industry_template_blocks_testimonials_locales_parent_id_fk": {
+          "name": "industry_template_blocks_testimonials_locales_parent_id_fk",
+          "tableFrom": "industry_template_blocks_testimonials_locales",
+          "tableTo": "industry_template_blocks_testimonials",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "industry_template_blocks_metrics_metrics": {
       "name": "industry_template_blocks_metrics_metrics",
       "columns": {
@@ -8650,34 +9939,6 @@
           "type": "text",
           "primaryKey": true,
           "notNull": true,
-          "autoincrement": false
-        },
-        "value": {
-          "name": "value",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "label": {
-          "name": "label",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "description": {
-          "name": "description",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "cta_label": {
-          "name": "cta_label",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
           "autoincrement": false
         },
         "cta_link": {
@@ -8709,6 +9970,88 @@
           "name": "industry_template_blocks_metrics_metrics_parent_id_fk",
           "tableFrom": "industry_template_blocks_metrics_metrics",
           "tableTo": "industry_template_blocks_metrics",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "industry_template_blocks_metrics_metrics_locales": {
+      "name": "industry_template_blocks_metrics_metrics_locales",
+      "columns": {
+        "value": {
+          "name": "value",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "label": {
+          "name": "label",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "cta_label": {
+          "name": "cta_label",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_locale": {
+          "name": "_locale",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "industry_template_blocks_metrics_metrics_locales_locale_pare": {
+          "name": "industry_template_blocks_metrics_metrics_locales_locale_pare",
+          "columns": [
+            "_locale",
+            "_parent_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "industry_template_blocks_metrics_metrics_locales_parent_i_fk": {
+          "name": "industry_template_blocks_metrics_metrics_locales_parent_i_fk",
+          "tableFrom": "industry_template_blocks_metrics_metrics_locales",
+          "tableTo": "industry_template_blocks_metrics_metrics",
           "columnsFrom": [
             "_parent_id"
           ],
@@ -8762,13 +10105,6 @@
           "autoincrement": false,
           "default": "'fixed'"
         },
-        "heading_fixed_text": {
-          "name": "heading_fixed_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
         "heading_variation_set_id": {
           "name": "heading_variation_set_id",
           "type": "integer",
@@ -8783,13 +10119,6 @@
           "notNull": false,
           "autoincrement": false,
           "default": "'fixed'"
-        },
-        "description_fixed_text": {
-          "name": "description_fixed_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
         },
         "description_variation_set_id": {
           "name": "description_variation_set_id",
@@ -8903,6 +10232,74 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
+    "industry_template_blocks_metrics_locales": {
+      "name": "industry_template_blocks_metrics_locales",
+      "columns": {
+        "heading_fixed_text": {
+          "name": "heading_fixed_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "description_fixed_text": {
+          "name": "description_fixed_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_locale": {
+          "name": "_locale",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "industry_template_blocks_metrics_locales_locale_parent_id_un": {
+          "name": "industry_template_blocks_metrics_locales_locale_parent_id_un",
+          "columns": [
+            "_locale",
+            "_parent_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "industry_template_blocks_metrics_locales_parent_id_fk": {
+          "name": "industry_template_blocks_metrics_locales_parent_id_fk",
+          "tableFrom": "industry_template_blocks_metrics_locales",
+          "tableTo": "industry_template_blocks_metrics",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "industry_template": {
       "name": "industry_template",
       "columns": {
@@ -8934,8 +10331,8 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
-    "job_title_template_blocks_hero_split_avatars": {
-      "name": "job_title_template_blocks_hero_split_avatars",
+    "job_title_template_blocks_hero_split_review_avatars": {
+      "name": "job_title_template_blocks_hero_split_review_avatars",
       "columns": {
         "_order": {
           "name": "_order",
@@ -8967,22 +10364,22 @@
         }
       },
       "indexes": {
-        "job_title_template_blocks_hero_split_avatars_order_idx": {
-          "name": "job_title_template_blocks_hero_split_avatars_order_idx",
+        "job_title_template_blocks_hero_split_review_avatars_order_idx": {
+          "name": "job_title_template_blocks_hero_split_review_avatars_order_idx",
           "columns": [
             "_order"
           ],
           "isUnique": false
         },
-        "job_title_template_blocks_hero_split_avatars_parent_id_idx": {
-          "name": "job_title_template_blocks_hero_split_avatars_parent_id_idx",
+        "job_title_template_blocks_hero_split_review_avatars_parent_id_idx": {
+          "name": "job_title_template_blocks_hero_split_review_avatars_parent_id_idx",
           "columns": [
             "_parent_id"
           ],
           "isUnique": false
         },
-        "job_title_template_blocks_hero_split_avatars_image_idx": {
-          "name": "job_title_template_blocks_hero_split_avatars_image_idx",
+        "job_title_template_blocks_hero_split_review_avatars_imag_idx": {
+          "name": "job_title_template_blocks_hero_split_review_avatars_imag_idx",
           "columns": [
             "image_id"
           ],
@@ -8990,9 +10387,9 @@
         }
       },
       "foreignKeys": {
-        "job_title_template_blocks_hero_split_avatars_image_id_media_id_fk": {
-          "name": "job_title_template_blocks_hero_split_avatars_image_id_media_id_fk",
-          "tableFrom": "job_title_template_blocks_hero_split_avatars",
+        "job_title_template_blocks_hero_split_review_avatars_image_id_media_id_fk": {
+          "name": "job_title_template_blocks_hero_split_review_avatars_image_id_media_id_fk",
+          "tableFrom": "job_title_template_blocks_hero_split_review_avatars",
           "tableTo": "media",
           "columnsFrom": [
             "image_id"
@@ -9003,9 +10400,9 @@
           "onDelete": "set null",
           "onUpdate": "no action"
         },
-        "job_title_template_blocks_hero_split_avatars_parent_id_fk": {
-          "name": "job_title_template_blocks_hero_split_avatars_parent_id_fk",
-          "tableFrom": "job_title_template_blocks_hero_split_avatars",
+        "job_title_template_blocks_hero_split_review_avatars_parent_id_fk": {
+          "name": "job_title_template_blocks_hero_split_review_avatars_parent_id_fk",
+          "tableFrom": "job_title_template_blocks_hero_split_review_avatars",
           "tableTo": "job_title_template_blocks_hero_split",
           "columnsFrom": [
             "_parent_id"
@@ -9060,13 +10457,6 @@
           "autoincrement": false,
           "default": "'fixed'"
         },
-        "heading_fixed_text": {
-          "name": "heading_fixed_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
         "heading_variation_set_id": {
           "name": "heading_variation_set_id",
           "type": "integer",
@@ -9082,13 +10472,6 @@
           "autoincrement": false,
           "default": "'fixed'"
         },
-        "description_fixed_text": {
-          "name": "description_fixed_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
         "description_variation_set_id": {
           "name": "description_variation_set_id",
           "type": "integer",
@@ -9102,38 +10485,6 @@
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
-        },
-        "form_placeholder": {
-          "name": "form_placeholder",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "'Enter your email'"
-        },
-        "form_button_label": {
-          "name": "form_button_label",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "'Get started'"
-        },
-        "form_helper_text": {
-          "name": "form_helper_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "'We care about your data in our privacy policy.'"
-        },
-        "review_text": {
-          "name": "review_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "'from 200+ reviews'"
         },
         "review_rating": {
           "name": "review_rating",
@@ -9253,6 +10604,106 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
+    "job_title_template_blocks_hero_split_locales": {
+      "name": "job_title_template_blocks_hero_split_locales",
+      "columns": {
+        "heading_fixed_text": {
+          "name": "heading_fixed_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "description_fixed_text": {
+          "name": "description_fixed_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "form_placeholder": {
+          "name": "form_placeholder",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'Enter your email'"
+        },
+        "form_button_label": {
+          "name": "form_button_label",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'Get started'"
+        },
+        "form_helper_text": {
+          "name": "form_helper_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'We care about your data in our privacy policy.'"
+        },
+        "review_text": {
+          "name": "review_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'from 200+ reviews'"
+        },
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_locale": {
+          "name": "_locale",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "job_title_template_blocks_hero_split_locales_locale_parent_i": {
+          "name": "job_title_template_blocks_hero_split_locales_locale_parent_i",
+          "columns": [
+            "_locale",
+            "_parent_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "job_title_template_blocks_hero_split_locales_parent_id_fk": {
+          "name": "job_title_template_blocks_hero_split_locales_parent_id_fk",
+          "tableFrom": "job_title_template_blocks_hero_split_locales",
+          "tableTo": "job_title_template_blocks_hero_split",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "job_title_template_blocks_blog_articles": {
       "name": "job_title_template_blocks_blog_articles",
       "columns": {
@@ -9277,29 +10728,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "title": {
-          "name": "title",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "summary": {
-          "name": "summary",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
         "href": {
           "name": "href",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "category_name": {
-          "name": "category_name",
           "type": "text",
           "primaryKey": false,
           "notNull": false,
@@ -9314,20 +10744,6 @@
         },
         "published_at": {
           "name": "published_at",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "reading_time": {
-          "name": "reading_time",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "author_name": {
-          "name": "author_name",
           "type": "text",
           "primaryKey": false,
           "notNull": false,
@@ -9416,6 +10832,95 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
+    "job_title_template_blocks_blog_articles_locales": {
+      "name": "job_title_template_blocks_blog_articles_locales",
+      "columns": {
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "summary": {
+          "name": "summary",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "category_name": {
+          "name": "category_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "reading_time": {
+          "name": "reading_time",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "author_name": {
+          "name": "author_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_locale": {
+          "name": "_locale",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "job_title_template_blocks_blog_articles_locales_locale_paren": {
+          "name": "job_title_template_blocks_blog_articles_locales_locale_paren",
+          "columns": [
+            "_locale",
+            "_parent_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "job_title_template_blocks_blog_articles_locales_parent_id_fk": {
+          "name": "job_title_template_blocks_blog_articles_locales_parent_id_fk",
+          "tableFrom": "job_title_template_blocks_blog_articles_locales",
+          "tableTo": "job_title_template_blocks_blog_articles",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "job_title_template_blocks_blog": {
       "name": "job_title_template_blocks_blog",
       "columns": {
@@ -9447,14 +10952,6 @@
           "notNull": true,
           "autoincrement": false
         },
-        "label": {
-          "name": "label",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "'Blog'"
-        },
         "heading_mode": {
           "name": "heading_mode",
           "type": "text",
@@ -9462,13 +10959,6 @@
           "notNull": false,
           "autoincrement": false,
           "default": "'fixed'"
-        },
-        "heading_fixed_text": {
-          "name": "heading_fixed_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
         },
         "heading_variation_set_id": {
           "name": "heading_variation_set_id",
@@ -9485,35 +10975,12 @@
           "autoincrement": false,
           "default": "'fixed'"
         },
-        "description_fixed_text": {
-          "name": "description_fixed_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
         "description_variation_set_id": {
           "name": "description_variation_set_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
-        },
-        "form_placeholder": {
-          "name": "form_placeholder",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "'Enter your email'"
-        },
-        "form_button_label": {
-          "name": "form_button_label",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "'Subscribe'"
         },
         "section_id": {
           "name": "section_id",
@@ -9620,6 +11087,98 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
+    "job_title_template_blocks_blog_locales": {
+      "name": "job_title_template_blocks_blog_locales",
+      "columns": {
+        "label": {
+          "name": "label",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'Blog'"
+        },
+        "heading_fixed_text": {
+          "name": "heading_fixed_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "description_fixed_text": {
+          "name": "description_fixed_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "form_placeholder": {
+          "name": "form_placeholder",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'Enter your email'"
+        },
+        "form_button_label": {
+          "name": "form_button_label",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'Subscribe'"
+        },
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_locale": {
+          "name": "_locale",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "job_title_template_blocks_blog_locales_locale_parent_id_uniq": {
+          "name": "job_title_template_blocks_blog_locales_locale_parent_id_uniq",
+          "columns": [
+            "_locale",
+            "_parent_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "job_title_template_blocks_blog_locales_parent_id_fk": {
+          "name": "job_title_template_blocks_blog_locales_parent_id_fk",
+          "tableFrom": "job_title_template_blocks_blog_locales",
+          "tableTo": "job_title_template_blocks_blog",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "job_title_template_blocks_testimonials_reviews": {
       "name": "job_title_template_blocks_testimonials_reviews",
       "columns": {
@@ -9642,27 +11201,6 @@
           "type": "text",
           "primaryKey": true,
           "notNull": true,
-          "autoincrement": false
-        },
-        "quote": {
-          "name": "quote",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "author_name": {
-          "name": "author_name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "author_title": {
-          "name": "author_title",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
           "autoincrement": false
         },
         "author_image_id": {
@@ -9789,6 +11327,81 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
+    "job_title_template_blocks_testimonials_reviews_locales": {
+      "name": "job_title_template_blocks_testimonials_reviews_locales",
+      "columns": {
+        "quote": {
+          "name": "quote",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "author_name": {
+          "name": "author_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "author_title": {
+          "name": "author_title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_locale": {
+          "name": "_locale",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "job_title_template_blocks_testimonials_reviews_locales_local": {
+          "name": "job_title_template_blocks_testimonials_reviews_locales_local",
+          "columns": [
+            "_locale",
+            "_parent_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "job_title_template_blocks_testimonials_reviews_locales_pa_fk": {
+          "name": "job_title_template_blocks_testimonials_reviews_locales_pa_fk",
+          "tableFrom": "job_title_template_blocks_testimonials_reviews_locales",
+          "tableTo": "job_title_template_blocks_testimonials_reviews",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "job_title_template_blocks_testimonials": {
       "name": "job_title_template_blocks_testimonials",
       "columns": {
@@ -9828,13 +11441,6 @@
           "autoincrement": false,
           "default": "'fixed'"
         },
-        "heading_fixed_text": {
-          "name": "heading_fixed_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
         "heading_variation_set_id": {
           "name": "heading_variation_set_id",
           "type": "integer",
@@ -9849,13 +11455,6 @@
           "notNull": false,
           "autoincrement": false,
           "default": "'fixed'"
-        },
-        "description_fixed_text": {
-          "name": "description_fixed_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
         },
         "description_variation_set_id": {
           "name": "description_variation_set_id",
@@ -9969,6 +11568,74 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
+    "job_title_template_blocks_testimonials_locales": {
+      "name": "job_title_template_blocks_testimonials_locales",
+      "columns": {
+        "heading_fixed_text": {
+          "name": "heading_fixed_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "description_fixed_text": {
+          "name": "description_fixed_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_locale": {
+          "name": "_locale",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "job_title_template_blocks_testimonials_locales_locale_parent": {
+          "name": "job_title_template_blocks_testimonials_locales_locale_parent",
+          "columns": [
+            "_locale",
+            "_parent_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "job_title_template_blocks_testimonials_locales_parent_id_fk": {
+          "name": "job_title_template_blocks_testimonials_locales_parent_id_fk",
+          "tableFrom": "job_title_template_blocks_testimonials_locales",
+          "tableTo": "job_title_template_blocks_testimonials",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "job_title_template_blocks_metrics_metrics": {
       "name": "job_title_template_blocks_metrics_metrics",
       "columns": {
@@ -9991,34 +11658,6 @@
           "type": "text",
           "primaryKey": true,
           "notNull": true,
-          "autoincrement": false
-        },
-        "value": {
-          "name": "value",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "label": {
-          "name": "label",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "description": {
-          "name": "description",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "cta_label": {
-          "name": "cta_label",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
           "autoincrement": false
         },
         "cta_link": {
@@ -10050,6 +11689,88 @@
           "name": "job_title_template_blocks_metrics_metrics_parent_id_fk",
           "tableFrom": "job_title_template_blocks_metrics_metrics",
           "tableTo": "job_title_template_blocks_metrics",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "job_title_template_blocks_metrics_metrics_locales": {
+      "name": "job_title_template_blocks_metrics_metrics_locales",
+      "columns": {
+        "value": {
+          "name": "value",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "label": {
+          "name": "label",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "cta_label": {
+          "name": "cta_label",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_locale": {
+          "name": "_locale",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "job_title_template_blocks_metrics_metrics_locales_locale_par": {
+          "name": "job_title_template_blocks_metrics_metrics_locales_locale_par",
+          "columns": [
+            "_locale",
+            "_parent_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "job_title_template_blocks_metrics_metrics_locales_parent__fk": {
+          "name": "job_title_template_blocks_metrics_metrics_locales_parent__fk",
+          "tableFrom": "job_title_template_blocks_metrics_metrics_locales",
+          "tableTo": "job_title_template_blocks_metrics_metrics",
           "columnsFrom": [
             "_parent_id"
           ],
@@ -10103,13 +11824,6 @@
           "autoincrement": false,
           "default": "'fixed'"
         },
-        "heading_fixed_text": {
-          "name": "heading_fixed_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
         "heading_variation_set_id": {
           "name": "heading_variation_set_id",
           "type": "integer",
@@ -10124,13 +11838,6 @@
           "notNull": false,
           "autoincrement": false,
           "default": "'fixed'"
-        },
-        "description_fixed_text": {
-          "name": "description_fixed_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
         },
         "description_variation_set_id": {
           "name": "description_variation_set_id",
@@ -10244,6 +11951,74 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
+    "job_title_template_blocks_metrics_locales": {
+      "name": "job_title_template_blocks_metrics_locales",
+      "columns": {
+        "heading_fixed_text": {
+          "name": "heading_fixed_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "description_fixed_text": {
+          "name": "description_fixed_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_locale": {
+          "name": "_locale",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "job_title_template_blocks_metrics_locales_locale_parent_id_u": {
+          "name": "job_title_template_blocks_metrics_locales_locale_parent_id_u",
+          "columns": [
+            "_locale",
+            "_parent_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "job_title_template_blocks_metrics_locales_parent_id_fk": {
+          "name": "job_title_template_blocks_metrics_locales_parent_id_fk",
+          "tableFrom": "job_title_template_blocks_metrics_locales",
+          "tableTo": "job_title_template_blocks_metrics",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "job_title_template": {
       "name": "job_title_template",
       "columns": {
@@ -10299,11 +12074,11 @@
           "notNull": true,
           "autoincrement": false
         },
-        "word": {
-          "name": "word",
-          "type": "text",
+        "word_form_set_id": {
+          "name": "word_form_set_id",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "weight": {
@@ -10329,9 +12104,29 @@
             "_parent_id"
           ],
           "isUnique": false
+        },
+        "suffix_variations_adjectives_word_form_set_idx": {
+          "name": "suffix_variations_adjectives_word_form_set_idx",
+          "columns": [
+            "word_form_set_id"
+          ],
+          "isUnique": false
         }
       },
       "foreignKeys": {
+        "suffix_variations_adjectives_word_form_set_id_word_form_sets_id_fk": {
+          "name": "suffix_variations_adjectives_word_form_set_id_word_form_sets_id_fk",
+          "tableFrom": "suffix_variations_adjectives",
+          "tableTo": "word_form_sets",
+          "columnsFrom": [
+            "word_form_set_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
         "suffix_variations_adjectives_parent_id_fk": {
           "name": "suffix_variations_adjectives_parent_id_fk",
           "tableFrom": "suffix_variations_adjectives",
@@ -10374,11 +12169,11 @@
           "notNull": true,
           "autoincrement": false
         },
-        "word": {
-          "name": "word",
-          "type": "text",
+        "word_form_set_id": {
+          "name": "word_form_set_id",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "weight": {
@@ -10404,9 +12199,29 @@
             "_parent_id"
           ],
           "isUnique": false
+        },
+        "suffix_variations_builders_word_form_set_idx": {
+          "name": "suffix_variations_builders_word_form_set_idx",
+          "columns": [
+            "word_form_set_id"
+          ],
+          "isUnique": false
         }
       },
       "foreignKeys": {
+        "suffix_variations_builders_word_form_set_id_word_form_sets_id_fk": {
+          "name": "suffix_variations_builders_word_form_set_id_word_form_sets_id_fk",
+          "tableFrom": "suffix_variations_builders",
+          "tableTo": "word_form_sets",
+          "columnsFrom": [
+            "word_form_set_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
         "suffix_variations_builders_parent_id_fk": {
           "name": "suffix_variations_builders_parent_id_fk",
           "tableFrom": "suffix_variations_builders",
@@ -10449,11 +12264,11 @@
           "notNull": true,
           "autoincrement": false
         },
-        "word": {
-          "name": "word",
-          "type": "text",
+        "word_form_set_id": {
+          "name": "word_form_set_id",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "weight": {
@@ -10479,9 +12294,29 @@
             "_parent_id"
           ],
           "isUnique": false
+        },
+        "suffix_variations_content_words_word_form_set_idx": {
+          "name": "suffix_variations_content_words_word_form_set_idx",
+          "columns": [
+            "word_form_set_id"
+          ],
+          "isUnique": false
         }
       },
       "foreignKeys": {
+        "suffix_variations_content_words_word_form_set_id_word_form_sets_id_fk": {
+          "name": "suffix_variations_content_words_word_form_set_id_word_form_sets_id_fk",
+          "tableFrom": "suffix_variations_content_words",
+          "tableTo": "word_form_sets",
+          "columnsFrom": [
+            "word_form_set_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
         "suffix_variations_content_words_parent_id_fk": {
           "name": "suffix_variations_content_words_parent_id_fk",
           "tableFrom": "suffix_variations_content_words",
@@ -10549,6 +12384,6 @@
   "internal": {
     "indexes": {}
   },
-  "id": "773061ff-fc46-488e-9a73-3c946d737ca3",
+  "id": "3cc63e13-5107-4e31-9175-b57b8bd9f855",
   "prevId": "00000000-0000-0000-0000-000000000000"
 }

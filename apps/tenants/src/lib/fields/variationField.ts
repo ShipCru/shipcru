@@ -18,6 +18,7 @@ export const variationField = (name: string, label: string): Field => ({
     {
       name: 'fixedText',
       type: 'textarea',
+      localized: true,
       admin: {
         condition: (_, siblingData) => siblingData?.mode === 'fixed',
         components: {

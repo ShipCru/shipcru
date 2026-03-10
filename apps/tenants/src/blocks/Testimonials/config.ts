@@ -23,14 +23,17 @@ export const Testimonials: Block = {
         {
           name: 'quote',
           type: 'textarea',
+          localized: true,
         },
         {
           name: 'authorName',
           type: 'text',
+          localized: true,
         },
         {
           name: 'authorTitle',
           type: 'text',
+          localized: true,
           admin: {
             placeholder: 'e.g., Project Manager, Warpspeed',
           },

@@ -115,7 +115,7 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  fallbackLocale: ('false' | 'none' | 'null') | false | null | 'en' | 'en'[];
+  fallbackLocale: ('false' | 'none' | 'null') | false | null | ('en' | 'es') | ('en' | 'es')[];
   globals: {
     'default-industry-template': DefaultIndustryTemplate;
     'default-job-title-template': DefaultJobTitleTemplate;
@@ -126,7 +126,7 @@ export interface Config {
     'default-job-title-template': DefaultJobTitleTemplateSelect<false> | DefaultJobTitleTemplateSelect<true>;
     'suffix-variations': SuffixVariationsSelect<false> | SuffixVariationsSelect<true>;
   };
-  locale: 'en';
+  locale: 'en' | 'es';
   user: User;
   jobs: {
     tasks: {
@@ -209,7 +209,7 @@ export interface Tenant {
   /**
    * Locales available for this tenant
    */
-  supportedLocales?: 'en'[] | null;
+  supportedLocales?: ('en' | 'es')[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -220,7 +220,7 @@ export interface Tenant {
 export interface Media {
   id: number;
   tenant?: (number | null) | Tenant;
-  alt: string;
+  alt?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -289,17 +289,21 @@ export interface HeroSplitBlock {
     variationSet?: (number | null) | ContentVariation;
   };
   image?: (number | null) | Media;
-  formPlaceholder?: string | null;
-  formButtonLabel?: string | null;
-  formHelperText?: string | null;
-  reviewText?: string | null;
-  reviewRating?: string | null;
-  avatars?:
-    | {
-        image?: (number | null) | Media;
-        id?: string | null;
-      }[]
-    | null;
+  form?: {
+    placeholder?: string | null;
+    buttonLabel?: string | null;
+    helperText?: string | null;
+  };
+  review?: {
+    text?: string | null;
+    rating?: string | null;
+    avatars?:
+      | {
+          image?: (number | null) | Media;
+          id?: string | null;
+        }[]
+      | null;
+  };
   id?: string | null;
   blockName?: string | null;
   blockType: 'heroSplit';
@@ -713,7 +717,7 @@ export interface TemplateOverride {
           /**
            * Select which fields to override. Only selected fields will be applied during merge.
            */
-          fieldsToOverride?: ('heading' | 'description' | 'formButtonLabel')[] | null;
+          fieldsToOverride?: ('heading' | 'description')[] | null;
           heading?: {
             mode?: ('fixed' | 'variation') | null;
             fixedText?: string | null;
@@ -724,7 +728,6 @@ export interface TemplateOverride {
             fixedText?: string | null;
             variationSet?: (number | null) | ContentVariation;
           };
-          formButtonLabel?: string | null;
         };
         ovrds_blog?: {
           /**
@@ -1155,16 +1158,24 @@ export interface HeroSplitBlockSelect<T extends boolean = true> {
         variationSet?: T;
       };
   image?: T;
-  formPlaceholder?: T;
-  formButtonLabel?: T;
-  formHelperText?: T;
-  reviewText?: T;
-  reviewRating?: T;
-  avatars?:
+  form?:
     | T
     | {
-        image?: T;
-        id?: T;
+        placeholder?: T;
+        buttonLabel?: T;
+        helperText?: T;
+      };
+  review?:
+    | T
+    | {
+        text?: T;
+        rating?: T;
+        avatars?:
+          | T
+          | {
+              image?: T;
+              id?: T;
+            };
       };
   id?: T;
   blockName?: T;
@@ -1435,7 +1446,6 @@ export interface TemplateOverridesSelect<T extends boolean = true> {
                     fixedText?: T;
                     variationSet?: T;
                   };
-              formButtonLabel?: T;
             };
         ovrds_blog?:
           | T
@@ -1618,7 +1628,7 @@ export interface SuffixVariation {
    */
   adjectives?:
     | {
-        word?: string | null;
+        wordFormSet: number | WordFormSet;
         weight?: number | null;
         id?: string | null;
       }[]
@@ -1628,7 +1638,7 @@ export interface SuffixVariation {
    */
   builders?:
     | {
-        word?: string | null;
+        wordFormSet: number | WordFormSet;
         weight?: number | null;
         id?: string | null;
       }[]
@@ -1638,7 +1648,7 @@ export interface SuffixVariation {
    */
   contentWords?:
     | {
-        word?: string | null;
+        wordFormSet: number | WordFormSet;
         weight?: number | null;
         id?: string | null;
       }[]
@@ -1700,21 +1710,21 @@ export interface SuffixVariationsSelect<T extends boolean = true> {
   adjectives?:
     | T
     | {
-        word?: T;
+        wordFormSet?: T;
         weight?: T;
         id?: T;
       };
   builders?:
     | T
     | {
-        word?: T;
+        wordFormSet?: T;
         weight?: T;
         id?: T;
       };
   contentWords?:
     | T
     | {
-        word?: T;
+        wordFormSet?: T;
         weight?: T;
         id?: T;
       };

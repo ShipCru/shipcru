@@ -7,20 +7,13 @@ import {
   createCollectionDeleteRevalidationHook,
   createCollectionRevalidationHook,
 } from '@/lib/resume-pages/hooks/revalidateResumeData'
+import { WORD_FORM_SET_LOOKUP_FIELD } from './constants'
 import { seedWordFormSetsEndpoint } from './endpoints/seedWordFormSets'
-
-/** Lookup field per type — the primary identifier for each word form set */
-const LOOKUP_FIELD: Record<string, string> = {
-  resumeWord: 'rw_singular',
-  verb: 'v_worder',
-  adjective: 'adj_singular',
-  contentWord: 'cw_plural',
-}
 
 /** Auto-generate `name` from the type-specific lookup field */
 const autoGenerateName: CollectionBeforeValidateHook = ({ data }) => {
   if (!data?.type) return data
-  const lookupField = LOOKUP_FIELD[data.type]
+  const lookupField = WORD_FORM_SET_LOOKUP_FIELD[data.type]
   if (lookupField && data[lookupField]) {
     data.name = data[lookupField]
   }
@@ -107,48 +100,56 @@ function resumeWordFields(): Field[] {
       name: 'rw_singular',
       label: 'Singular',
       type: 'text',
+      localized: true,
       admin: { condition: isResumeWord, description: 'e.g., "resume", "CV", "curriculum vitae"' },
     },
     {
       name: 'rw_plural',
       label: 'Plural',
       type: 'text',
+      localized: true,
       admin: { condition: isResumeWord, description: 'e.g., "resumes", "CVs", "curricula vitae"' },
     },
     {
       name: 'rw_capitalized',
       label: 'Capitalized',
       type: 'text',
+      localized: true,
       admin: { condition: isResumeWord, description: 'e.g., "Resume", "CV", "Curriculum Vitae"' },
     },
     {
       name: 'rw_abbreviated',
       label: 'Abbreviated',
       type: 'text',
+      localized: true,
       admin: { condition: isResumeWord, description: 'e.g., "resume", "CV"' },
     },
     {
       name: 'rw_abbreviatedCapitalized',
       label: 'Abbreviated Capitalized',
       type: 'text',
+      localized: true,
       admin: { condition: isResumeWord, description: 'e.g., "Resume", "CV"' },
     },
     {
       name: 'rw_pluralCapitalized',
       label: 'Plural Capitalized',
       type: 'text',
+      localized: true,
       admin: { condition: isResumeWord, description: 'e.g., "Resumes", "CVs"' },
     },
     {
       name: 'rw_pluralAbbreviated',
       label: 'Plural Abbreviated',
       type: 'text',
+      localized: true,
       admin: { condition: isResumeWord, description: 'e.g., "resumes", "CVs"' },
     },
     {
       name: 'rw_pluralAbbreviatedCapitalized',
       label: 'Plural Abbreviated Capitalized',
       type: 'text',
+      localized: true,
       admin: { condition: isResumeWord, description: 'e.g., "Resumes", "CVs"' },
     },
   ]
@@ -161,6 +162,7 @@ function verbFields(): Field[] {
       name: 'v_worder',
       label: 'Builder Word (-er form)',
       type: 'text',
+      localized: true,
       admin: {
         condition: isVerb,
         description: 'The URL suffix word, e.g., "creator", "builder", "maker"',
@@ -170,42 +172,49 @@ function verbFields(): Field[] {
       name: 'v_singular',
       label: 'Base Verb',
       type: 'text',
+      localized: true,
       admin: { condition: isVerb, description: 'e.g., "create", "build", "make"' },
     },
     {
       name: 'v_capitalized',
       label: 'Base Verb Capitalized',
       type: 'text',
+      localized: true,
       admin: { condition: isVerb, description: 'e.g., "Create", "Build"' },
     },
     {
       name: 'v_worderCapitalized',
       label: 'Builder Word Capitalized',
       type: 'text',
+      localized: true,
       admin: { condition: isVerb, description: 'e.g., "Creator", "Builder"' },
     },
     {
       name: 'v_wording',
       label: 'Gerund (-ing)',
       type: 'text',
+      localized: true,
       admin: { condition: isVerb, description: 'e.g., "creating", "building"' },
     },
     {
       name: 'v_wordingCapitalized',
       label: 'Gerund Capitalized',
       type: 'text',
+      localized: true,
       admin: { condition: isVerb, description: 'e.g., "Creating", "Building"' },
     },
     {
       name: 'v_past',
       label: 'Past Tense',
       type: 'text',
+      localized: true,
       admin: { condition: isVerb, description: 'e.g., "created", "built", "wrote"' },
     },
     {
       name: 'v_pastCapitalized',
       label: 'Past Tense Capitalized',
       type: 'text',
+      localized: true,
       admin: { condition: isVerb, description: 'e.g., "Created", "Built"' },
     },
   ]
@@ -218,24 +227,28 @@ function adjectiveFields(): Field[] {
       name: 'adj_singular',
       label: 'Adjective',
       type: 'text',
+      localized: true,
       admin: { condition: isAdjective, description: 'e.g., "best", "professional", "simple"' },
     },
     {
       name: 'adj_capitalized',
       label: 'Adjective Capitalized',
       type: 'text',
+      localized: true,
       admin: { condition: isAdjective, description: 'e.g., "Best", "Professional"' },
     },
     {
       name: 'adj_adverb',
       label: 'Adverb / Comparative',
       type: 'text',
+      localized: true,
       admin: { condition: isAdjective, description: 'e.g., "better", "professionally", "easier"' },
     },
     {
       name: 'adj_adverbCapitalized',
       label: 'Adverb Capitalized',
       type: 'text',
+      localized: true,
       admin: { condition: isAdjective, description: 'e.g., "Better", "Professionally"' },
     },
   ]
@@ -248,12 +261,14 @@ function contentWordFields(): Field[] {
       name: 'cw_singular',
       label: 'Singular',
       type: 'text',
+      localized: true,
       admin: { condition: isContentWord, description: 'e.g., "template", "example", "content"' },
     },
     {
       name: 'cw_plural',
       label: 'Plural',
       type: 'text',
+      localized: true,
       admin: {
         condition: isContentWord,
         description: 'e.g., "templates", "examples", "content" (same for uncountable)',
@@ -263,12 +278,14 @@ function contentWordFields(): Field[] {
       name: 'cw_capitalized',
       label: 'Singular Capitalized',
       type: 'text',
+      localized: true,
       admin: { condition: isContentWord, description: 'e.g., "Template", "Content"' },
     },
     {
       name: 'cw_pluralCapitalized',
       label: 'Plural Capitalized',
       type: 'text',
+      localized: true,
       admin: { condition: isContentWord, description: 'e.g., "Templates", "Content"' },
     },
   ]

@@ -20,18 +20,22 @@ export const Metrics: Block = {
         {
           name: 'value',
           type: 'text',
+          localized: true,
         },
         {
           name: 'label',
           type: 'text',
+          localized: true,
         },
         {
           name: 'description',
           type: 'textarea',
+          localized: true,
         },
         {
           name: 'ctaLabel',
           type: 'text',
+          localized: true,
         },
         {
           name: 'ctaLink',
