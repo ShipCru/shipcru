@@ -1300,11 +1300,13 @@ export interface Config {
   globals: {
     'default-industry-template': DefaultIndustryTemplate;
     'default-job-title-template': DefaultJobTitleTemplate;
+    header: Header;
     'suffix-variations': SuffixVariation;
   };
   globalsSelect: {
     'default-industry-template': DefaultIndustryTemplateSelect<false> | DefaultIndustryTemplateSelect<true>;
     'default-job-title-template': DefaultJobTitleTemplateSelect<false> | DefaultJobTitleTemplateSelect<true>;
+    header: HeaderSelect<false> | HeaderSelect<true>;
     'suffix-variations': SuffixVariationsSelect<false> | SuffixVariationsSelect<true>;
   };
   locale: 'en' | 'es';
@@ -2929,6 +2931,30 @@ export interface DefaultJobTitleTemplate {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "header".
+ */
+export interface Header {
+  id: number;
+  navItems?:
+    | {
+        type?: ('link' | 'dropdown') | null;
+        link?: LinkField;
+        label?: string | null;
+        dropdownItems?:
+          | {
+              link?: LinkField;
+              subtitle?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "suffix-variations".
  */
 export interface SuffixVariation {
@@ -3009,6 +3035,30 @@ export interface DefaultJobTitleTemplateSelect<T extends boolean = true> {
         testimonials?: T | TestimonialsBlockSelect<T>;
         metrics?: T | MetricsBlockSelect<T>;
         cta?: T | CTABlockSelect<T>;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "header_select".
+ */
+export interface HeaderSelect<T extends boolean = true> {
+  navItems?:
+    | T
+    | {
+        type?: T;
+        link?: T | LinkFieldSelect<T>;
+        label?: T;
+        dropdownItems?:
+          | T
+          | {
+              link?: T | LinkFieldSelect<T>;
+              subtitle?: T;
+              id?: T;
+            };
+        id?: T;
       };
   updatedAt?: T;
   createdAt?: T;

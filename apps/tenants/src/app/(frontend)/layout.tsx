@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import React from 'react'
 
+import { HeaderNav } from '@/components/marketing/header-navigation/HeaderNav'
 import { getServerSideURL } from '@/utils/getURL'
 import { mergeOpenGraph } from '@/utils/mergeOpenGraph'
 
@@ -12,7 +13,8 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="bg-primary antialiased">
-        <main>{children}</main>
+        <HeaderNav />
+        <main className="pt-14">{children}</main>
       </body>
     </html>
   )

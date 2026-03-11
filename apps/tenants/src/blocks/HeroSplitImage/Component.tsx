@@ -30,6 +30,18 @@ const defaultAvatars = [
   },
 ]
 
+const StarIcon = ({ className }: { className?: string }) => (
+  <svg
+    width={16}
+    height={16}
+    viewBox="0 0 20 20"
+    fill="currentColor"
+    className={className}
+  >
+    <path d="M9.53834 1.60996C9.70914 1.19932 10.2909 1.19932 10.4617 1.60996L12.5278 6.57744C12.5998 6.75056 12.7626 6.86885 12.9495 6.88383L18.3123 7.31376C18.7556 7.3493 18.9354 7.90256 18.5976 8.19189L14.5117 11.6919C14.3693 11.8139 14.3071 12.0053 14.3506 12.1876L15.5989 17.4208C15.7021 17.8534 15.2315 18.1954 14.8519 17.9635L10.2606 15.1592C10.1006 15.0615 9.89938 15.0615 9.73937 15.1592L5.14806 17.9635C4.76851 18.1954 4.29788 17.8534 4.40108 17.4208L5.64939 12.1876C5.69289 12.0053 5.6307 11.8139 5.48831 11.6919L1.40241 8.19189C1.06464 7.90256 1.24441 7.3493 1.68773 7.31376L7.05054 6.88383C7.23744 6.86885 7.40024 6.75056 7.47225 6.57744L9.53834 1.60996Z" />
+  </svg>
+)
+
 const AvatarsWithReview = ({
   className,
   avatars,
@@ -56,53 +68,30 @@ const AvatarsWithReview = ({
   const review = reviewText ?? 'from 200+ reviews'
 
   return (
-    <div className={`flex items-center gap-4 ${className ?? ''}`}>
-      <div className="inline-flex -space-x-3 overflow-hidden">
+    <div className={`flex items-center gap-3 ${className ?? ''}`}>
+      <div className="inline-flex -space-x-2 overflow-hidden">
         {avatarList.map((avatar, index) => (
-          <Avatar key={index} size="md" src={avatar.src} alt={avatar.alt} />
+          <Avatar
+            key={index}
+            size="sm"
+            src={avatar.src}
+            alt={avatar.alt}
+            className="ring-2 ring-white"
+          />
         ))}
       </div>
-      <div className="flex flex-col gap-0.5">
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1">
+      <div className="flex flex-col">
+        <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-0.5 text-amber-400">
             {Array(5)
               .fill(null)
               .map((_, index) => (
-                <svg
-                  key={index}
-                  width={20}
-                  height={20}
-                  viewBox="0 0 20 20"
-                  fill="none"
-                  className="relative size-5 shrink-0 grow-0"
-                  preserveAspectRatio="none"
-                >
-                  <g clipPath={`url(#clip0_star_${index})`}>
-                    <path
-                      d="M9.53834 1.60996C9.70914 1.19932 10.2909 1.19932 10.4617 1.60996L12.5278 6.57744C12.5998 6.75056 12.7626 6.86885 12.9495 6.88383L18.3123 7.31376C18.7556 7.3493 18.9354 7.90256 18.5976 8.19189L14.5117 11.6919C14.3693 11.8139 14.3071 12.0053 14.3506 12.1876L15.5989 17.4208C15.7021 17.8534 15.2315 18.1954 14.8519 17.9635L10.2606 15.1592C10.1006 15.0615 9.89938 15.0615 9.73937 15.1592L5.14806 17.9635C4.76851 18.1954 4.29788 17.8534 4.40108 17.4208L5.64939 12.1876C5.69289 12.0053 5.6307 11.8139 5.48831 11.6919L1.40241 8.19189C1.06464 7.90256 1.24441 7.3493 1.68773 7.31376L7.05054 6.88383C7.23744 6.86885 7.40024 6.75056 7.47225 6.57744L9.53834 1.60996Z"
-                      className="fill-gray-200"
-                    />
-                    <g clipPath={`url(#clip1_star_${index})`}>
-                      <path
-                        d="M9.53834 1.60996C9.70914 1.19932 10.2909 1.19932 10.4617 1.60996L12.5278 6.57744C12.5998 6.75056 12.7626 6.86885 12.9495 6.88383L18.3123 7.31376C18.7556 7.3493 18.9354 7.90256 18.5976 8.19189L14.5117 11.6919C14.3693 11.8139 14.3071 12.0053 14.3506 12.1876L15.5989 17.4208C15.7021 17.8534 15.2315 18.1954 14.8519 17.9635L10.2606 15.1592C10.1006 15.0615 9.89938 15.0615 9.73937 15.1592L5.14806 17.9635C4.76851 18.1954 4.29788 17.8534 4.40108 17.4208L5.64939 12.1876C5.69289 12.0053 5.6307 11.8139 5.48831 11.6919L1.40241 8.19189C1.06464 7.90256 1.24441 7.3493 1.68773 7.31376L7.05054 6.88383C7.23744 6.86885 7.40024 6.75056 7.47225 6.57744L9.53834 1.60996Z"
-                        className="fill-yellow-400"
-                      />
-                    </g>
-                  </g>
-                  <defs>
-                    <clipPath id={`clip0_star_${index}`}>
-                      <rect width={20} height={20} fill="white" />
-                    </clipPath>
-                    <clipPath id={`clip1_star_${index}`}>
-                      <rect width={20} height={20} fill="white" />
-                    </clipPath>
-                  </defs>
-                </svg>
+                <StarIcon key={index} className="size-3.5" />
               ))}
           </div>
-          <span className="text-base font-semibold text-gray-700">{rating}</span>
+          <span className="text-sm font-bold tracking-tight text-gray-900">{rating}</span>
         </div>
-        <p className="text-base font-medium text-gray-500">{review}</p>
+        <p className="text-xs font-medium text-gray-500">{review}</p>
       </div>
     </div>
   )
@@ -120,30 +109,53 @@ export const HeroSplitImageBlock = ({ data }: { data: HeroSplitBlockType }) => {
   const formPlaceholder = data.form?.placeholder ?? 'Enter your email'
   const formButtonLabel = data.form?.buttonLabel ?? 'Get started'
   const formHelperText = data.form?.helperText ?? 'We care about your data in our privacy policy.'
+  const hasForm = !!data.form?.buttonLabel
 
   return (
     <Fragment>
-      <section
-        className="relative py-16 md:pb-24 overflow-hidden"
-        style={{
-          background: `
-            radial-gradient(ellipse 80% 60% at 15% 60%, rgba(255, 237, 213, 0.4) 0%, transparent 70%),
-            radial-gradient(ellipse 60% 80% at 85% 30%, rgba(219, 234, 254, 0.5) 0%, transparent 70%),
-            radial-gradient(ellipse 50% 50% at 50% 0%, rgba(243, 232, 255, 0.3) 0%, transparent 60%),
-            linear-gradient(180deg, #fefefe 0%, #f9fafb 100%)
-          `,
-        }}
-      >
-        <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-16 px-4 md:px-8 lg:grid-cols-2 lg:gap-8">
+      <section className="relative overflow-hidden">
+        {/* Background */}
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background: `
+              radial-gradient(ellipse 60% 50% at 0% 40%, rgba(124, 58, 237, 0.04) 0%, transparent 70%),
+              radial-gradient(ellipse 50% 60% at 100% 30%, rgba(59, 130, 246, 0.03) 0%, transparent 60%),
+              linear-gradient(180deg, #ffffff 0%, #fafafa 100%)
+            `,
+          }}
+        />
+        {/* Subtle dot grid */}
+        <div
+          className="pointer-events-none absolute inset-0 opacity-30"
+          style={{
+            backgroundImage: 'radial-gradient(circle, #d1d5db 0.5px, transparent 0.5px)',
+            backgroundSize: '20px 20px',
+          }}
+        />
+
+        <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-16 px-4 py-16 md:px-8 md:py-24 lg:grid-cols-2 lg:gap-8">
+          {/* Left: Content */}
           <div className="flex max-w-3xl flex-col items-start lg:pr-8">
-            <h1 className="text-4xl font-semibold text-gray-900 md:text-5xl lg:text-6xl">
+            {/* Trust badge */}
+            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-gray-200/80 bg-white/80 px-2.5 py-1 shadow-xs backdrop-blur-sm">
+              <div className="inline-flex -space-x-1.5">
+                {defaultAvatars.slice(0, 3).map((avatar, i) => (
+                  <Avatar key={i} size="xxs" src={avatar.src} alt={avatar.alt} className="ring-1 ring-white" />
+                ))}
+              </div>
+              <span className="text-xs font-medium text-gray-600">Trusted by 10,000+ professionals</span>
+            </div>
+
+            <h1 className="text-4xl font-extrabold tracking-tight text-gray-950 md:text-5xl lg:text-6xl">
               {heading}
             </h1>
-            <p className="mt-4 max-w-lg text-lg text-balance text-gray-500 md:mt-6 md:text-xl">
+
+            <p className="mt-4 max-w-lg text-lg leading-relaxed text-balance text-gray-500 md:mt-6 md:text-xl">
               {description}
             </p>
 
-            {data.form?.buttonLabel && (
+            {hasForm ? (
               <form
                 action="#"
                 className="mt-8 flex w-full flex-col items-stretch gap-4 md:mt-12 md:max-w-[480px] md:flex-row md:items-start"
@@ -177,7 +189,17 @@ export const HeroSplitImageBlock = ({ data }: { data: HeroSplitBlockType }) => {
                   {formButtonLabel}
                 </Button>
               </form>
+            ) : (
+              <div className="mt-8 flex flex-wrap items-center gap-3 md:mt-10">
+                <Button color="primary" size="xl" href="/">
+                  Build Your Resume
+                </Button>
+                <Button color="secondary" size="xl" href="/resume-templates">
+                  View Templates
+                </Button>
+              </div>
             )}
+
             <AvatarsWithReview
               className="mt-8 md:mt-12"
               avatars={data?.review?.avatars}
@@ -186,12 +208,60 @@ export const HeroSplitImageBlock = ({ data }: { data: HeroSplitBlockType }) => {
             />
           </div>
 
+          {/* Right: Resume image with elevated card treatment */}
           <div className="relative lg:h-full lg:min-h-[640px]">
-            <img
-              className="inset-0 h-[280px] w-full object-cover md:h-[440px] lg:absolute lg:h-full"
-              src={imageSrc}
-              alt={imageAlt}
+            {/* Decorative glow */}
+            <div
+              className="absolute top-12 right-0 left-0 bottom-12 rounded-3xl opacity-50 blur-[60px]"
+              style={{
+                background: 'linear-gradient(160deg, rgba(124, 58, 237, 0.1) 0%, rgba(99, 102, 241, 0.06) 50%, rgba(59, 130, 246, 0.08) 100%)',
+              }}
             />
+
+            {/* Resume card with slight tilt */}
+            <div
+              className="inset-0 overflow-hidden rounded-xl bg-white lg:absolute"
+              style={{
+                transform: 'perspective(1200px) rotateY(-2deg) rotateX(1deg)',
+                boxShadow: `
+                  0 1px 2px rgba(0,0,0,0.04),
+                  0 4px 8px rgba(0,0,0,0.04),
+                  0 12px 24px rgba(0,0,0,0.06),
+                  0 24px 48px rgba(0,0,0,0.06)
+                `,
+              }}
+            >
+              <img
+                className="h-[280px] w-full object-cover object-top md:h-[440px] lg:h-full"
+                src={imageSrc}
+                alt={imageAlt}
+              />
+              {/* Bottom fade */}
+              <div
+                className="pointer-events-none absolute right-0 bottom-0 left-0 h-24"
+                style={{
+                  background: 'linear-gradient(to top, white 0%, transparent 100%)',
+                }}
+              />
+            </div>
+
+            {/* Floating ATS badge */}
+            <div
+              className="absolute -bottom-2 left-4 z-10 hidden rounded-lg border border-gray-100 bg-white px-3 py-2 shadow-lg md:block"
+              style={{ transform: 'rotate(-3deg)' }}
+            >
+              <div className="flex items-center gap-2">
+                <div className="flex size-8 items-center justify-center rounded-full bg-emerald-50">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M3 8.5L6.5 12L13 4" stroke="#059669" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-xs font-semibold text-gray-900">ATS Optimized</p>
+                  <p className="text-[10px] text-gray-500">Score: 95/100</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
