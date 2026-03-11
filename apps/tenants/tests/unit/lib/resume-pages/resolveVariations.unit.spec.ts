@@ -4,19 +4,16 @@ import { resolveVariationField } from '@/lib/resume-pages/resolveVariations'
 import type { VariationFieldValue, VariationSet } from '@/lib/resume-pages/types'
 
 describe('resolveVariationField', () => {
-  const variationSets = new Map<string, VariationSet>([
-    [
-      'hero.title',
-      {
-        assignmentKey: 'hero.title',
-        options: [
-          { text: 'Build Your $(adjective) Resume', weight: 2 },
-          { text: 'Create a Professional Resume', weight: 1 },
-          { text: '{skill1} Resume Builder', weight: 1 },
-        ],
-      },
-    ],
-  ])
+  const variationSets: Record<string, VariationSet> = {
+    'hero.title': {
+      assignmentKey: 'hero.title',
+      options: [
+        { text: 'Build Your $(adjective) Resume', weight: 2 },
+        { text: 'Create a Professional Resume', weight: 1 },
+        { text: '{skill1} Resume Builder', weight: 1 },
+      ],
+    },
+  }
 
   const baseContext = {
     tenantSlug: 'resumebuilder',
@@ -70,7 +67,7 @@ describe('resolveVariationField', () => {
         variationSet: 'hero.title',
       }
       const result = resolveVariationField(field, baseContext)
-      const allTexts = variationSets.get('hero.title')!.options.map((o) => o.text)
+      const allTexts = variationSets['hero.title'].options.map((o) => o.text)
       expect(allTexts).toContain(result)
     })
 

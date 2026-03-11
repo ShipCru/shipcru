@@ -4,6 +4,7 @@ import type React from 'react'
 import { Fragment } from 'react'
 
 import { BlogBlock } from './Blog/Component'
+import { CTABlock } from './CTA/Component'
 import { HeroSplitImageBlock } from './HeroSplitImage/Component'
 import { MetricsBlock } from './Metrics/Component'
 import { TestimonialsBlock } from './Testimonials/Component'
@@ -19,6 +20,7 @@ const blockComponents: Record<Block['blockType'], React.ComponentType<any>> = {
   blog: BlogBlock,
   testimonials: TestimonialsBlock,
   metrics: MetricsBlock,
+  cta: CTABlock,
 }
 
 export const RenderBlocks: React.FC<{ blocks: Block[] }> = ({ blocks }) => {

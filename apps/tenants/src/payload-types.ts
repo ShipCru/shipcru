@@ -1421,7 +1421,7 @@ export interface Page {
   tenant?: (number | null) | Tenant;
   title: string;
   hero?: HeroSplitBlock[] | null;
-  layout?: (BlogBlock | TestimonialsBlock | MetricsBlock)[] | null;
+  layout?: (BlogBlock | TestimonialsBlock | MetricsBlock | CTABlock)[] | null;
   meta?: {
     title?: string | null;
     /**
@@ -1636,6 +1636,57 @@ export interface MetricsBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'metrics';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CTABlock".
+ */
+export interface CTABlock {
+  heading?: {
+    mode?: ('fixed' | 'variation') | null;
+    fixedText?: string | null;
+    variationSet?: (number | null) | ContentVariation;
+  };
+  description?: {
+    mode?: ('fixed' | 'variation') | null;
+    fixedText?: string | null;
+    variationSet?: (number | null) | ContentVariation;
+  };
+  /**
+   * CTA buttons displayed below the description
+   */
+  links?:
+    | {
+        link?: LinkField;
+        variant?: ('primary' | 'secondary' | 'tertiary' | 'link-gray' | 'link-color') | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Auto-generated identifier for this section. Used as merge key for template overrides.
+   */
+  sectionId?: string | null;
+  /**
+   * Controls section ordering group. "Test" sections are shuffled for A/B testing.
+   */
+  sectionGroup?: ('before' | 'test' | 'after') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'cta';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LinkField".
+ */
+export interface LinkField {
+  type?: ('reference' | 'custom') | null;
+  newTab?: boolean | null;
+  reference?: {
+    relationTo: 'pages';
+    value: number | Page;
+  } | null;
+  url?: string | null;
+  label?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1884,7 +1935,7 @@ export interface TemplateOverride {
         /**
          * Which block type this override applies to
          */
-        sectionBlockType?: ('heroSplit' | 'blog' | 'testimonials' | 'metrics') | null;
+        sectionBlockType?: ('heroSplit' | 'blog' | 'testimonials' | 'metrics' | 'cta') | null;
         action?: ('hide' | 'override-props') | null;
         /**
          * When locked, tenant overrides cannot modify this section.
@@ -1943,6 +1994,22 @@ export interface TemplateOverride {
           };
         };
         ovrds_metrics?: {
+          /**
+           * Select which fields to override. Only selected fields will be applied during merge.
+           */
+          fieldsToOverride?: ('heading' | 'description')[] | null;
+          heading?: {
+            mode?: ('fixed' | 'variation') | null;
+            fixedText?: string | null;
+            variationSet?: (number | null) | ContentVariation;
+          };
+          description?: {
+            mode?: ('fixed' | 'variation') | null;
+            fixedText?: string | null;
+            variationSet?: (number | null) | ContentVariation;
+          };
+        };
+        ovrds_cta?: {
           /**
            * Select which fields to override. Only selected fields will be applied during merge.
            */
@@ -2281,6 +2348,7 @@ export interface PagesSelect<T extends boolean = true> {
         blog?: T | BlogBlockSelect<T>;
         testimonials?: T | TestimonialsBlockSelect<T>;
         metrics?: T | MetricsBlockSelect<T>;
+        cta?: T | CTABlockSelect<T>;
       };
   meta?:
     | T
@@ -2459,6 +2527,48 @@ export interface MetricsBlockSelect<T extends boolean = true> {
   sectionGroup?: T;
   id?: T;
   blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CTABlock_select".
+ */
+export interface CTABlockSelect<T extends boolean = true> {
+  heading?:
+    | T
+    | {
+        mode?: T;
+        fixedText?: T;
+        variationSet?: T;
+      };
+  description?:
+    | T
+    | {
+        mode?: T;
+        fixedText?: T;
+        variationSet?: T;
+      };
+  links?:
+    | T
+    | {
+        link?: T | LinkFieldSelect<T>;
+        variant?: T;
+        id?: T;
+      };
+  sectionId?: T;
+  sectionGroup?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LinkField_select".
+ */
+export interface LinkFieldSelect<T extends boolean = true> {
+  type?: T;
+  newTab?: T;
+  reference?: T;
+  url?: T;
+  label?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2673,6 +2783,25 @@ export interface TemplateOverridesSelect<T extends boolean = true> {
                     variationSet?: T;
                   };
             };
+        ovrds_cta?:
+          | T
+          | {
+              fieldsToOverride?: T;
+              heading?:
+                | T
+                | {
+                    mode?: T;
+                    fixedText?: T;
+                    variationSet?: T;
+                  };
+              description?:
+                | T
+                | {
+                    mode?: T;
+                    fixedText?: T;
+                    variationSet?: T;
+                  };
+            };
         advancedOverrides?: T;
         id?: T;
       };
@@ -2783,7 +2912,7 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 export interface DefaultIndustryTemplate {
   id: number;
   hero?: HeroSplitBlock[] | null;
-  sections?: (BlogBlock | TestimonialsBlock | MetricsBlock)[] | null;
+  sections?: (BlogBlock | TestimonialsBlock | MetricsBlock | CTABlock)[] | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -2794,7 +2923,7 @@ export interface DefaultIndustryTemplate {
 export interface DefaultJobTitleTemplate {
   id: number;
   hero?: HeroSplitBlock[] | null;
-  sections?: (BlogBlock | TestimonialsBlock | MetricsBlock)[] | null;
+  sections?: (BlogBlock | TestimonialsBlock | MetricsBlock | CTABlock)[] | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -2857,6 +2986,7 @@ export interface DefaultIndustryTemplateSelect<T extends boolean = true> {
         blog?: T | BlogBlockSelect<T>;
         testimonials?: T | TestimonialsBlockSelect<T>;
         metrics?: T | MetricsBlockSelect<T>;
+        cta?: T | CTABlockSelect<T>;
       };
   updatedAt?: T;
   createdAt?: T;
@@ -2878,6 +3008,7 @@ export interface DefaultJobTitleTemplateSelect<T extends boolean = true> {
         blog?: T | BlogBlockSelect<T>;
         testimonials?: T | TestimonialsBlockSelect<T>;
         metrics?: T | MetricsBlockSelect<T>;
+        cta?: T | CTABlockSelect<T>;
       };
   updatedAt?: T;
   createdAt?: T;

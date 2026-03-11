@@ -7,7 +7,7 @@
  */
 export function resolveVariationText(
   field: string | { fixedText?: string | null; mode?: string | null } | null | undefined,
-  fallback: string,
+  fallback: string = '',
 ): string {
   if (typeof field === 'string') return field
   if (field && typeof field === 'object') return field.fixedText ?? fallback
