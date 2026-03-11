@@ -20,7 +20,7 @@
   "d1_databases": [
     {
       "binding": "D1",
-      "database_id": "27935558-e8ba-4796-a29f-abb64aef5340",
+      "database_id": "2a69b54e-545a-4b7e-9348-77c8e4f6ee24",
       "database_name": "shipcru-tenants",
     },
   ],
@@ -34,13 +34,13 @@
   "r2_buckets": [
     {
       "binding": "R2",
-      "bucket_name": "shipcru-tenants",
+      "bucket_name": "shipcru-tenants-media",
     },
     // Create a R2 binding with the binding name "NEXT_INC_CACHE_R2_BUCKET"
-    // {
-    //   "binding": "NEXT_INC_CACHE_R2_BUCKET",
-    //   "bucket_name": "<BUCKET_NAME>",
-    // },
+    {
+      "binding": "NEXT_INC_CACHE_R2_BUCKET",
+      "bucket_name": "shipcru-tenants-cache",
+    },
   ],
   // Here's how to configure an additional environment
   // It can be deployed with `CLOUDFLARE_ENV=staging pnpm run deploy`

@@ -5,7 +5,7 @@ import { HeaderNav } from '@/components/marketing/header-navigation/HeaderNav'
 import { getServerSideURL } from '@/utils/getURL'
 import { mergeOpenGraph } from '@/utils/mergeOpenGraph'
 
-import '@/assets/styles/globals.css'
+import './globals.css'
 
 export default async function RootLayout(props: { children: React.ReactNode }) {
   const { children } = props

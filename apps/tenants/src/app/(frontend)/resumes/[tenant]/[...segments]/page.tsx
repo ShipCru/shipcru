@@ -34,7 +34,7 @@ import { substituteVariables } from '@/lib/resume-pages/substituteVariables'
 import { validateEntity } from '@/lib/resume-pages/validateEntity'
 import { resolveTenantBySlug } from '@/utils/resolveTenant'
 
-export const revalidate = 24 * 60 * 60
+export const revalidate = 86400 // 24h
 
 interface PageProps {
   params: Promise<{ tenant: string; segments: string[] }>

@@ -40,6 +40,9 @@ const isCLI = process.argv.some((value) =>
   realpath(value)?.endsWith(path.join('payload', 'bin.js')),
 )
 const isProduction = process.env.NODE_ENV === 'production'
+const pushEnabled = !(
+  process.env.NODE_ENV === 'production' || process.env.DISABLE_PUSH_MODE === 'true'
+)
 
 const createLog =
   (level: string, fn: typeof console.log) => (objOrMsg: object | string, msg?: string) => {
@@ -97,7 +100,7 @@ export default buildConfig({
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
-  db: sqliteD1Adapter({ binding: cloudflare.env.D1 }),
+  db: sqliteD1Adapter({ binding: cloudflare.env.D1, push: pushEnabled }),
   logger: isProduction ? cloudflareLogger : undefined,
   localization: {
     locales: SUPPORTED_LOCALES.map((l) => ({ code: l.value, label: l.label })),

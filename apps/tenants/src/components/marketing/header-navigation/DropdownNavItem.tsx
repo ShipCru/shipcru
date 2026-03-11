@@ -2,8 +2,8 @@
 
 import type { Header as HeaderType } from '@/payload-types'
 
-import { ChevronDown } from '@untitledui/icons'
 import { useRef, useState } from 'react'
+import { ChevronDown } from '@untitledui/icons'
 
 import { DropdownMenuSimple } from './dropdown-menu-simple'
 
