@@ -36,28 +36,52 @@ import { resolveTenantBySlug } from '@/utils/resolveTenant'
 
 export const revalidate = 86400 // 24h
 
+export async function generateStaticParams(): Promise<{ tenant: string; segments: string[] }[]> {
+  return []
+}
+
 interface PageProps {
   params: Promise<{ tenant: string; segments: string[] }>
 }
 
 export default async function ResumePage({ params }: PageProps) {
   const { tenant: tenantSlug, segments } = await params
+  const path = `/resumes/${segments.join('/')}`
+
+  console.log(`[ResumePage] start: tenantSlug=${tenantSlug} segments=${JSON.stringify(segments)} path=${path}`)
+
   const payload = await getPayload({ config })
 
   const tenant = await resolveTenantBySlug(payload, tenantSlug)
-  if (!tenant) return notFound()
+  if (!tenant) {
+    console.log(`[ResumePage] tenant not found for slug: ${tenantSlug}`)
+    return notFound()
+  }
+  console.log(`[ResumePage] tenant resolved: id=${tenant.id} slug=${tenant.slug} name=${tenant.name}`)
 
   const suffixWords = await getCachedSuffixWords()
+  console.log(`[ResumePage] suffixWords loaded: adjectives=${suffixWords.adjectives.length} builders=${suffixWords.builders.length} contentWords=${suffixWords.contentWords.length}`)
 
-  const path = `/resumes/${segments.join('/')}`
   const parsed = parseResumeUrl(path, suffixWords)
-  if (!parsed) return notFound()
+  if (!parsed) {
+    console.log(`[ResumePage] parseResumeUrl returned null for path: ${path}`)
+    return notFound()
+  }
+  console.log(`[ResumePage] parsed URL: type=${parsed.type} industrySlug=${parsed.industrySlug} jobTitleSlug=${parsed.jobTitleSlug || '<none>'} builder=${parsed.builder || '<none>'} adjective=${parsed.adjective || '<none>'} content=${parsed.content || '<none>'}`)
 
   const entity = await validateEntity(payload, parsed)
-  if (!entity) return notFound()
+  if (!entity) {
+    console.log(`[ResumePage] entity validation failed for: type=${parsed.type} industrySlug=${parsed.industrySlug} jobTitleSlug=${parsed.jobTitleSlug || '<none>'}`)
+    return notFound()
+  }
+  console.log(`[ResumePage] entity validated: id=${entity.id} industryName=${entity.industryName} jobTitleName=${entity.jobTitleName || '<none>'} skills=${entity.skills?.length || 0}`)
 
   const canServe = await checkTenantPageConfig(payload, tenant.id, parsed, entity)
-  if (!canServe) return notFound()
+  if (!canServe) {
+    console.log(`[ResumePage] checkTenantPageConfig denied: tenantId=${tenant.id} entityId=${entity.id}`)
+    return notFound()
+  }
+  console.log(`[ResumePage] tenant page config OK`)
 
   const getCachedTemplate =
     parsed.type === 'industry' ? getCachedIndustryTemplate : getCachedJobTitleTemplate
@@ -75,6 +99,10 @@ export default async function ResumePage({ params }: PageProps) {
     getCachedWordFormSets(),
   ])
 
+  console.log(`[ResumePage] template loaded: hero=${defaultTemplate.hero?.length || 0} sections=${defaultTemplate.sections?.length || 0}`)
+  console.log(`[ResumePage] overrideChain: ${overrideChain.length} overrides`)
+  console.log(`[ResumePage] variationSets: ${variationSets.length}, wordFormSets: ${wordFormSets.length}`)
+
   // Normalize template into SectionConfig objects
   const hero = defaultTemplate.hero?.[0] ? normalizeBlock(defaultTemplate.hero[0]) : null
   const baseSections = (defaultTemplate.sections || []).map(normalizeBlock)
@@ -82,6 +110,8 @@ export default async function ResumePage({ params }: PageProps) {
   // Apply overrides
   const mergedSections = applyOverrides(baseSections, overrideChain)
   const mergedHero = hero ? (applyOverrides([hero], overrideChain)[0] ?? null) : null
+
+  console.log(`[ResumePage] after merge: hero=${mergedHero ? 'yes' : 'no'} sections=${mergedSections.length}`)
 
   // Filter by data dependencies
   const filteredSections = filterByDataDependencies(mergedSections, {
@@ -137,6 +167,8 @@ export default async function ResumePage({ params }: PageProps) {
   const baseSlug = parsed.jobTitleSlug || parsed.industrySlug
   const ordered = orderSections({ sections: substitutedSections, baseSlug })
 
+  console.log(`[ResumePage] rendering: hero=${substitutedHero ? substitutedHero.blockType : 'none'} sections=${ordered.map((s) => s.blockType).join(',')}`)
+
   return (
     <article>
       {substitutedHero && <RenderHero blocks={[sectionToBlock(substitutedHero)]} />}
@@ -149,18 +181,29 @@ export default async function ResumePage({ params }: PageProps) {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { tenant: tenantSlug, segments } = await params
+  console.log(`[generateMetadata] start: tenantSlug=${tenantSlug} segments=${JSON.stringify(segments)}`)
+
   const payload = await getPayload({ config })
 
   const tenant = await resolveTenantBySlug(payload, tenantSlug)
-  if (!tenant) return {}
+  if (!tenant) {
+    console.log(`[generateMetadata] tenant not found: ${tenantSlug}`)
+    return {}
+  }
 
   const suffixWords = await getCachedSuffixWords()
   const path = `/resumes/${segments.join('/')}`
   const parsed = parseResumeUrl(path, suffixWords)
-  if (!parsed) return {}
+  if (!parsed) {
+    console.log(`[generateMetadata] parse failed for path: ${path}`)
+    return {}
+  }
 
   const entity = await validateEntity(payload, parsed)
-  if (!entity) return {}
+  if (!entity) {
+    console.log(`[generateMetadata] entity validation failed: ${parsed.type} ${parsed.industrySlug}`)
+    return {}
+  }
 
   const title =
     entity.meta?.title ||

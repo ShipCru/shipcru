@@ -18,6 +18,7 @@ const nextConfig: import('next').NextConfig = {
 
   experimental: {
     cssChunking: 'strict',
+    inlineCss: true,
   },
 }
 
