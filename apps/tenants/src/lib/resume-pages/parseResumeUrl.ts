@@ -1,6 +1,19 @@
 import type { ParsedResumeUrl, SuffixWordLists } from './types'
 
 /**
+ * Builds the internal path for a job-title suffix page.
+ * Inverse of the job-title branch in parseResumeUrl.
+ */
+export function buildJobTitleSuffixPath(
+  tenantSlug: string,
+  industrySlug: string,
+  jobTitleSlug: string,
+  suffix: { adjective: string; builder: string; contentWord: string },
+): string {
+  return `/${tenantSlug}/resumes/${industrySlug}/${jobTitleSlug}-${suffix.adjective}-resume-${suffix.builder}-${suffix.contentWord}`
+}
+
+/**
  * Parses a resume page URL path into structured data.
  *
  * URL structure: /resumes/:industrySlug or /resumes/:industrySlug/:jobTitleSlug-:adj-resume-:builder-:content

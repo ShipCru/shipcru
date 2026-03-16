@@ -17,7 +17,8 @@ import { IndustryCategories } from './collections/IndustryCategories'
 import { JobTitles } from './collections/JobTitles'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
-import { Skills } from './collections/Skills'
+import { ResumeContent } from './collections/ResumeContent'
+import { Sources } from './collections/Sources'
 import { TemplateOverrides } from './collections/TemplateOverrides'
 import { TenantPageConfigs } from './collections/TenantPageConfigs'
 import { Tenants } from './collections/Tenants'
@@ -85,7 +86,8 @@ export default buildConfig({
     IndustryCategories,
     Industries,
     JobTitles,
-    Skills,
+    ResumeContent,
+    Sources,
     // Template system:
     ContentVariations,
     WordFormSets,

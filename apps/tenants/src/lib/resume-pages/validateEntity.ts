@@ -1,6 +1,15 @@
 import type { ParsedResumeUrl } from './types'
 import type { Payload } from 'payload'
 
+function extractRelId(value: unknown): number | string | null {
+  if (value === null || value === undefined) return null
+  if (typeof value === 'number' || typeof value === 'string') return value
+  if (typeof value === 'object' && 'id' in (value as object)) {
+    return (value as { id: number | string }).id
+  }
+  return null
+}
+
 export interface EntityData {
   id: number | string
   industryId: number | string
@@ -15,6 +24,12 @@ export interface EntityData {
     image?: unknown
     robots?: string | null
   }
+  // Canonical suffix override fields (top-level in Canonical tab, not nested in a group)
+  overrideSuffix?: boolean | null
+  suffixAdjective?: number | string | null
+  suffixBuilder?: number | string | null
+  suffixContentWord?: number | string | null
+  suffixStrategy?: string | null
 }
 
 /**
@@ -104,10 +119,12 @@ async function validateJobTitleEntity(
         : (industry.category ?? null),
     jobTitleName: jobTitle.name,
     jobTitleSlug: jobTitle.slug,
-    skills:
-      (jobTitle.suggestedSkills as Array<{ name: string } | string>)?.map((s) =>
-        typeof s === 'object' ? s.name : s,
-      ) ?? [],
+    skills: [],
     meta: jobTitle.meta,
+    overrideSuffix: jobTitle.overrideSuffix ?? null,
+    suffixAdjective: extractRelId(jobTitle.suffixAdjective),
+    suffixBuilder: extractRelId(jobTitle.suffixBuilder),
+    suffixContentWord: extractRelId(jobTitle.suffixContentWord),
+    suffixStrategy: jobTitle.suffixStrategy ?? null,
   }
 }

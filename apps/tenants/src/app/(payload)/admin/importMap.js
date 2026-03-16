@@ -8,7 +8,9 @@ import { MetaImageComponent as MetaImageComponent_a8a977ebc872c5d5ea7ee689724c08
 import { MetaDescriptionComponent as MetaDescriptionComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { PreviewComponent as PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { SlugField as SlugField_2b8867833a34864a02ddf429b0728a40 } from '@payloadcms/next/client'
+import { default as default_bbddb283fe90d5c43b9ed7887f973474 } from '../../../components/admin/ContentScoreRowLabel'
 import { ExampleUrls as ExampleUrls_88acdfc11b94c727d7f9bd36ca34f563 } from '../../../components/admin/ExampleUrls'
+import { default as default_a92c5dfb3c2e323ee05fef993ef6e5f5 } from '../../../components/admin/TypeFilterTabs'
 import { WordFormSetsListActions as WordFormSetsListActions_22d5a53eab36571250c25cd618ca3567 } from '@/components/admin/WordFormSetsListActions'
 import { SectionOverrideRowLabel as SectionOverrideRowLabel_a65b2ee139f4c7668f8e6e1e6bfe0c74 } from '@/components/admin/SectionOverrideRowLabel'
 import { WatchTenantCollection as WatchTenantCollection_1d0591e3cf4f332c83a86da13a0de59a } from '@payloadcms/plugin-multi-tenant/client'
@@ -29,7 +31,9 @@ export const importMap = {
   "@payloadcms/plugin-seo/client#MetaDescriptionComponent": MetaDescriptionComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@payloadcms/plugin-seo/client#PreviewComponent": PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@payloadcms/next/client#SlugField": SlugField_2b8867833a34864a02ddf429b0728a40,
+  "/components/admin/ContentScoreRowLabel#default": default_bbddb283fe90d5c43b9ed7887f973474,
   "/components/admin/ExampleUrls#ExampleUrls": ExampleUrls_88acdfc11b94c727d7f9bd36ca34f563,
+  "/components/admin/TypeFilterTabs#default": default_a92c5dfb3c2e323ee05fef993ef6e5f5,
   "@/components/admin/WordFormSetsListActions#WordFormSetsListActions": WordFormSetsListActions_22d5a53eab36571250c25cd618ca3567,
   "@/components/admin/SectionOverrideRowLabel#SectionOverrideRowLabel": SectionOverrideRowLabel_a65b2ee139f4c7668f8e6e1e6bfe0c74,
   "@payloadcms/plugin-multi-tenant/client#WatchTenantCollection": WatchTenantCollection_1d0591e3cf4f332c83a86da13a0de59a,

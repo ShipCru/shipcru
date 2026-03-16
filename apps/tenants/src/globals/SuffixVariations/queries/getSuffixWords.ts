@@ -8,8 +8,13 @@ import config from '@payload-config'
 import { WORD_FORM_SET_LOOKUP_FIELD } from '@/collections/WordFormSets/constants'
 import { generateCacheTag } from '@/utilities/generateCacheTag'
 
+interface WordEntry {
+  wordFormSet?: WordFormSet | number | null
+  isCanonical?: boolean | null
+}
+
 function extractWords(
-  items: Array<{ wordFormSet?: WordFormSet | number | null }> | null | undefined,
+  items: WordEntry[] | null | undefined,
   wordFormSetType: string,
 ): string[] {
   const field = WORD_FORM_SET_LOOKUP_FIELD[wordFormSetType] as keyof WordFormSet | undefined
@@ -23,13 +28,43 @@ function extractWords(
   })
 }
 
-export async function getSuffixWords(payload: Payload) {
+function extractCanonicalWord(
+  items: WordEntry[] | null | undefined,
+  wordFormSetType: string,
+): string | null {
+  const field = WORD_FORM_SET_LOOKUP_FIELD[wordFormSetType] as keyof WordFormSet | undefined
+  if (!field) return null
+
+  const canonical = (items ?? []).find((item) => item.isCanonical)
+  if (!canonical) return null
+
+  const doc = canonical.wordFormSet
+  if (!doc || typeof doc === 'number') return null
+  const value = doc[field]
+  return typeof value === 'string' && value ? value : null
+}
+
+export interface SuffixWordsData {
+  adjectives: string[]
+  builders: string[]
+  contentWords: string[]
+  canonicalAdjective: string | null
+  canonicalBuilder: string | null
+  canonicalContentWord: string | null
+  canonicalStrategy: string
+}
+
+export async function getSuffixWords(payload: Payload): Promise<SuffixWordsData> {
   const global = await payload.findGlobal({ slug: 'suffix-variations', depth: 1 })
 
   return {
     adjectives: extractWords(global.adjectives, 'adjective'),
     builders: extractWords(global.builders, 'verb'),
     contentWords: extractWords(global.contentWords, 'contentWord'),
+    canonicalAdjective: extractCanonicalWord(global.adjectives, 'adjective'),
+    canonicalBuilder: extractCanonicalWord(global.builders, 'verb'),
+    canonicalContentWord: extractCanonicalWord(global.contentWords, 'contentWord'),
+    canonicalStrategy: global.canonicalStrategy ?? 'rel-canonical',
   }
 }
 

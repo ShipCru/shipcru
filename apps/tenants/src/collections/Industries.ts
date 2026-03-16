@@ -1,6 +1,7 @@
 import { type CollectionConfig, slugField } from 'payload'
 
 import { superAdminCrud } from '@/access/superAdminCrud'
+import { originFields } from '@/fields/origin'
 import { seo } from '@/lib/fields/seo'
 
 export const Industries: CollectionConfig = {
@@ -56,5 +57,6 @@ export const Industries: CollectionConfig = {
     slugField({
       useAsSlug: 'name',
     }),
+    originFields(),
   ],
 }

@@ -6,7 +6,7 @@ import type {
 } from '@/lib/resume-pages/types'
 import type { Metadata } from 'next'
 
-import { notFound } from 'next/navigation'
+import { notFound, permanentRedirect, redirect } from 'next/navigation'
 import { getPayload } from 'payload'
 import React from 'react'
 import config from '@payload-config'
@@ -22,7 +22,8 @@ import { checkTenantPageConfig } from '@/lib/resume-pages/checkTenantPageConfig'
 import { applyOverrides, filterByDataDependencies } from '@/lib/resume-pages/mergeTemplate'
 import { normalizeBlock } from '@/lib/resume-pages/normalizeBlock'
 import { orderSections } from '@/lib/resume-pages/orderSections'
-import { parseResumeUrl } from '@/lib/resume-pages/parseResumeUrl'
+import { buildJobTitleSuffixPath, parseResumeUrl } from '@/lib/resume-pages/parseResumeUrl'
+import { resolveCanonicalSuffix } from '@/lib/resume-pages/resolveCanonicalSuffix'
 import { resolveVariationField } from '@/lib/resume-pages/resolveVariations'
 import {
   resolveAdjectiveForms,
@@ -48,7 +49,9 @@ export default async function ResumePage({ params }: PageProps) {
   const { tenant: tenantSlug, segments } = await params
   const path = `/resumes/${segments.join('/')}`
 
-  console.log(`[ResumePage] start: tenantSlug=${tenantSlug} segments=${JSON.stringify(segments)} path=${path}`)
+  console.log(
+    `[ResumePage] start: tenantSlug=${tenantSlug} segments=${JSON.stringify(segments)} path=${path}`,
+  )
 
   const payload = await getPayload({ config })
 
@@ -57,31 +60,64 @@ export default async function ResumePage({ params }: PageProps) {
     console.log(`[ResumePage] tenant not found for slug: ${tenantSlug}`)
     return notFound()
   }
-  console.log(`[ResumePage] tenant resolved: id=${tenant.id} slug=${tenant.slug} name=${tenant.name}`)
+  console.log(
+    `[ResumePage] tenant resolved: id=${tenant.id} slug=${tenant.slug} name=${tenant.name}`,
+  )
 
   const suffixWords = await getCachedSuffixWords()
-  console.log(`[ResumePage] suffixWords loaded: adjectives=${suffixWords.adjectives.length} builders=${suffixWords.builders.length} contentWords=${suffixWords.contentWords.length}`)
+  console.log(
+    `[ResumePage] suffixWords loaded: adjectives=${suffixWords.adjectives.length} builders=${suffixWords.builders.length} contentWords=${suffixWords.contentWords.length}`,
+  )
 
   const parsed = parseResumeUrl(path, suffixWords)
   if (!parsed) {
     console.log(`[ResumePage] parseResumeUrl returned null for path: ${path}`)
     return notFound()
   }
-  console.log(`[ResumePage] parsed URL: type=${parsed.type} industrySlug=${parsed.industrySlug} jobTitleSlug=${parsed.jobTitleSlug || '<none>'} builder=${parsed.builder || '<none>'} adjective=${parsed.adjective || '<none>'} content=${parsed.content || '<none>'}`)
+  console.log(
+    `[ResumePage] parsed URL: type=${parsed.type} industrySlug=${parsed.industrySlug} jobTitleSlug=${parsed.jobTitleSlug || '<none>'} builder=${parsed.builder || '<none>'} adjective=${parsed.adjective || '<none>'} content=${parsed.content || '<none>'}`,
+  )
 
   const entity = await validateEntity(payload, parsed)
   if (!entity) {
-    console.log(`[ResumePage] entity validation failed for: type=${parsed.type} industrySlug=${parsed.industrySlug} jobTitleSlug=${parsed.jobTitleSlug || '<none>'}`)
+    console.log(
+      `[ResumePage] entity validation failed for: type=${parsed.type} industrySlug=${parsed.industrySlug} jobTitleSlug=${parsed.jobTitleSlug || '<none>'}`,
+    )
     return notFound()
   }
-  console.log(`[ResumePage] entity validated: id=${entity.id} industryName=${entity.industryName} jobTitleName=${entity.jobTitleName || '<none>'} skills=${entity.skills?.length || 0}`)
+  console.log(
+    `[ResumePage] entity validated: id=${entity.id} industryName=${entity.industryName} jobTitleName=${entity.jobTitleName || '<none>'} skills=${entity.skills?.length || 0}`,
+  )
 
   const canServe = await checkTenantPageConfig(payload, tenant.id, parsed, entity)
   if (!canServe) {
-    console.log(`[ResumePage] checkTenantPageConfig denied: tenantId=${tenant.id} entityId=${entity.id}`)
+    console.log(
+      `[ResumePage] checkTenantPageConfig denied: tenantId=${tenant.id} entityId=${entity.id}`,
+    )
     return notFound()
   }
   console.log(`[ResumePage] tenant page config OK`)
+
+  // Canonical suffix resolution (job-title pages only)
+  if (parsed.type === 'job-title') {
+    const canonicalSuffix = await resolveCanonicalSuffix(payload, entity, suffixWords)
+
+    if (canonicalSuffix) {
+      const isCanonicalUrl =
+        parsed.adjective === canonicalSuffix.adjective &&
+        parsed.builder === canonicalSuffix.builder &&
+        parsed.content === canonicalSuffix.contentWord
+
+      if (!isCanonicalUrl && canonicalSuffix.strategy.startsWith('redirect-')) {
+        const canonicalPath = buildJobTitleSuffixPath(tenantSlug, parsed.industrySlug, parsed.jobTitleSlug!, canonicalSuffix)
+        if (canonicalSuffix.strategy === 'redirect-301') {
+          permanentRedirect(canonicalPath)
+        } else {
+          redirect(canonicalPath)
+        }
+      }
+    }
+  }
 
   const getCachedTemplate =
     parsed.type === 'industry' ? getCachedIndustryTemplate : getCachedJobTitleTemplate
@@ -99,9 +135,13 @@ export default async function ResumePage({ params }: PageProps) {
     getCachedWordFormSets(),
   ])
 
-  console.log(`[ResumePage] template loaded: hero=${defaultTemplate.hero?.length || 0} sections=${defaultTemplate.sections?.length || 0}`)
+  console.log(
+    `[ResumePage] template loaded: hero=${defaultTemplate.hero?.length || 0} sections=${defaultTemplate.sections?.length || 0}`,
+  )
   console.log(`[ResumePage] overrideChain: ${overrideChain.length} overrides`)
-  console.log(`[ResumePage] variationSets: ${variationSets.length}, wordFormSets: ${wordFormSets.length}`)
+  console.log(
+    `[ResumePage] variationSets: ${variationSets.length}, wordFormSets: ${wordFormSets.length}`,
+  )
 
   // Normalize template into SectionConfig objects
   const hero = defaultTemplate.hero?.[0] ? normalizeBlock(defaultTemplate.hero[0]) : null
@@ -111,7 +151,9 @@ export default async function ResumePage({ params }: PageProps) {
   const mergedSections = applyOverrides(baseSections, overrideChain)
   const mergedHero = hero ? (applyOverrides([hero], overrideChain)[0] ?? null) : null
 
-  console.log(`[ResumePage] after merge: hero=${mergedHero ? 'yes' : 'no'} sections=${mergedSections.length}`)
+  console.log(
+    `[ResumePage] after merge: hero=${mergedHero ? 'yes' : 'no'} sections=${mergedSections.length}`,
+  )
 
   // Filter by data dependencies
   const filteredSections = filterByDataDependencies(mergedSections, {
@@ -167,7 +209,9 @@ export default async function ResumePage({ params }: PageProps) {
   const baseSlug = parsed.jobTitleSlug || parsed.industrySlug
   const ordered = orderSections({ sections: substitutedSections, baseSlug })
 
-  console.log(`[ResumePage] rendering: hero=${substitutedHero ? substitutedHero.blockType : 'none'} sections=${ordered.map((s) => s.blockType).join(',')}`)
+  console.log(
+    `[ResumePage] rendering: hero=${substitutedHero ? substitutedHero.blockType : 'none'} sections=${ordered.map((s) => s.blockType).join(',')}`,
+  )
 
   return (
     <article>
@@ -181,7 +225,9 @@ export default async function ResumePage({ params }: PageProps) {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { tenant: tenantSlug, segments } = await params
-  console.log(`[generateMetadata] start: tenantSlug=${tenantSlug} segments=${JSON.stringify(segments)}`)
+  console.log(
+    `[generateMetadata] start: tenantSlug=${tenantSlug} segments=${JSON.stringify(segments)}`,
+  )
 
   const payload = await getPayload({ config })
 
@@ -201,7 +247,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const entity = await validateEntity(payload, parsed)
   if (!entity) {
-    console.log(`[generateMetadata] entity validation failed: ${parsed.type} ${parsed.industrySlug}`)
+    console.log(
+      `[generateMetadata] entity validation failed: ${parsed.type} ${parsed.industrySlug}`,
+    )
     return {}
   }
 
@@ -217,10 +265,28 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       ? `Create a professional ${entity.jobTitleName} resume for the ${entity.industryName} industry.`
       : `Browse ${entity.industryName} resume templates and examples.`)
 
+  let canonicalUrl: string | undefined
+  if (parsed.type === 'job-title') {
+    const canonicalSuffix = await resolveCanonicalSuffix(payload, entity, suffixWords)
+
+    if (canonicalSuffix) {
+      const isCanonicalUrl =
+        parsed.adjective === canonicalSuffix.adjective &&
+        parsed.builder === canonicalSuffix.builder &&
+        parsed.content === canonicalSuffix.contentWord
+
+      if (!isCanonicalUrl && canonicalSuffix.strategy === 'rel-canonical') {
+        const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL || ''
+        canonicalUrl = `${serverUrl}${buildJobTitleSuffixPath(tenantSlug, parsed.industrySlug, parsed.jobTitleSlug!, canonicalSuffix)}`
+      }
+    }
+  }
+
   return {
     title,
     description,
     robots: entity.meta?.robots === 'noindex' ? { index: false, follow: false } : undefined,
+    ...(canonicalUrl ? { alternates: { canonical: canonicalUrl } } : {}),
   }
 }
 

@@ -2,6 +2,11 @@
 
 You are an expert Payload CMS developer. When working with Payload projects, follow these rules:
 
+## Codebase Gotchas
+
+- Tailwind: the class `<target>-[var(--variable)]` must be written as `<target>-(--variable)`
+  - Example: `border-[var(--theme-elevation-150)]` -> `border-(--theme-elevation-150)`
+
 ## Core Principles
 
 1. **TypeScript-First**: Always use TypeScript with proper types from Payload
@@ -725,7 +730,6 @@ export const Posts: CollectionConfig = {
 ### Performance Best Practices
 
 1. **Import correctly:**
-
    - Admin Panel: `import { Button } from '@payloadcms/ui'`
    - Frontend: `import { Button } from '@payloadcms/ui/elements/Button'`
 
@@ -740,7 +744,6 @@ export const Posts: CollectionConfig = {
    ```
 
 3. **Prefer Server Components** - Only use Client Components when you need:
-
    - State (useState, useReducer)
    - Effects (useEffect)
    - Event handlers (onClick, onChange)
@@ -1014,13 +1017,11 @@ For deeper exploration of specific topics, refer to the context files located in
 ### Available Context Files
 
 1. **`security-critical.md`** - Critical security patterns (⚠️ IMPORTANT)
-
    - Local API access control
    - Transaction safety in hooks
    - Preventing infinite hook loops
 
 2. **`collections.md`** - Collection configurations
-
    - Basic collection patterns
    - Auth collections with RBAC
    - Upload collections
@@ -1028,7 +1029,6 @@ For deeper exploration of specific topics, refer to the context files located in
    - Globals
 
 3. **`fields.md`** - Field types and patterns
-
    - All field types with examples
    - Conditional fields
    - Virtual fields
@@ -1036,13 +1036,11 @@ For deeper exploration of specific topics, refer to the context files located in
    - Common field patterns
 
 4. **`field-type-guards.md`** - TypeScript field type utilities
-
    - Field type checking utilities
    - Safe type narrowing
    - Runtime field validation
 
 5. **`access-control.md`** - Permission patterns
-
    - Collection-level access
    - Field-level access
    - Row-level security
@@ -1050,41 +1048,35 @@ For deeper exploration of specific topics, refer to the context files located in
    - Multi-tenant access control
 
 6. **`access-control-advanced.md`** - Complex access patterns
-
    - Nested document access
    - Cross-collection permissions
    - Dynamic role hierarchies
    - Performance optimization
 
 7. **`hooks.md`** - Lifecycle hooks
-
    - Collection hooks
    - Field hooks
    - Hook context patterns
    - Common hook recipes
 
 8. **`queries.md`** - Database operations
-
    - Local API usage
    - Query operators
    - Complex queries with AND/OR
    - Performance optimization
 
 9. **`endpoints.md`** - Custom API endpoints
-
-    - REST endpoint patterns
-    - Authentication in endpoints
-    - Error handling
-    - Route parameters
+   - REST endpoint patterns
+   - Authentication in endpoints
+   - Error handling
+   - Route parameters
 
 10. **`adapters.md`** - Database and storage adapters
-
     - MongoDB, PostgreSQL, SQLite patterns
     - Storage adapter usage (S3, Azure, GCS, etc.)
     - Custom adapter development
 
 11. **`components.md`** - Custom Components
-
     - Component types (Root, Collection, Global, Field)
     - Server vs Client Components
     - Component paths and definition

@@ -1254,7 +1254,8 @@ export interface Config {
     'industry-categories': IndustryCategory;
     industries: Industry;
     'job-titles': JobTitle;
-    skills: Skill;
+    'resume-content': ResumeContent;
+    sources: Source;
     'content-variations': ContentVariation;
     'word-form-sets': WordFormSet;
     'template-overrides': TemplateOverride;
@@ -1281,7 +1282,8 @@ export interface Config {
     'industry-categories': IndustryCategoriesSelect<false> | IndustryCategoriesSelect<true>;
     industries: IndustriesSelect<false> | IndustriesSelect<true>;
     'job-titles': JobTitlesSelect<false> | JobTitlesSelect<true>;
-    skills: SkillsSelect<false> | SkillsSelect<true>;
+    'resume-content': ResumeContentSelect<false> | ResumeContentSelect<true>;
+    sources: SourcesSelect<false> | SourcesSelect<true>;
     'content-variations': ContentVariationsSelect<false> | ContentVariationsSelect<true>;
     'word-form-sets': WordFormSetsSelect<false> | WordFormSetsSelect<true>;
     'template-overrides': TemplateOverridesSelect<false> | TemplateOverridesSelect<true>;
@@ -1742,6 +1744,17 @@ export interface Industry {
    */
   generateSlug?: boolean | null;
   slug: string;
+  /**
+   * Where this data originated
+   */
+  origin?: {
+    source?: (number | null) | Source;
+    importedAt?: string | null;
+    /**
+     * Optional: batch ID, file name, external ID, etc.
+     */
+    notes?: string | null;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -1753,7 +1766,40 @@ export interface JobTitle {
   id: number;
   name: string;
   industries?: (number | Industry)[] | null;
-  suggestedSkills?: (number | Skill)[] | null;
+  suggestedContent?:
+    | {
+        content: number | ResumeContent;
+        /**
+         * Supply-side: do professionals in this role report this? (0-1)
+         */
+        experienceScore?: number | null;
+        /**
+         * Demand-side: do job seekers for this role search for this? (0-1)
+         */
+        interestScore?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Override the default canonical suffix for this job title. When unchecked, the global canonical suffix from Suffix Variations is used.
+   */
+  overrideSuffix?: boolean | null;
+  /**
+   * Adjective word for canonical suffix (e.g., "best")
+   */
+  suffixAdjective?: (number | null) | WordFormSet;
+  /**
+   * Builder word for canonical suffix (e.g., "creator")
+   */
+  suffixBuilder?: (number | null) | WordFormSet;
+  /**
+   * Content word for canonical suffix (e.g., "content")
+   */
+  suffixContentWord?: (number | null) | WordFormSet;
+  /**
+   * Override the global canonical strategy for this job title.
+   */
+  suffixStrategy?: ('redirect-301' | 'redirect-302' | 'rel-canonical') | null;
   meta?: {
     title?: string | null;
     /**
@@ -1771,14 +1817,60 @@ export interface JobTitle {
    */
   generateSlug?: boolean | null;
   slug: string;
+  /**
+   * Confidence this is a real job title (1.0 = SOC/O*NET verified)
+   */
+  probability?: number | null;
+  /**
+   * Where this data originated
+   */
+  origin?: {
+    source?: (number | null) | Source;
+    importedAt?: string | null;
+    /**
+     * Optional: batch ID, file name, external ID, etc.
+     */
+    notes?: string | null;
+  };
   updatedAt: string;
   createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "skills".
+ * via the `definition` "resume-content".
  */
-export interface Skill {
+export interface ResumeContent {
+  id: number;
+  type: 'skill' | 'experience' | 'summary' | 'accomplishment' | 'affiliation' | 'certification';
+  name: string;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  /**
+   * The content text (experience bullet, summary paragraph, skill phrase, etc.)
+   */
+  description?: string | null;
+  /**
+   * Where this data originated
+   */
+  origin?: {
+    source?: (number | null) | Source;
+    importedAt?: string | null;
+    /**
+     * Optional: batch ID, file name, external ID, etc.
+     */
+    notes?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sources".
+ */
+export interface Source {
   id: number;
   name: string;
   /**
@@ -1786,7 +1878,10 @@ export interface Skill {
    */
   generateSlug?: boolean | null;
   slug: string;
-  category?: ('technical' | 'soft' | 'certification') | null;
+  /**
+   * Optional context about this data source.
+   */
+  description?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -2219,8 +2314,12 @@ export interface PayloadLockedDocument {
         value: number | JobTitle;
       } | null)
     | ({
-        relationTo: 'skills';
-        value: number | Skill;
+        relationTo: 'resume-content';
+        value: number | ResumeContent;
+      } | null)
+    | ({
+        relationTo: 'sources';
+        value: number | Source;
       } | null)
     | ({
         relationTo: 'content-variations';
@@ -2604,6 +2703,13 @@ export interface IndustriesSelect<T extends boolean = true> {
       };
   generateSlug?: T;
   slug?: T;
+  origin?:
+    | T
+    | {
+        source?: T;
+        importedAt?: T;
+        notes?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2614,7 +2720,19 @@ export interface IndustriesSelect<T extends boolean = true> {
 export interface JobTitlesSelect<T extends boolean = true> {
   name?: T;
   industries?: T;
-  suggestedSkills?: T;
+  suggestedContent?:
+    | T
+    | {
+        content?: T;
+        experienceScore?: T;
+        interestScore?: T;
+        id?: T;
+      };
+  overrideSuffix?: T;
+  suffixAdjective?: T;
+  suffixBuilder?: T;
+  suffixContentWord?: T;
+  suffixStrategy?: T;
   meta?:
     | T
     | {
@@ -2625,18 +2743,46 @@ export interface JobTitlesSelect<T extends boolean = true> {
       };
   generateSlug?: T;
   slug?: T;
+  probability?: T;
+  origin?:
+    | T
+    | {
+        source?: T;
+        importedAt?: T;
+        notes?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "skills_select".
+ * via the `definition` "resume-content_select".
  */
-export interface SkillsSelect<T extends boolean = true> {
+export interface ResumeContentSelect<T extends boolean = true> {
+  type?: T;
   name?: T;
   generateSlug?: T;
   slug?: T;
-  category?: T;
+  description?: T;
+  origin?:
+    | T
+    | {
+        source?: T;
+        importedAt?: T;
+        notes?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sources_select".
+ */
+export interface SourcesSelect<T extends boolean = true> {
+  name?: T;
+  generateSlug?: T;
+  slug?: T;
+  description?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2966,6 +3112,10 @@ export interface SuffixVariation {
     | {
         wordFormSet: number | WordFormSet;
         weight?: number | null;
+        /**
+         * Use this word in the canonical suffix URL
+         */
+        isCanonical?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -2976,6 +3126,10 @@ export interface SuffixVariation {
     | {
         wordFormSet: number | WordFormSet;
         weight?: number | null;
+        /**
+         * Use this word in the canonical suffix URL
+         */
+        isCanonical?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -2986,6 +3140,10 @@ export interface SuffixVariation {
     | {
         wordFormSet: number | WordFormSet;
         weight?: number | null;
+        /**
+         * Use this word in the canonical suffix URL
+         */
+        isCanonical?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -2993,6 +3151,10 @@ export interface SuffixVariation {
    * Default number of suffix URLs to generate per page.
    */
   defaultSuffixCount?: number | null;
+  /**
+   * How to handle non-canonical suffix URLs. Redirect sends users to the canonical URL. rel="canonical" renders the page but tells search engines which URL is preferred.
+   */
+  canonicalStrategy?: ('redirect-301' | 'redirect-302' | 'rel-canonical') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -3074,6 +3236,7 @@ export interface SuffixVariationsSelect<T extends boolean = true> {
     | {
         wordFormSet?: T;
         weight?: T;
+        isCanonical?: T;
         id?: T;
       };
   builders?:
@@ -3081,6 +3244,7 @@ export interface SuffixVariationsSelect<T extends boolean = true> {
     | {
         wordFormSet?: T;
         weight?: T;
+        isCanonical?: T;
         id?: T;
       };
   contentWords?:
@@ -3088,9 +3252,11 @@ export interface SuffixVariationsSelect<T extends boolean = true> {
     | {
         wordFormSet?: T;
         weight?: T;
+        isCanonical?: T;
         id?: T;
       };
   defaultSuffixCount?: T;
+  canonicalStrategy?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
