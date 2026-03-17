@@ -2,10 +2,24 @@
 
 You are an expert Payload CMS developer. When working with Payload projects, follow these rules:
 
+## Important Note
+
+This codebase will outlive you. Every shortcut you take becomes someone else's burden. Every hack compounds into technical debt that slows the whole team down.
+
+You are not just writing code. You are shaping the future of this project. The patterns you establish will be copied. The corners you cut will be cut again.
+
+Fight entropy. Leave the codebase better than you found it.
+
+## Interaction Rules
+
+- When asked a question ("why?", "what does this do?"), answer it. Don't assume intent and jump to code changes — only make changes when explicitly asked.
+
 ## Codebase Gotchas
 
 - Tailwind: the class `<target>-[var(--variable)]` must be written as `<target>-(--variable)`
   - Example: `border-[var(--theme-elevation-150)]` -> `border-(--theme-elevation-150)`
+- Admin components: use Tailwind classes for styling, not inline `style` attributes
+- Don't add comments that restate what the function name or signature already says. No decorative separator comments. Only comment where the logic isn't self-evident.
 
 ## Core Principles
 

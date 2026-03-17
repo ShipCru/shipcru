@@ -159,3 +159,30 @@ export function resolveContentWordForms(
     pluralCapitalized: s(doc.cw_pluralCapitalized),
   }
 }
+
+export interface ResolveAllWordFormsInput {
+  resumeWord: string
+  builder?: string | null
+  adjective?: string | null
+  contentWord?: string | null
+}
+
+export interface AllWordForms {
+  resumeWords: ResumeWordsConfig
+  verbForms: VerbFormsConfig
+  adjectiveForms: AdjectiveFormsConfig
+  contentWordForms: ContentWordFormsConfig
+}
+
+export function resolveAllWordForms(
+  docs: WordFormSet[],
+  input: ResolveAllWordFormsInput,
+  tenantId: string | number | null,
+): AllWordForms {
+  return {
+    resumeWords: resolveResumeWords(docs, input.resumeWord, tenantId),
+    verbForms: resolveVerbForms(docs, input.builder ?? '', tenantId),
+    adjectiveForms: resolveAdjectiveForms(docs, input.adjective ?? '', tenantId),
+    contentWordForms: resolveContentWordForms(docs, input.contentWord ?? '', tenantId),
+  }
+}

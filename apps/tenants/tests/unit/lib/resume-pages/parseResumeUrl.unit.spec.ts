@@ -5,6 +5,7 @@ import { describe, expect, it } from 'vitest'
 import { parseResumeUrl } from '@/lib/resume-pages/parseResumeUrl'
 
 const suffixWords: SuffixWordLists = {
+  resumeWords: ['resume', 'cv', 'curriculum-vitae'],
   adjectives: ['best', 'top', 'professional'],
   builders: ['creator', 'builder', 'maker', 'generator', 'help'],
   contentWords: ['content', 'examples', 'tips'],
@@ -75,6 +76,40 @@ describe('parseResumeUrl', () => {
       })
     })
 
+    it('parses with cv as resume word', () => {
+      const result = parseResumeUrl(
+        '/resumes/tech/engineer-best-cv-creator-content',
+        suffixWords,
+      )
+      expect(result).toEqual({
+        type: 'job-title',
+        industrySlug: 'tech',
+        jobTitleSlug: 'engineer',
+        adjective: 'best',
+        builder: 'creator',
+        content: 'content',
+        contentSeed: 'engineer-best-cv-creator-content',
+        fullSlug: 'tech/engineer-best-cv-creator-content',
+      })
+    })
+
+    it('parses with curriculum-vitae as multi-word resume word', () => {
+      const result = parseResumeUrl(
+        '/resumes/tech/engineer-professional-curriculum-vitae-maker-tips',
+        suffixWords,
+      )
+      expect(result).toEqual({
+        type: 'job-title',
+        industrySlug: 'tech',
+        jobTitleSlug: 'engineer',
+        adjective: 'professional',
+        builder: 'maker',
+        content: 'tips',
+        contentSeed: 'engineer-professional-curriculum-vitae-maker-tips',
+        fullSlug: 'tech/engineer-professional-curriculum-vitae-maker-tips',
+      })
+    })
+
     it('handles job title containing the word "resume" safely', () => {
       // The scan-from-right approach should not be confused by "resume" in the job title
       const result = parseResumeUrl(
@@ -131,8 +166,8 @@ describe('parseResumeUrl', () => {
       expect(result).toBeNull()
     })
 
-    it('returns null when "resume" literal is missing', () => {
-      const result = parseResumeUrl('/resumes/tech/engineer-best-cv-creator-content', suffixWords)
+    it('returns null when no valid resume word is present', () => {
+      const result = parseResumeUrl('/resumes/tech/engineer-best-unknown-creator-content', suffixWords)
       expect(result).toBeNull()
     })
 

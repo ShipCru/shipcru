@@ -24,8 +24,7 @@ import { TenantPageConfigs } from './collections/TenantPageConfigs'
 import { Tenants } from './collections/Tenants'
 import { Users } from './collections/Users'
 import { WordFormSets } from './collections/WordFormSets'
-import { DefaultIndustryTemplate } from './globals/DefaultIndustryTemplate'
-import { DefaultJobTitleTemplate } from './globals/DefaultJobTitleTemplate'
+import { DefaultTemplates } from './globals/DefaultTemplates'
 import { Header } from './globals/Header'
 import { SuffixVariations } from './globals/SuffixVariations'
 import { SUPPORTED_LOCALES } from './locales'
@@ -96,7 +95,7 @@ export default buildConfig({
     Tenants,
     TenantPageConfigs,
   ],
-  globals: [DefaultIndustryTemplate, DefaultJobTitleTemplate, Header, SuffixVariations],
+  globals: [DefaultTemplates, Header, SuffixVariations],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

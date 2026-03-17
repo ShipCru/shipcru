@@ -45,9 +45,11 @@ function extractCanonicalWord(
 }
 
 export interface SuffixWordsData {
+  resumeWords: string[]
   adjectives: string[]
   builders: string[]
   contentWords: string[]
+  canonicalResumeWord: string | null
   canonicalAdjective: string | null
   canonicalBuilder: string | null
   canonicalContentWord: string | null
@@ -56,15 +58,19 @@ export interface SuffixWordsData {
 
 export async function getSuffixWords(payload: Payload): Promise<SuffixWordsData> {
   const global = await payload.findGlobal({ slug: 'suffix-variations', depth: 1 })
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const doc = global as any
 
   return {
-    adjectives: extractWords(global.adjectives, 'adjective'),
-    builders: extractWords(global.builders, 'verb'),
-    contentWords: extractWords(global.contentWords, 'contentWord'),
-    canonicalAdjective: extractCanonicalWord(global.adjectives, 'adjective'),
-    canonicalBuilder: extractCanonicalWord(global.builders, 'verb'),
-    canonicalContentWord: extractCanonicalWord(global.contentWords, 'contentWord'),
-    canonicalStrategy: global.canonicalStrategy ?? 'rel-canonical',
+    resumeWords: extractWords(doc.resumeWords, 'resumeWord'),
+    adjectives: extractWords(doc.adjectives, 'adjective'),
+    builders: extractWords(doc.builders, 'verb'),
+    contentWords: extractWords(doc.contentWords, 'contentWord'),
+    canonicalResumeWord: extractCanonicalWord(doc.resumeWords, 'resumeWord'),
+    canonicalAdjective: extractCanonicalWord(doc.adjectives, 'adjective'),
+    canonicalBuilder: extractCanonicalWord(doc.builders, 'verb'),
+    canonicalContentWord: extractCanonicalWord(doc.contentWords, 'contentWord'),
+    canonicalStrategy: doc.canonicalStrategy ?? 'rel-canonical',
   }
 }
 

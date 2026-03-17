@@ -11,8 +11,7 @@ vi.mock('payload', async (importOriginal) => {
 vi.mock('@payload-config', () => ({ default: {} }))
 
 import { getVariationSets } from '@/collections/ContentVariations/queries/getVariationSets'
-import { getDefaultTemplate as getIndustryTemplate } from '@/globals/DefaultIndustryTemplate/queries/getDefaultTemplate'
-import { getDefaultTemplate as getJobTitleTemplate } from '@/globals/DefaultJobTitleTemplate/queries/getDefaultTemplate'
+import { getDefaultTemplate } from '@/globals/DefaultTemplates/queries/getDefaultTemplate'
 import { getSuffixWords } from '@/globals/SuffixVariations/queries/getSuffixWords'
 
 describe('getSuffixWords', () => {
@@ -60,25 +59,33 @@ describe('getVariationSets', () => {
 })
 
 describe('getDefaultTemplate (industry)', () => {
-  it('loads industry template global', async () => {
-    const mockTemplate = { hero: [{ blockType: 'heroSplitImage' }], sections: [] as never[] }
+  it('loads industry tab from default-templates global', async () => {
+    const mockGlobal = {
+      jobTitle: { hero: [] as never[], sections: [] as never[] },
+      industry: { hero: [{ blockType: 'heroSplitImage' }], sections: [] as never[] },
+      keyword: { hero: [] as never[], sections: [] as never[] },
+    }
     const mockPayload = {
-      findGlobal: async () => mockTemplate,
+      findGlobal: async () => mockGlobal,
     } as any
 
-    const result = await getIndustryTemplate(mockPayload)
-    expect(result).toEqual(mockTemplate)
+    const result = await getDefaultTemplate(mockPayload, 'industry')
+    expect(result).toEqual(mockGlobal.industry)
   })
 })
 
 describe('getDefaultTemplate (job-title)', () => {
-  it('loads job-title template global', async () => {
-    const mockTemplate = { hero: [{ blockType: 'heroSplitImage' }], sections: [] as never[] }
+  it('loads jobTitle tab from default-templates global', async () => {
+    const mockGlobal = {
+      jobTitle: { hero: [{ blockType: 'heroSplitImage' }], sections: [] as never[] },
+      industry: { hero: [] as never[], sections: [] as never[] },
+      keyword: { hero: [] as never[], sections: [] as never[] },
+    }
     const mockPayload = {
-      findGlobal: async () => mockTemplate,
+      findGlobal: async () => mockGlobal,
     } as any
 
-    const result = await getJobTitleTemplate(mockPayload)
-    expect(result).toEqual(mockTemplate)
+    const result = await getDefaultTemplate(mockPayload, 'jobTitle')
+    expect(result).toEqual(mockGlobal.jobTitle)
   })
 })

@@ -48,6 +48,7 @@ export interface VariationInput {
  * Passed to the parser so it can validate suffix segments.
  */
 export interface SuffixWordLists {
+  resumeWords: string[]
   adjectives: string[]
   builders: string[]
   contentWords: string[]

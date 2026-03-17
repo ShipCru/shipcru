@@ -8,6 +8,7 @@ import { MetaImageComponent as MetaImageComponent_a8a977ebc872c5d5ea7ee689724c08
 import { MetaDescriptionComponent as MetaDescriptionComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { PreviewComponent as PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { SlugField as SlugField_2b8867833a34864a02ddf429b0728a40 } from '@payloadcms/next/client'
+import { KeywordCollisionWarning as KeywordCollisionWarning_4691545b5f99a82b66cd80b6130f579a } from '@/collections/Pages/components/KeywordCollisionWarning'
 import { default as default_bbddb283fe90d5c43b9ed7887f973474 } from '../../../components/admin/ContentScoreRowLabel'
 import { ExampleUrls as ExampleUrls_88acdfc11b94c727d7f9bd36ca34f563 } from '../../../components/admin/ExampleUrls'
 import { default as default_a92c5dfb3c2e323ee05fef993ef6e5f5 } from '../../../components/admin/TypeFilterTabs'
@@ -31,6 +32,7 @@ export const importMap = {
   "@payloadcms/plugin-seo/client#MetaDescriptionComponent": MetaDescriptionComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@payloadcms/plugin-seo/client#PreviewComponent": PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@payloadcms/next/client#SlugField": SlugField_2b8867833a34864a02ddf429b0728a40,
+  "@/collections/Pages/components/KeywordCollisionWarning#KeywordCollisionWarning": KeywordCollisionWarning_4691545b5f99a82b66cd80b6130f579a,
   "/components/admin/ContentScoreRowLabel#default": default_bbddb283fe90d5c43b9ed7887f973474,
   "/components/admin/ExampleUrls#ExampleUrls": ExampleUrls_88acdfc11b94c727d7f9bd36ca34f563,
   "/components/admin/TypeFilterTabs#default": default_a92c5dfb3c2e323ee05fef993ef6e5f5,

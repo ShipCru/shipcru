@@ -103,6 +103,16 @@ export const Pages: CollectionConfig = {
       useAsSlug: 'title',
     }),
     {
+      name: 'keywordCollisionWarning',
+      type: 'ui',
+      admin: {
+        position: 'sidebar',
+        components: {
+          Field: '@/collections/Pages/components/KeywordCollisionWarning#KeywordCollisionWarning',
+        },
+      },
+    },
+    {
       name: 'author',
       type: 'relationship',
       relationTo: 'users',

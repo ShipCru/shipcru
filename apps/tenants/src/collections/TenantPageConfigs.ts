@@ -89,6 +89,50 @@ export const TenantPageConfigs: CollectionConfig = {
         description: 'Specific job titles to exclude.',
       },
     },
+    {
+      name: 'keywordLandings',
+      type: 'group',
+      fields: [
+        {
+          name: 'enabled',
+          type: 'checkbox',
+          defaultValue: false,
+          label: 'Enable Keyword Landings',
+        },
+        {
+          name: 'mode',
+          type: 'select',
+          options: [
+            { label: 'All', value: 'all' },
+            { label: 'Include', value: 'include' },
+            { label: 'Exclude', value: 'exclude' },
+          ],
+          defaultValue: 'all',
+          admin: {
+            condition: (_data, siblingData) => siblingData?.enabled === true,
+          },
+        },
+        {
+          name: 'patterns',
+          type: 'array',
+          label: 'URL Patterns',
+          admin: {
+            condition: (_data, siblingData) =>
+              siblingData?.enabled === true &&
+              (siblingData?.mode === 'include' || siblingData?.mode === 'exclude'),
+            description:
+              'Glob patterns using * as wildcard. E.g., "best-*", "*-resume-*", "free-*-templates"',
+          },
+          fields: [
+            {
+              name: 'pattern',
+              type: 'text',
+              required: true,
+            },
+          ],
+        },
+      ],
+    },
   ],
   timestamps: true,
 }

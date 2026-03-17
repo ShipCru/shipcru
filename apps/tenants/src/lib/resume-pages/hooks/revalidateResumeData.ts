@@ -15,7 +15,7 @@ export function createGlobalRevalidationHook(globalSlug: string): GlobalAfterCha
     const tag = generateCacheTag({ type: 'global', slug: globalSlug })
     payload.logger.info(`Revalidating cache tag: ${tag}`)
     revalidateTag(tag)
-    revalidatePath('/resumes', 'layout')
+    revalidatePath('/', 'layout')
   }
 }
 
@@ -28,7 +28,7 @@ export function createCollectionRevalidationHook(
     const tag = generateCacheTag({ type: 'collection', collection: collectionSlug })
     payload.logger.info(`Revalidating cache tag: ${tag}`)
     revalidateTag(tag)
-    revalidatePath('/resumes', 'layout')
+    revalidatePath('/', 'layout')
   }
 }
 
@@ -41,6 +41,6 @@ export function createCollectionDeleteRevalidationHook(
     const tag = generateCacheTag({ type: 'collection', collection: collectionSlug })
     payload.logger.info(`Revalidating cache tag: ${tag}`)
     revalidateTag(tag)
-    revalidatePath('/resumes', 'layout')
+    revalidatePath('/', 'layout')
   }
 }

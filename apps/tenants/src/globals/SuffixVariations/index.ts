@@ -44,6 +44,17 @@ export const SuffixVariations: GlobalConfig = {
   },
   fields: [
     {
+      name: 'resumeWords',
+      type: 'array',
+      labels: { singular: 'Resume Word', plural: 'Resume Words' },
+      fields: weightedWordFormSetFields('resumeWord'),
+      admin: {
+        initCollapsed: true,
+        description:
+          'Resume words used in suffix and keyword generation. E.g., resume, cv, curriculum-vitae.',
+      },
+    },
+    {
       name: 'adjectives',
       type: 'array',
       labels: { singular: 'Adjective', plural: 'Adjectives' },

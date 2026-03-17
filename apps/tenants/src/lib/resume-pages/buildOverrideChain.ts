@@ -1,6 +1,7 @@
 import type { ResolvedTemplateOverride } from './types'
-import { TARGET_TYPE_TO_RELATION } from './types'
 import type { Payload } from 'payload'
+
+import { TARGET_TYPE_TO_RELATION } from './types'
 
 /**
  * Priority order for target types. Index = applied first (less specific).

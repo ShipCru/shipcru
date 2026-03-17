@@ -2,9 +2,10 @@ import type { GlobalBeforeValidateHook } from 'payload'
 
 import { ValidationError } from 'payload'
 
-const WORD_ARRAYS = ['adjectives', 'builders', 'contentWords'] as const
+const WORD_ARRAYS = ['resumeWords', 'adjectives', 'builders', 'contentWords'] as const
 
 const LABELS: Record<string, string> = {
+  resumeWords: 'resume word',
   adjectives: 'adjectives',
   builders: 'builders',
   contentWords: 'content words',

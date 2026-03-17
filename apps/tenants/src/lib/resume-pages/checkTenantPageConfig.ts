@@ -1,28 +1,19 @@
 import type { ParsedResumeUrl } from './types'
 import type { EntityData } from './validateEntity'
-import type { Payload } from 'payload'
+import type { TenantPageConfig } from '@/payload-types'
 
 /**
- * Checks whether the tenant is configured to serve this page.
+ * Checks whether the tenant page config allows serving this page.
  * Returns false if:
- * - No tenant-page-config exists for this tenant
+ * - Config is null (no config for tenant)
  * - Industry is not included (or is excluded) by the config
  * - Job title is not allowed by the jobTitleMode
  */
-export async function checkTenantPageConfig(
-  payload: Payload,
-  tenantId: number | string,
+export function checkTenantPageConfig(
+  cfg: TenantPageConfig | null,
   parsed: ParsedResumeUrl,
   entity: EntityData,
-): Promise<boolean> {
-  const result = await payload.find({
-    collection: 'tenant-page-configs',
-    where: { tenant: { equals: tenantId } },
-    limit: 1,
-    depth: 1,
-  })
-
-  const cfg = result.docs[0]
+): boolean {
   if (!cfg) return false
 
   if (cfg.mode === 'include') {

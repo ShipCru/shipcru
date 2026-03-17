@@ -1,9 +1,4 @@
-import type {
-  SectionConfig,
-  SubstitutionContext,
-  VariationFieldValue,
-  VariationInput,
-} from '@/lib/resume-pages/types'
+import type { SubstitutionContext, VariationInput } from '@/lib/resume-pages/types'
 import type { Metadata } from 'next'
 
 import { notFound, permanentRedirect, redirect } from 'next/navigation'
@@ -11,11 +6,11 @@ import { getPayload } from 'payload'
 import React from 'react'
 import config from '@payload-config'
 
-import { type Block, RenderBlocks, RenderHero } from '@/blocks/RenderBlocks'
+import { RenderBlocks, RenderHero } from '@/blocks/RenderBlocks'
 import { getCachedVariationSets } from '@/collections/ContentVariations/queries/getVariationSets'
+import { getCachedTenantPageConfig } from '@/collections/TenantPageConfigs/queries/getTenantPageConfig'
 import { getCachedWordFormSets } from '@/collections/WordFormSets/queries/getWordFormSets'
-import { getCachedDefaultTemplate as getCachedIndustryTemplate } from '@/globals/DefaultIndustryTemplate/queries/getDefaultTemplate'
-import { getCachedDefaultTemplate as getCachedJobTitleTemplate } from '@/globals/DefaultJobTitleTemplate/queries/getDefaultTemplate'
+import { getCachedDefaultTemplate } from '@/globals/DefaultTemplates/queries/getDefaultTemplate'
 import { getCachedSuffixWords } from '@/globals/SuffixVariations/queries/getSuffixWords'
 import { buildOverrideChain } from '@/lib/resume-pages/buildOverrideChain'
 import { checkTenantPageConfig } from '@/lib/resume-pages/checkTenantPageConfig'
@@ -23,30 +18,28 @@ import { applyOverrides, filterByDataDependencies } from '@/lib/resume-pages/mer
 import { normalizeBlock } from '@/lib/resume-pages/normalizeBlock'
 import { orderSections } from '@/lib/resume-pages/orderSections'
 import { buildJobTitleSuffixPath, parseResumeUrl } from '@/lib/resume-pages/parseResumeUrl'
-import { resolveCanonicalSuffix } from '@/lib/resume-pages/resolveCanonicalSuffix'
-import { resolveVariationField } from '@/lib/resume-pages/resolveVariations'
 import {
-  resolveAdjectiveForms,
-  resolveContentWordForms,
-  resolveResumeWords,
-  resolveVerbForms,
-} from '@/lib/resume-pages/resolveWordForms'
-import { substituteVariables } from '@/lib/resume-pages/substituteVariables'
+  resolveVariationsInSection,
+  sectionToBlock,
+  substituteSection,
+} from '@/lib/resume-pages/renderHelpers'
+import { resolveCanonicalSuffix } from '@/lib/resume-pages/resolveCanonicalSuffix'
+import { resolveAllWordForms } from '@/lib/resume-pages/resolveWordForms'
 import { validateEntity } from '@/lib/resume-pages/validateEntity'
 import { resolveTenantBySlug } from '@/utils/resolveTenant'
 
 export const revalidate = 86400 // 24h
 
-export async function generateStaticParams(): Promise<{ tenant: string; segments: string[] }[]> {
+export async function generateStaticParams(): Promise<{ tenantId: string; segments: string[] }[]> {
   return []
 }
 
 interface PageProps {
-  params: Promise<{ tenant: string; segments: string[] }>
+  params: Promise<{ tenantId: string; segments: string[] }>
 }
 
 export default async function ResumePage({ params }: PageProps) {
-  const { tenant: tenantSlug, segments } = await params
+  const { tenantId: tenantSlug, segments } = await params
   const path = `/resumes/${segments.join('/')}`
 
   console.log(
@@ -89,7 +82,8 @@ export default async function ResumePage({ params }: PageProps) {
     `[ResumePage] entity validated: id=${entity.id} industryName=${entity.industryName} jobTitleName=${entity.jobTitleName || '<none>'} skills=${entity.skills?.length || 0}`,
   )
 
-  const canServe = await checkTenantPageConfig(payload, tenant.id, parsed, entity)
+  const pageConfig = await getCachedTenantPageConfig(tenant.id)
+  const canServe = checkTenantPageConfig(pageConfig, parsed, entity)
   if (!canServe) {
     console.log(
       `[ResumePage] checkTenantPageConfig denied: tenantId=${tenant.id} entityId=${entity.id}`,
@@ -109,7 +103,12 @@ export default async function ResumePage({ params }: PageProps) {
         parsed.content === canonicalSuffix.contentWord
 
       if (!isCanonicalUrl && canonicalSuffix.strategy.startsWith('redirect-')) {
-        const canonicalPath = buildJobTitleSuffixPath(tenantSlug, parsed.industrySlug, parsed.jobTitleSlug!, canonicalSuffix)
+        const canonicalPath = buildJobTitleSuffixPath(
+          tenantSlug,
+          parsed.industrySlug,
+          parsed.jobTitleSlug!,
+          canonicalSuffix,
+        )
         if (canonicalSuffix.strategy === 'redirect-301') {
           permanentRedirect(canonicalPath)
         } else {
@@ -119,11 +118,8 @@ export default async function ResumePage({ params }: PageProps) {
     }
   }
 
-  const getCachedTemplate =
-    parsed.type === 'industry' ? getCachedIndustryTemplate : getCachedJobTitleTemplate
-
   const [defaultTemplate, overrideChain, variationSets, wordFormSets] = await Promise.all([
-    getCachedTemplate(),
+    getCachedDefaultTemplate(parsed.type === 'industry' ? 'industry' : 'jobTitle'),
     buildOverrideChain(payload, {
       entityType: parsed.type,
       entityId: entity.id,
@@ -183,10 +179,16 @@ export default async function ResumePage({ params }: PageProps) {
     industryName: entity.industryName,
     jobTitleName: entity.jobTitleName,
     brandTitle: process.env.NEXT_PUBLIC_BRAND_TITLE || tenant.name,
-    resumeWords: resolveResumeWords(wordFormSets, 'resume', tenant.id),
-    verbForms: resolveVerbForms(wordFormSets, parsed.builder || '', tenant.id),
-    adjectiveForms: resolveAdjectiveForms(wordFormSets, parsed.adjective || '', tenant.id),
-    contentWordForms: resolveContentWordForms(wordFormSets, parsed.content || '', tenant.id),
+    ...resolveAllWordForms(
+      wordFormSets,
+      {
+        resumeWord: 'resume',
+        builder: parsed.builder,
+        adjective: parsed.adjective,
+        contentWord: parsed.content,
+      },
+      tenant.id,
+    ),
     pageTerms: {
       pageTerm: parsed.type === 'job-title' ? entity.jobTitleName || '' : entity.industryName || '',
       iSlug: parsed.industrySlug,
@@ -224,7 +226,7 @@ export default async function ResumePage({ params }: PageProps) {
 // --- SEO Metadata ---
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { tenant: tenantSlug, segments } = await params
+  const { tenantId: tenantSlug, segments } = await params
   console.log(
     `[generateMetadata] start: tenantSlug=${tenantSlug} segments=${JSON.stringify(segments)}`,
   )
@@ -288,81 +290,4 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     robots: entity.meta?.robots === 'noindex' ? { index: false, follow: false } : undefined,
     ...(canonicalUrl ? { alternates: { canonical: canonicalUrl } } : {}),
   }
-}
-
-function sectionToBlock(section: SectionConfig): Block {
-  return { blockType: section.blockType, ...section.fields } as Block
-}
-
-function isVariationFieldValue(value: unknown): value is VariationFieldValue {
-  if (typeof value !== 'object' || value === null || !('mode' in value)) return false
-  const { mode } = value as Record<string, unknown>
-  return mode === 'fixed' || mode === 'variation'
-}
-
-function resolveVariationsInSection(section: SectionConfig, ctx: VariationInput): SectionConfig {
-  return {
-    ...section,
-    fields: resolveFieldValues(section.fields, ctx),
-  }
-}
-
-function resolveFieldValues(
-  fields: Record<string, unknown>,
-  ctx: VariationInput,
-): Record<string, unknown> {
-  const result: Record<string, unknown> = {}
-  for (const [key, value] of Object.entries(fields)) {
-    if (isVariationFieldValue(value)) {
-      result[key] = resolveVariationField(value, ctx)
-    } else if (Array.isArray(value)) {
-      result[key] = value.map((item) =>
-        typeof item === 'object' && item !== null && !Array.isArray(item)
-          ? isVariationFieldValue(item)
-            ? resolveVariationField(item, ctx)
-            : resolveFieldValues(item as Record<string, unknown>, ctx)
-          : item,
-      )
-    } else if (typeof value === 'object' && value !== null) {
-      result[key] = resolveFieldValues(value as Record<string, unknown>, ctx)
-    } else {
-      result[key] = value
-    }
-  }
-  return result
-}
-
-function substituteSection(
-  section: SectionConfig,
-  ctx: Parameters<typeof substituteVariables>[1],
-): SectionConfig {
-  return {
-    ...section,
-    fields: substituteFieldValues(section.fields, ctx),
-  }
-}
-
-function substituteFieldValues(
-  fields: Record<string, unknown>,
-  ctx: Parameters<typeof substituteVariables>[1],
-): Record<string, unknown> {
-  const result: Record<string, unknown> = {}
-  for (const [key, value] of Object.entries(fields)) {
-    if (typeof value === 'string') {
-      result[key] = substituteVariables(value, ctx)
-    } else if (Array.isArray(value)) {
-      result[key] = value.map((item) =>
-        typeof item === 'object' && item !== null
-          ? substituteFieldValues(item as Record<string, unknown>, ctx)
-          : typeof item === 'string'
-            ? substituteVariables(item, ctx)
-            : item,
-      )
-    } else if (typeof value === 'object' && value !== null) {
-      result[key] = substituteFieldValues(value as Record<string, unknown>, ctx)
-    } else {
-      result[key] = value
-    }
-  }
-  return result
 }

@@ -8,9 +8,10 @@ export function buildJobTitleSuffixPath(
   tenantSlug: string,
   industrySlug: string,
   jobTitleSlug: string,
-  suffix: { adjective: string; builder: string; contentWord: string },
+  suffix: { adjective: string; resumeWord?: string; builder: string; contentWord: string },
 ): string {
-  return `/${tenantSlug}/resumes/${industrySlug}/${jobTitleSlug}-${suffix.adjective}-resume-${suffix.builder}-${suffix.contentWord}`
+  const rw = suffix.resumeWord ?? 'resume'
+  return `/${tenantSlug}/resumes/${industrySlug}/${jobTitleSlug}-${suffix.adjective}-${rw}-${suffix.builder}-${suffix.contentWord}`
 }
 
 /**
@@ -51,22 +52,53 @@ export function parseResumeUrl(
     const fullJobSegment = segments[1]
     const parts = fullJobSegment.split('-')
 
-    // Minimum: "{jobTitle}-{adj}-resume-{builder}-{content}" = at least 5 parts
+    // Known resume words from the global config (fall back to ['resume'] for backwards compat)
+    const resumeWords =
+      suffixWords.resumeWords && suffixWords.resumeWords.length > 0
+        ? suffixWords.resumeWords
+        : ['resume']
+
+    // Minimum: "{jobTitle}-{adj}-{resumeWord}-{builder}-{content}" = at least 5 parts
     if (parts.length < 5) return null
 
-    // Scan from right: content, builder, "resume", adjective
+    // Scan from right: content, builder, then find a resume word, then adjective
     const contentWord = parts[parts.length - 1]
     const builderWord = parts[parts.length - 2]
-    const resumeWord = parts[parts.length - 3]
-    const adjective = parts[parts.length - 4]
 
-    if (resumeWord !== 'resume') return null
     if (!suffixWords.contentWords.includes(contentWord)) return null
     if (!suffixWords.builders.includes(builderWord)) return null
+
+    // Try to match a resume word at the position(s) before the builder
+    // Resume words can be multi-word (e.g., "curriculum-vitae" = 2 parts)
+    let matchedResumeWord: string | null = null
+    let resumeWordPartCount = 0
+
+    // Sort resume words longest first to match multi-word entries first
+    const sortedResumeWords = [...resumeWords].sort((a, b) => b.length - a.length)
+
+    for (const rw of sortedResumeWords) {
+      const rwParts = rw.split('-')
+      const startIdx = parts.length - 2 - rwParts.length
+      if (startIdx < 1) continue // Need at least 1 part before for adjective
+
+      const candidate = parts.slice(startIdx, startIdx + rwParts.length).join('-')
+      if (candidate === rw) {
+        matchedResumeWord = rw
+        resumeWordPartCount = rwParts.length
+        break
+      }
+    }
+
+    if (!matchedResumeWord) return null
+
+    // Adjective is the part just before the resume word
+    const adjIdx = parts.length - 2 - resumeWordPartCount - 1
+    if (adjIdx < 0) return null
+    const adjective = parts[adjIdx]
     if (!suffixWords.adjectives.includes(adjective)) return null
 
     // Everything before the adjective is the job title slug
-    const jobTitleSlug = parts.slice(0, parts.length - 4).join('-')
+    const jobTitleSlug = parts.slice(0, adjIdx).join('-')
     if (!jobTitleSlug) return null
 
     return {

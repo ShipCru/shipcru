@@ -1300,14 +1300,12 @@ export interface Config {
   };
   fallbackLocale: ('false' | 'none' | 'null') | false | null | ('en' | 'es') | ('en' | 'es')[];
   globals: {
-    'default-industry-template': DefaultIndustryTemplate;
-    'default-job-title-template': DefaultJobTitleTemplate;
+    'default-templates': DefaultTemplate;
     header: Header;
     'suffix-variations': SuffixVariation;
   };
   globalsSelect: {
-    'default-industry-template': DefaultIndustryTemplateSelect<false> | DefaultIndustryTemplateSelect<true>;
-    'default-job-title-template': DefaultJobTitleTemplateSelect<false> | DefaultJobTitleTemplateSelect<true>;
+    'default-templates': DefaultTemplatesSelect<false> | DefaultTemplatesSelect<true>;
     header: HeaderSelect<false> | HeaderSelect<true>;
     'suffix-variations': SuffixVariationsSelect<false> | SuffixVariationsSelect<true>;
   };
@@ -2170,6 +2168,19 @@ export interface TenantPageConfig {
    * Specific job titles to exclude.
    */
   excludedJobTitles?: (number | JobTitle)[] | null;
+  keywordLandings?: {
+    enabled?: boolean | null;
+    mode?: ('all' | 'include' | 'exclude') | null;
+    /**
+     * Glob patterns using * as wildcard. E.g., "best-*", "*-resume-*", "free-*-templates"
+     */
+    patterns?:
+      | {
+          pattern: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -2979,6 +2990,18 @@ export interface TenantPageConfigsSelect<T extends boolean = true> {
   jobTitleMode?: T;
   jobTitles?: T;
   excludedJobTitles?: T;
+  keywordLandings?:
+    | T
+    | {
+        enabled?: T;
+        mode?: T;
+        patterns?:
+          | T
+          | {
+              pattern?: T;
+              id?: T;
+            };
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -3055,23 +3078,22 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "default-industry-template".
+ * via the `definition` "default-templates".
  */
-export interface DefaultIndustryTemplate {
+export interface DefaultTemplate {
   id: number;
-  hero?: HeroSplitBlock[] | null;
-  sections?: (BlogBlock | TestimonialsBlock | MetricsBlock | CTABlock)[] | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "default-job-title-template".
- */
-export interface DefaultJobTitleTemplate {
-  id: number;
-  hero?: HeroSplitBlock[] | null;
-  sections?: (BlogBlock | TestimonialsBlock | MetricsBlock | CTABlock)[] | null;
+  jobTitle?: {
+    hero?: HeroSplitBlock[] | null;
+    sections?: (BlogBlock | TestimonialsBlock | MetricsBlock | CTABlock)[] | null;
+  };
+  industry?: {
+    hero?: HeroSplitBlock[] | null;
+    sections?: (BlogBlock | TestimonialsBlock | MetricsBlock | CTABlock)[] | null;
+  };
+  keyword?: {
+    hero?: HeroSplitBlock[] | null;
+    sections?: (BlogBlock | TestimonialsBlock | MetricsBlock | CTABlock)[] | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -3105,6 +3127,20 @@ export interface Header {
  */
 export interface SuffixVariation {
   id: number;
+  /**
+   * Resume words used in suffix and keyword generation. E.g., resume, cv, curriculum-vitae.
+   */
+  resumeWords?:
+    | {
+        wordFormSet: number | WordFormSet;
+        weight?: number | null;
+        /**
+         * Use this word in the canonical suffix URL
+         */
+        isCanonical?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
   /**
    * Adjective words used in suffix generation. Pattern: {adjective}-resume-{builder}-{content}
    */
@@ -3160,43 +3196,59 @@ export interface SuffixVariation {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "default-industry-template_select".
+ * via the `definition` "default-templates_select".
  */
-export interface DefaultIndustryTemplateSelect<T extends boolean = true> {
-  hero?:
+export interface DefaultTemplatesSelect<T extends boolean = true> {
+  jobTitle?:
     | T
     | {
-        heroSplit?: T | HeroSplitBlockSelect<T>;
+        hero?:
+          | T
+          | {
+              heroSplit?: T | HeroSplitBlockSelect<T>;
+            };
+        sections?:
+          | T
+          | {
+              blog?: T | BlogBlockSelect<T>;
+              testimonials?: T | TestimonialsBlockSelect<T>;
+              metrics?: T | MetricsBlockSelect<T>;
+              cta?: T | CTABlockSelect<T>;
+            };
       };
-  sections?:
+  industry?:
     | T
     | {
-        blog?: T | BlogBlockSelect<T>;
-        testimonials?: T | TestimonialsBlockSelect<T>;
-        metrics?: T | MetricsBlockSelect<T>;
-        cta?: T | CTABlockSelect<T>;
+        hero?:
+          | T
+          | {
+              heroSplit?: T | HeroSplitBlockSelect<T>;
+            };
+        sections?:
+          | T
+          | {
+              blog?: T | BlogBlockSelect<T>;
+              testimonials?: T | TestimonialsBlockSelect<T>;
+              metrics?: T | MetricsBlockSelect<T>;
+              cta?: T | CTABlockSelect<T>;
+            };
       };
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "default-job-title-template_select".
- */
-export interface DefaultJobTitleTemplateSelect<T extends boolean = true> {
-  hero?:
+  keyword?:
     | T
     | {
-        heroSplit?: T | HeroSplitBlockSelect<T>;
-      };
-  sections?:
-    | T
-    | {
-        blog?: T | BlogBlockSelect<T>;
-        testimonials?: T | TestimonialsBlockSelect<T>;
-        metrics?: T | MetricsBlockSelect<T>;
-        cta?: T | CTABlockSelect<T>;
+        hero?:
+          | T
+          | {
+              heroSplit?: T | HeroSplitBlockSelect<T>;
+            };
+        sections?:
+          | T
+          | {
+              blog?: T | BlogBlockSelect<T>;
+              testimonials?: T | TestimonialsBlockSelect<T>;
+              metrics?: T | MetricsBlockSelect<T>;
+              cta?: T | CTABlockSelect<T>;
+            };
       };
   updatedAt?: T;
   createdAt?: T;
@@ -3231,6 +3283,14 @@ export interface HeaderSelect<T extends boolean = true> {
  * via the `definition` "suffix-variations_select".
  */
 export interface SuffixVariationsSelect<T extends boolean = true> {
+  resumeWords?:
+    | T
+    | {
+        wordFormSet?: T;
+        weight?: T;
+        isCanonical?: T;
+        id?: T;
+      };
   adjectives?:
     | T
     | {

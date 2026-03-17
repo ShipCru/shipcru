@@ -1,5 +1,6 @@
 import type { ParsedResumeUrl } from '@/lib/resume-pages/types'
 import type { EntityData } from '@/lib/resume-pages/validateEntity'
+import type { TenantPageConfig } from '@/payload-types'
 
 import { describe, expect, it } from 'vitest'
 
@@ -30,93 +31,94 @@ const jobTitleParsed: ParsedResumeUrl = {
   fullSlug: 'advertising/account-manager-best-resume-creator-content',
 }
 
+function makeConfig(overrides: Partial<TenantPageConfig>): TenantPageConfig {
+  return {
+    id: 1,
+    mode: 'all',
+    jobTitleMode: 'all-in-industries',
+    updatedAt: '',
+    createdAt: '',
+    ...overrides,
+  } as TenantPageConfig
+}
+
 describe('checkTenantPageConfig', () => {
-  it('returns false when no config exists for tenant', async () => {
-    const mockPayload = {
-      find: async () => ({ docs: [] as never[] }),
-    } as any
-
-    const result = await checkTenantPageConfig(mockPayload, 1, industryParsed, baseEntity)
+  it('returns false when no config exists for tenant', () => {
+    const result = checkTenantPageConfig(null, industryParsed, baseEntity)
     expect(result).toBe(false)
   })
 
-  it('returns true when mode is "all"', async () => {
-    const config = { mode: 'all', jobTitleMode: 'all-in-industries' }
-    const mockPayload = {
-      find: async () => ({ docs: [config] }),
-    } as any
-
-    const result = await checkTenantPageConfig(mockPayload, 1, industryParsed, baseEntity)
+  it('returns true when mode is "all"', () => {
+    const result = checkTenantPageConfig(makeConfig({ mode: 'all' }), industryParsed, baseEntity)
     expect(result).toBe(true)
   })
 
-  it('returns true when mode is "include" and industry is included', async () => {
-    const config = {
+  it('returns true when mode is "include" and industry is included', () => {
+    const cfg = makeConfig({
       mode: 'include',
-      industries: [{ id: 1 }],
-      jobTitleMode: 'all-in-industries',
-    }
-    const mockPayload = {
-      find: async () => ({ docs: [config] }),
-    } as any
-
-    const result = await checkTenantPageConfig(mockPayload, 1, industryParsed, baseEntity)
+      industries: [
+        { id: 1 } as TenantPageConfig['industries'] extends (infer T)[] | null | undefined
+          ? T
+          : never,
+      ],
+    })
+    const result = checkTenantPageConfig(cfg, industryParsed, baseEntity)
     expect(result).toBe(true)
   })
 
-  it('returns false when mode is "include" and industry is not included', async () => {
-    const config = {
+  it('returns false when mode is "include" and industry is not included', () => {
+    const cfg = makeConfig({
       mode: 'include',
-      industries: [{ id: 999 }],
-      jobTitleMode: 'all-in-industries',
-    }
-    const mockPayload = {
-      find: async () => ({ docs: [config] }),
-    } as any
-
-    const result = await checkTenantPageConfig(mockPayload, 1, industryParsed, baseEntity)
+      industries: [999],
+    })
+    const result = checkTenantPageConfig(cfg, industryParsed, baseEntity)
     expect(result).toBe(false)
   })
 
-  it('returns false when mode is "exclude" and industry is excluded', async () => {
-    const config = {
+  it('returns false when mode is "exclude" and industry is excluded', () => {
+    const cfg = makeConfig({
       mode: 'exclude',
-      industries: [{ id: 1 }],
-      jobTitleMode: 'all-in-industries',
-    }
-    const mockPayload = {
-      find: async () => ({ docs: [config] }),
-    } as any
-
-    const result = await checkTenantPageConfig(mockPayload, 1, industryParsed, baseEntity)
+      industries: [
+        { id: 1 } as TenantPageConfig['industries'] extends (infer T)[] | null | undefined
+          ? T
+          : never,
+      ],
+    })
+    const result = checkTenantPageConfig(cfg, industryParsed, baseEntity)
     expect(result).toBe(false)
   })
 
-  it('returns false when jobTitleMode is "specific" and job title not listed', async () => {
-    const config = {
+  it('returns false when jobTitleMode is "specific" and job title not listed', () => {
+    const cfg = makeConfig({
       mode: 'all',
       jobTitleMode: 'specific',
-      jobTitles: [{ slug: 'other-title' }],
-    }
-    const mockPayload = {
-      find: async () => ({ docs: [config] }),
-    } as any
-
-    const result = await checkTenantPageConfig(mockPayload, 1, jobTitleParsed, baseEntity)
+      jobTitles: [
+        { slug: 'other-title' } as TenantPageConfig['jobTitles'] extends
+          | (infer T)[]
+          | null
+          | undefined
+          ? T
+          : never,
+      ],
+    })
+    const result = checkTenantPageConfig(cfg, jobTitleParsed, baseEntity)
     expect(result).toBe(false)
   })
 
-  it('returns false when jobTitleMode is "exclude-specific" and job title is excluded', async () => {
-    const config = {
+  it('returns false when jobTitleMode is "exclude-specific" and job title is excluded', () => {
+    const cfg = makeConfig({
       mode: 'all',
       jobTitleMode: 'exclude-specific',
-      excludedJobTitles: [{ slug: 'account-manager' }],
-    }
-    const mockPayload = {
-      find: async () => ({ docs: [config] }),
-    } as any
-
-    const result = await checkTenantPageConfig(mockPayload, 1, jobTitleParsed, baseEntity)
+      excludedJobTitles: [
+        { slug: 'account-manager' } as TenantPageConfig['excludedJobTitles'] extends
+          | (infer T)[]
+          | null
+          | undefined
+          ? T
+          : never,
+      ],
+    })
+    const result = checkTenantPageConfig(cfg, jobTitleParsed, baseEntity)
     expect(result).toBe(false)
   })
 })
