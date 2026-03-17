@@ -1245,6 +1245,7 @@ export type SupportedTimezones =
 export interface Config {
   auth: {
     users: UserAuthOperations;
+    'payload-mcp-api-keys': PayloadMcpApiKeyAuthOperations;
   };
   blocks: {};
   collections: {
@@ -1261,6 +1262,7 @@ export interface Config {
     'template-overrides': TemplateOverride;
     tenants: Tenant;
     'tenant-page-configs': TenantPageConfig;
+    'payload-mcp-api-keys': PayloadMcpApiKey;
     'payload-kv': PayloadKv;
     'payload-jobs': PayloadJob;
     'payload-locked-documents': PayloadLockedDocument;
@@ -1289,6 +1291,7 @@ export interface Config {
     'template-overrides': TemplateOverridesSelect<false> | TemplateOverridesSelect<true>;
     tenants: TenantsSelect<false> | TenantsSelect<true>;
     'tenant-page-configs': TenantPageConfigsSelect<false> | TenantPageConfigsSelect<true>;
+    'payload-mcp-api-keys': PayloadMcpApiKeysSelect<false> | PayloadMcpApiKeysSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -1310,7 +1313,7 @@ export interface Config {
     'suffix-variations': SuffixVariationsSelect<false> | SuffixVariationsSelect<true>;
   };
   locale: 'en' | 'es';
-  user: User;
+  user: User | PayloadMcpApiKey;
   jobs: {
     tasks: {
       schedulePublish: TaskSchedulePublish;
@@ -1323,6 +1326,24 @@ export interface Config {
   };
 }
 export interface UserAuthOperations {
+  forgotPassword: {
+    email: string;
+    password: string;
+  };
+  login: {
+    email: string;
+    password: string;
+  };
+  registerFirstUser: {
+    email: string;
+    password: string;
+  };
+  unlock: {
+    email: string;
+    password: string;
+  };
+}
+export interface PayloadMcpApiKeyAuthOperations {
   forgotPassword: {
     email: string;
     password: string;
@@ -2185,6 +2206,249 @@ export interface TenantPageConfig {
   createdAt: string;
 }
 /**
+ * API keys control which collections, resources, tools, and prompts MCP clients can access
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-mcp-api-keys".
+ */
+export interface PayloadMcpApiKey {
+  id: number;
+  /**
+   * The user that the API key is associated with.
+   */
+  user: number | User;
+  /**
+   * A useful label for the API key.
+   */
+  label?: string | null;
+  /**
+   * The purpose of the API key.
+   */
+  description?: string | null;
+  contentVariations?: {
+    /**
+     * Allow clients to find content-variations.
+     */
+    find?: boolean | null;
+    /**
+     * Allow clients to create content-variations.
+     */
+    create?: boolean | null;
+    /**
+     * Allow clients to update content-variations.
+     */
+    update?: boolean | null;
+    /**
+     * Allow clients to delete content-variations.
+     */
+    delete?: boolean | null;
+  };
+  templateOverrides?: {
+    /**
+     * Allow clients to find template-overrides.
+     */
+    find?: boolean | null;
+    /**
+     * Allow clients to create template-overrides.
+     */
+    create?: boolean | null;
+    /**
+     * Allow clients to update template-overrides.
+     */
+    update?: boolean | null;
+    /**
+     * Allow clients to delete template-overrides.
+     */
+    delete?: boolean | null;
+  };
+  resumeContent?: {
+    /**
+     * Allow clients to find resume-content.
+     */
+    find?: boolean | null;
+    /**
+     * Allow clients to create resume-content.
+     */
+    create?: boolean | null;
+    /**
+     * Allow clients to update resume-content.
+     */
+    update?: boolean | null;
+    /**
+     * Allow clients to delete resume-content.
+     */
+    delete?: boolean | null;
+  };
+  wordFormSets?: {
+    /**
+     * Allow clients to find word-form-sets.
+     */
+    find?: boolean | null;
+    /**
+     * Allow clients to create word-form-sets.
+     */
+    create?: boolean | null;
+    /**
+     * Allow clients to update word-form-sets.
+     */
+    update?: boolean | null;
+    /**
+     * Allow clients to delete word-form-sets.
+     */
+    delete?: boolean | null;
+  };
+  industries?: {
+    /**
+     * Allow clients to find industries.
+     */
+    find?: boolean | null;
+    /**
+     * Allow clients to create industries.
+     */
+    create?: boolean | null;
+    /**
+     * Allow clients to update industries.
+     */
+    update?: boolean | null;
+    /**
+     * Allow clients to delete industries.
+     */
+    delete?: boolean | null;
+  };
+  industryCategories?: {
+    /**
+     * Allow clients to find industry-categories.
+     */
+    find?: boolean | null;
+    /**
+     * Allow clients to create industry-categories.
+     */
+    create?: boolean | null;
+    /**
+     * Allow clients to update industry-categories.
+     */
+    update?: boolean | null;
+    /**
+     * Allow clients to delete industry-categories.
+     */
+    delete?: boolean | null;
+  };
+  jobTitles?: {
+    /**
+     * Allow clients to find job-titles.
+     */
+    find?: boolean | null;
+    /**
+     * Allow clients to create job-titles.
+     */
+    create?: boolean | null;
+    /**
+     * Allow clients to update job-titles.
+     */
+    update?: boolean | null;
+    /**
+     * Allow clients to delete job-titles.
+     */
+    delete?: boolean | null;
+  };
+  sources?: {
+    /**
+     * Allow clients to find sources.
+     */
+    find?: boolean | null;
+    /**
+     * Allow clients to create sources.
+     */
+    create?: boolean | null;
+    /**
+     * Allow clients to update sources.
+     */
+    update?: boolean | null;
+    /**
+     * Allow clients to delete sources.
+     */
+    delete?: boolean | null;
+  };
+  pages?: {
+    /**
+     * Allow clients to find pages.
+     */
+    find?: boolean | null;
+    /**
+     * Allow clients to create pages.
+     */
+    create?: boolean | null;
+    /**
+     * Allow clients to update pages.
+     */
+    update?: boolean | null;
+    /**
+     * Allow clients to delete pages.
+     */
+    delete?: boolean | null;
+  };
+  tenantPageConfigs?: {
+    /**
+     * Allow clients to find tenant-page-configs.
+     */
+    find?: boolean | null;
+    /**
+     * Allow clients to create tenant-page-configs.
+     */
+    create?: boolean | null;
+    /**
+     * Allow clients to update tenant-page-configs.
+     */
+    update?: boolean | null;
+    /**
+     * Allow clients to delete tenant-page-configs.
+     */
+    delete?: boolean | null;
+  };
+  tenants?: {
+    /**
+     * Allow clients to find tenants.
+     */
+    find?: boolean | null;
+  };
+  defaultTemplates?: {
+    /**
+     * Allow clients to find default-templates global.
+     */
+    find?: boolean | null;
+    /**
+     * Allow clients to update default-templates global.
+     */
+    update?: boolean | null;
+  };
+  suffixVariations?: {
+    /**
+     * Allow clients to find suffix-variations global.
+     */
+    find?: boolean | null;
+    /**
+     * Allow clients to update suffix-variations global.
+     */
+    update?: boolean | null;
+  };
+  header?: {
+    /**
+     * Allow clients to find header global.
+     */
+    find?: boolean | null;
+    /**
+     * Allow clients to update header global.
+     */
+    update?: boolean | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+  enableAPIKey?: boolean | null;
+  apiKey?: string | null;
+  apiKeyIndex?: string | null;
+  collection: 'payload-mcp-api-keys';
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -2351,12 +2615,21 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'tenant-page-configs';
         value: number | TenantPageConfig;
+      } | null)
+    | ({
+        relationTo: 'payload-mcp-api-keys';
+        value: number | PayloadMcpApiKey;
       } | null);
   globalSlug?: string | null;
-  user: {
-    relationTo: 'users';
-    value: number | User;
-  };
+  user:
+    | {
+        relationTo: 'users';
+        value: number | User;
+      }
+    | {
+        relationTo: 'payload-mcp-api-keys';
+        value: number | PayloadMcpApiKey;
+      };
   updatedAt: string;
   createdAt: string;
 }
@@ -2366,10 +2639,15 @@ export interface PayloadLockedDocument {
  */
 export interface PayloadPreference {
   id: number;
-  user: {
-    relationTo: 'users';
-    value: number | User;
-  };
+  user:
+    | {
+        relationTo: 'users';
+        value: number | User;
+      }
+    | {
+        relationTo: 'payload-mcp-api-keys';
+        value: number | PayloadMcpApiKey;
+      };
   key?: string | null;
   value?:
     | {
@@ -3004,6 +3282,123 @@ export interface TenantPageConfigsSelect<T extends boolean = true> {
       };
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-mcp-api-keys_select".
+ */
+export interface PayloadMcpApiKeysSelect<T extends boolean = true> {
+  user?: T;
+  label?: T;
+  description?: T;
+  contentVariations?:
+    | T
+    | {
+        find?: T;
+        create?: T;
+        update?: T;
+        delete?: T;
+      };
+  templateOverrides?:
+    | T
+    | {
+        find?: T;
+        create?: T;
+        update?: T;
+        delete?: T;
+      };
+  resumeContent?:
+    | T
+    | {
+        find?: T;
+        create?: T;
+        update?: T;
+        delete?: T;
+      };
+  wordFormSets?:
+    | T
+    | {
+        find?: T;
+        create?: T;
+        update?: T;
+        delete?: T;
+      };
+  industries?:
+    | T
+    | {
+        find?: T;
+        create?: T;
+        update?: T;
+        delete?: T;
+      };
+  industryCategories?:
+    | T
+    | {
+        find?: T;
+        create?: T;
+        update?: T;
+        delete?: T;
+      };
+  jobTitles?:
+    | T
+    | {
+        find?: T;
+        create?: T;
+        update?: T;
+        delete?: T;
+      };
+  sources?:
+    | T
+    | {
+        find?: T;
+        create?: T;
+        update?: T;
+        delete?: T;
+      };
+  pages?:
+    | T
+    | {
+        find?: T;
+        create?: T;
+        update?: T;
+        delete?: T;
+      };
+  tenantPageConfigs?:
+    | T
+    | {
+        find?: T;
+        create?: T;
+        update?: T;
+        delete?: T;
+      };
+  tenants?:
+    | T
+    | {
+        find?: T;
+      };
+  defaultTemplates?:
+    | T
+    | {
+        find?: T;
+        update?: T;
+      };
+  suffixVariations?:
+    | T
+    | {
+        find?: T;
+        update?: T;
+      };
+  header?:
+    | T
+    | {
+        find?: T;
+        update?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  enableAPIKey?: T;
+  apiKey?: T;
+  apiKeyIndex?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

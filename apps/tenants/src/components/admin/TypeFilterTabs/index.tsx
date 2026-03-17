@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
-import { RESUME_CONTENT_TYPES } from '@/collections/ResumeContent'
+import { RESUME_CONTENT_TYPES } from '@/collections/ResumeContent/constants'
 
 const ALL_TAB = { label: 'All', value: '' } as const
 const TABS = [

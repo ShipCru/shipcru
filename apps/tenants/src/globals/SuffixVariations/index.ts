@@ -52,6 +52,9 @@ export const SuffixVariations: GlobalConfig = {
         initCollapsed: true,
         description:
           'Resume words used in suffix and keyword generation. E.g., resume, cv, curriculum-vitae.',
+        components: {
+          RowLabel: '@/components/admin/SuffixVariationRowLabel',
+        },
       },
     },
     {
@@ -62,6 +65,9 @@ export const SuffixVariations: GlobalConfig = {
       admin: {
         description:
           'Adjective words used in suffix generation. Pattern: {adjective}-resume-{builder}-{content}',
+        components: {
+          RowLabel: '@/components/admin/SuffixVariationRowLabel',
+        },
       },
     },
     {
@@ -71,6 +77,9 @@ export const SuffixVariations: GlobalConfig = {
       fields: weightedWordFormSetFields('verb'),
       admin: {
         description: 'Builder words used in suffix generation.',
+        components: {
+          RowLabel: '@/components/admin/SuffixVariationRowLabel',
+        },
       },
     },
     {
@@ -80,6 +89,9 @@ export const SuffixVariations: GlobalConfig = {
       fields: weightedWordFormSetFields('contentWord'),
       admin: {
         description: 'Content words used in suffix generation.',
+        components: {
+          RowLabel: '@/components/admin/SuffixVariationRowLabel',
+        },
       },
     },
     {

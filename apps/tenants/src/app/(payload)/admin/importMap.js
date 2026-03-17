@@ -16,6 +16,7 @@ import { WordFormSetsListActions as WordFormSetsListActions_22d5a53eab36571250c2
 import { SectionOverrideRowLabel as SectionOverrideRowLabel_a65b2ee139f4c7668f8e6e1e6bfe0c74 } from '@/components/admin/SectionOverrideRowLabel'
 import { WatchTenantCollection as WatchTenantCollection_1d0591e3cf4f332c83a86da13a0de59a } from '@payloadcms/plugin-multi-tenant/client'
 import { default as default_17c6ef4bfe47bfa29d923fb5718170b7 } from '@/globals/Header/RowLabel'
+import { default as default_eb9f0801d65a2b66bac35d04f88fd707 } from '@/components/admin/SuffixVariationRowLabel'
 import { TenantSelector as TenantSelector_d6d5f193a167989e2ee7d14202901e62 } from '@payloadcms/plugin-multi-tenant/rsc'
 import { R2ClientUploadHandler as R2ClientUploadHandler_85cc02ed84006fcc91d3aff39dda669d } from '@payloadcms/storage-r2/client'
 import { TenantSelectionProvider as TenantSelectionProvider_d6d5f193a167989e2ee7d14202901e62 } from '@payloadcms/plugin-multi-tenant/rsc'
@@ -40,6 +41,7 @@ export const importMap = {
   "@/components/admin/SectionOverrideRowLabel#SectionOverrideRowLabel": SectionOverrideRowLabel_a65b2ee139f4c7668f8e6e1e6bfe0c74,
   "@payloadcms/plugin-multi-tenant/client#WatchTenantCollection": WatchTenantCollection_1d0591e3cf4f332c83a86da13a0de59a,
   "@/globals/Header/RowLabel#default": default_17c6ef4bfe47bfa29d923fb5718170b7,
+  "@/components/admin/SuffixVariationRowLabel#default": default_eb9f0801d65a2b66bac35d04f88fd707,
   "@payloadcms/plugin-multi-tenant/rsc#TenantSelector": TenantSelector_d6d5f193a167989e2ee7d14202901e62,
   "@payloadcms/storage-r2/client#R2ClientUploadHandler": R2ClientUploadHandler_85cc02ed84006fcc91d3aff39dda669d,
   "@payloadcms/plugin-multi-tenant/rsc#TenantSelectionProvider": TenantSelectionProvider_d6d5f193a167989e2ee7d14202901e62,

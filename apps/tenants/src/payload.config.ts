@@ -6,8 +6,9 @@ import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import { GetPlatformProxyOptions } from 'wrangler'
 import { CloudflareContext, getCloudflareContext } from '@opennextjs/cloudflare'
-import { sqliteD1Adapter } from '@payloadcms/db-d1-sqlite'
+import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { mcpPlugin } from '@payloadcms/plugin-mcp'
 import { r2Storage } from '@payloadcms/storage-r2'
 
 import { isSuperAdmin } from './access/isSuperAdmin'
@@ -101,7 +102,10 @@ export default buildConfig({
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
-  db: sqliteD1Adapter({ binding: cloudflare.env.D1, push: pushEnabled }),
+  db: postgresAdapter({
+    pool: { connectionString: process.env.DATABASE_URL || '' },
+    push: pushEnabled,
+  }),
   logger: isProduction ? cloudflareLogger : undefined,
   localization: {
     locales: SUPPORTED_LOCALES.map((l) => ({ code: l.value, label: l.label })),
@@ -135,6 +139,26 @@ export default buildConfig({
     r2Storage({
       bucket: cloudflare.env.R2,
       collections: { media: true },
+    }),
+    mcpPlugin({
+      collections: {
+        'content-variations': { enabled: true },
+        'template-overrides': { enabled: true },
+        'resume-content': { enabled: true },
+        'word-form-sets': { enabled: true },
+        industries: { enabled: true },
+        'industry-categories': { enabled: true },
+        'job-titles': { enabled: true },
+        sources: { enabled: true },
+        pages: { enabled: true },
+        'tenant-page-configs': { enabled: true },
+        tenants: { enabled: { find: true, create: false, update: false, delete: false } },
+      },
+      globals: {
+        'default-templates': { enabled: true },
+        'suffix-variations': { enabled: true },
+        header: { enabled: true },
+      },
     }),
     pluginMultiTenant,
     pluginNestedDocs,

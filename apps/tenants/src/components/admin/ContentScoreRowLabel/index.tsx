@@ -2,7 +2,7 @@
 
 import { useRowLabel } from '@payloadcms/ui'
 
-export const ContentScoreRowLabel: React.FC = () => {
+const ContentScoreRowLabel: React.FC = () => {
   const { data } = useRowLabel<{
     content?: { name?: string } | string | number
     experienceScore?: number
@@ -23,3 +23,5 @@ export const ContentScoreRowLabel: React.FC = () => {
     </span>
   )
 }
+
+export default ContentScoreRowLabel

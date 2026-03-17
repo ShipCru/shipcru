@@ -3,14 +3,9 @@ import { type CollectionConfig, slugField } from 'payload'
 import { superAdminCrud } from '@/access/superAdminCrud'
 import { originFields } from '@/fields/origin'
 
-export const RESUME_CONTENT_TYPES = [
-  { label: 'Skill', value: 'skill' },
-  { label: 'Experience', value: 'experience' },
-  { label: 'Summary', value: 'summary' },
-  { label: 'Accomplishment', value: 'accomplishment' },
-  { label: 'Affiliation', value: 'affiliation' },
-  { label: 'Certification', value: 'certification' },
-] as const
+import { RESUME_CONTENT_TYPES } from './constants'
+
+export { RESUME_CONTENT_TYPES }
 
 export const ResumeContent: CollectionConfig = {
   slug: 'resume-content',
