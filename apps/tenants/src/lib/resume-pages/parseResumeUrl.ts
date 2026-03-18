@@ -8,10 +8,9 @@ export function buildJobTitleSuffixPath(
   tenantSlug: string,
   industrySlug: string,
   jobTitleSlug: string,
-  suffix: { adjective: string; resumeWord?: string; builder: string; contentWord: string },
+  suffix: { adjective: string; resumeWord: string; builder: string; contentWord: string },
 ): string {
-  const rw = suffix.resumeWord ?? 'resume'
-  return `/${tenantSlug}/resumes/${industrySlug}/${jobTitleSlug}-${suffix.adjective}-${rw}-${suffix.builder}-${suffix.contentWord}`
+  return `/${tenantSlug}/resumes/${industrySlug}/${jobTitleSlug}-${suffix.adjective}-${suffix.resumeWord}-${suffix.builder}-${suffix.contentWord}`
 }
 
 /**

@@ -1,8 +1,7 @@
-import type { SectionConfig, SubstitutionContext, VariationInput } from '@/lib/resume-pages/types'
+import type { SectionConfig, VariationInput } from '@/lib/resume-pages/types'
 import type { Page } from '@/payload-types'
 import type { ResolvedTenant } from '@/utils/resolveTenant'
 import type { Metadata } from 'next'
-import type { Payload } from 'payload'
 
 import { notFound } from 'next/navigation'
 import { getPayload } from 'payload'
@@ -19,13 +18,9 @@ import { getCachedSuffixWords } from '@/globals/SuffixVariations/queries/getSuff
 import { checkKeywordAccess } from '@/lib/keyword-landings/checkKeywordAccess'
 import { parseKeywordSlug } from '@/lib/keyword-landings/parseKeywordSlug'
 import { normalizeBlock } from '@/lib/resume-pages/normalizeBlock'
-import { orderSections } from '@/lib/resume-pages/orderSections'
-import {
-  resolveVariationsInSection,
-  sectionToBlock,
-  substituteSection,
-} from '@/lib/resume-pages/renderHelpers'
-import { resolveAllWordForms } from '@/lib/resume-pages/resolveWordForms'
+import { buildSubstitutionContext } from '@/lib/shared/buildSubstitutionContext'
+import { RenderedPage } from '@/lib/shared/RenderedPage'
+import { renderTemplate } from '@/lib/shared/renderTemplate'
 import { resolveTenantBySlug } from '@/utils/resolveTenant'
 
 export const revalidate = 86400
@@ -77,6 +72,14 @@ async function renderKeywordLanding(tenant: ResolvedTenant, keywordSlug: string)
   const parsed = parseKeywordSlug(keywordSlug, pools)
   if (!parsed) return notFound()
 
+  // Fill missing parts from canonical suffixes for template rendering
+  const resolvedParsed = {
+    adjective: parsed.adjective ?? pools.canonicalAdjective,
+    resumeWord: parsed.resumeWord,
+    builder: parsed.builder ?? pools.canonicalBuilder,
+    contentWord: parsed.contentWord ?? pools.canonicalContentWord,
+  }
+
   const pageConfig = await getCachedTenantPageConfig(tenant.id)
   if (!pageConfig) return notFound()
 
@@ -96,21 +99,16 @@ async function renderKeywordLanding(tenant: ResolvedTenant, keywordSlug: string)
 
   // Normalize template blocks
   const heroBlock = templateData.hero?.[0] ? normalizeBlock(templateData.hero[0]) : null
-  let sections: SectionConfig[] = (templateData.sections ?? []).map(normalizeBlock)
+  const sections: SectionConfig[] = (templateData.sections ?? []).map(normalizeBlock)
 
-  // Resolve word forms
-  const { resumeWords, verbForms, adjectiveForms, contentWordForms } = resolveAllWordForms(
+  const subCtx = buildSubstitutionContext({
+    kind: 'keyword',
+    tenant,
+    parsed: resolvedParsed,
     wordFormSets,
-    {
-      resumeWord: parsed.resumeWord,
-      builder: parsed.builder,
-      adjective: parsed.adjective,
-      contentWord: parsed.contentWord,
-    },
-    tenant.id,
-  )
+    contentSeed: keywordSlug,
+  })
 
-  // Resolve variations
   const variationCtx: VariationInput = {
     tenantSlug: tenant.slug,
     contentSeed: keywordSlug,
@@ -118,39 +116,8 @@ async function renderKeywordLanding(tenant: ResolvedTenant, keywordSlug: string)
     entitySkills: [],
   }
 
-  sections = sections.map((section) => resolveVariationsInSection(section, variationCtx))
-
-  // Build substitution context
-  const subCtx: SubstitutionContext = {
-    adjective: parsed.adjective ?? '',
-    builder: parsed.builder ?? '',
-    content: parsed.contentWord ?? '',
-    skills: [],
-    skillSeed: keywordSlug,
-    industryName: '',
-    jobTitleName: '',
-    brandTitle: tenant.name,
-    resumeWords,
-    verbForms,
-    adjectiveForms,
-    contentWordForms,
-    pageTerms: {
-      pageTerm: keywordSlug,
-      iSlug: '',
-      jSlug: '',
-    },
-    pageData: {},
-  }
-
-  sections = sections.map((section) => substituteSection(section, subCtx))
-  sections = orderSections({ sections, baseSlug: keywordSlug })
-
-  return (
-    <article>
-      {heroBlock && <RenderHero blocks={[sectionToBlock(heroBlock)]} />}
-      <RenderBlocks blocks={sections.map(sectionToBlock)} />
-    </article>
-  )
+  const page = renderTemplate(heroBlock, sections, variationCtx, subCtx, keywordSlug)
+  return <RenderedPage page={page} />
 }
 
 export async function generateStaticParams(): Promise<{ tenantId: string; slug?: string[] }[]> {

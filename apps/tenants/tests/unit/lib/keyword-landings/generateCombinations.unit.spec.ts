@@ -12,12 +12,9 @@ const pools = {
 describe('generateKeywordCombinations', () => {
   it('generates all valid combinations', () => {
     const combos = generateKeywordCombinations(pools)
-    // With adjective + content: 2 adj x 2 resume x 2 builder x 2 content = 16
-    // With adjective only (no content): 2 x 2 x 2 = 8
-    // With content only (no adjective): 2 x 2 x 2 = 8
-    // resume-builder alone (no adj, no content): 2 x 2 = 4
-    // Total = 16 + 8 + 8 + 4 = 36
-    expect(combos).toHaveLength(36)
+    // adj(3) x rw(2) x builder(3) x content(3) = 54 raw
+    // Minus 2 single-part slugs (resumeWord alone) = 52
+    expect(combos).toHaveLength(52)
   })
 
   it('includes expected slugs', () => {
@@ -26,6 +23,11 @@ describe('generateKeywordCombinations', () => {
     expect(combos).toContain('free-resume-builder-templates')
     expect(combos).toContain('best-cv-maker-examples')
     expect(combos).toContain('cv-maker')
+    // Builder-less slugs
+    expect(combos).toContain('resume-templates')
+    expect(combos).toContain('free-resume')
+    expect(combos).toContain('cv-examples')
+    expect(combos).toContain('best-cv')
   })
 
   it('does not include bare resume word alone', () => {

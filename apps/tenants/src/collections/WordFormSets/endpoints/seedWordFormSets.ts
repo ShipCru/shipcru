@@ -17,8 +17,8 @@ const SEED_DATA = [
   },
   {
     type: 'resumeWord',
-    rw_singular: 'CV',
-    rw_plural: 'CVs',
+    rw_singular: 'cv',
+    rw_plural: 'cvs',
     rw_capitalized: 'CV',
     rw_abbreviated: 'CV',
     rw_abbreviatedCapitalized: 'CV',

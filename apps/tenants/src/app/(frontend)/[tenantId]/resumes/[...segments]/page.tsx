@@ -1,4 +1,4 @@
-import type { SubstitutionContext, VariationInput } from '@/lib/resume-pages/types'
+import type { VariationInput } from '@/lib/resume-pages/types'
 import type { Metadata } from 'next'
 
 import { notFound, permanentRedirect, redirect } from 'next/navigation'
@@ -6,7 +6,6 @@ import { getPayload } from 'payload'
 import React from 'react'
 import config from '@payload-config'
 
-import { RenderBlocks, RenderHero } from '@/blocks/RenderBlocks'
 import { getCachedVariationSets } from '@/collections/ContentVariations/queries/getVariationSets'
 import { getCachedTenantPageConfig } from '@/collections/TenantPageConfigs/queries/getTenantPageConfig'
 import { getCachedWordFormSets } from '@/collections/WordFormSets/queries/getWordFormSets'
@@ -16,16 +15,12 @@ import { buildOverrideChain } from '@/lib/resume-pages/buildOverrideChain'
 import { checkTenantPageConfig } from '@/lib/resume-pages/checkTenantPageConfig'
 import { applyOverrides, filterByDataDependencies } from '@/lib/resume-pages/mergeTemplate'
 import { normalizeBlock } from '@/lib/resume-pages/normalizeBlock'
-import { orderSections } from '@/lib/resume-pages/orderSections'
 import { buildJobTitleSuffixPath, parseResumeUrl } from '@/lib/resume-pages/parseResumeUrl'
-import {
-  resolveVariationsInSection,
-  sectionToBlock,
-  substituteSection,
-} from '@/lib/resume-pages/renderHelpers'
 import { resolveCanonicalSuffix } from '@/lib/resume-pages/resolveCanonicalSuffix'
-import { resolveAllWordForms } from '@/lib/resume-pages/resolveWordForms'
 import { validateEntity } from '@/lib/resume-pages/validateEntity'
+import { buildSubstitutionContext } from '@/lib/shared/buildSubstitutionContext'
+import { RenderedPage } from '@/lib/shared/RenderedPage'
+import { renderTemplate } from '@/lib/shared/renderTemplate'
 import { resolveTenantBySlug } from '@/utils/resolveTenant'
 
 export const revalidate = 86400 // 24h
@@ -41,56 +36,21 @@ interface PageProps {
 export default async function ResumePage({ params }: PageProps) {
   const { tenantId: tenantSlug, segments } = await params
   const path = `/resumes/${segments.join('/')}`
-
-  console.log(
-    `[ResumePage] start: tenantSlug=${tenantSlug} segments=${JSON.stringify(segments)} path=${path}`,
-  )
-
   const payload = await getPayload({ config })
 
   const tenant = await resolveTenantBySlug(payload, tenantSlug)
-  if (!tenant) {
-    console.log(`[ResumePage] tenant not found for slug: ${tenantSlug}`)
-    return notFound()
-  }
-  console.log(
-    `[ResumePage] tenant resolved: id=${tenant.id} slug=${tenant.slug} name=${tenant.name}`,
-  )
+  if (!tenant) return notFound()
 
   const suffixWords = await getCachedSuffixWords()
-  console.log(
-    `[ResumePage] suffixWords loaded: adjectives=${suffixWords.adjectives.length} builders=${suffixWords.builders.length} contentWords=${suffixWords.contentWords.length}`,
-  )
 
   const parsed = parseResumeUrl(path, suffixWords)
-  if (!parsed) {
-    console.log(`[ResumePage] parseResumeUrl returned null for path: ${path}`)
-    return notFound()
-  }
-  console.log(
-    `[ResumePage] parsed URL: type=${parsed.type} industrySlug=${parsed.industrySlug} jobTitleSlug=${parsed.jobTitleSlug || '<none>'} builder=${parsed.builder || '<none>'} adjective=${parsed.adjective || '<none>'} content=${parsed.content || '<none>'}`,
-  )
+  if (!parsed) return notFound()
 
   const entity = await validateEntity(payload, parsed)
-  if (!entity) {
-    console.log(
-      `[ResumePage] entity validation failed for: type=${parsed.type} industrySlug=${parsed.industrySlug} jobTitleSlug=${parsed.jobTitleSlug || '<none>'}`,
-    )
-    return notFound()
-  }
-  console.log(
-    `[ResumePage] entity validated: id=${entity.id} industryName=${entity.industryName} jobTitleName=${entity.jobTitleName || '<none>'} skills=${entity.skills?.length || 0}`,
-  )
+  if (!entity) return notFound()
 
   const pageConfig = await getCachedTenantPageConfig(tenant.id)
-  const canServe = checkTenantPageConfig(pageConfig, parsed, entity)
-  if (!canServe) {
-    console.log(
-      `[ResumePage] checkTenantPageConfig denied: tenantId=${tenant.id} entityId=${entity.id}`,
-    )
-    return notFound()
-  }
-  console.log(`[ResumePage] tenant page config OK`)
+  if (!checkTenantPageConfig(pageConfig, parsed, entity)) return notFound()
 
   // Canonical suffix resolution (job-title pages only)
   if (parsed.type === 'job-title') {
@@ -131,129 +91,56 @@ export default async function ResumePage({ params }: PageProps) {
     getCachedWordFormSets(),
   ])
 
-  console.log(
-    `[ResumePage] template loaded: hero=${defaultTemplate.hero?.length || 0} sections=${defaultTemplate.sections?.length || 0}`,
-  )
-  console.log(`[ResumePage] overrideChain: ${overrideChain.length} overrides`)
-  console.log(
-    `[ResumePage] variationSets: ${variationSets.length}, wordFormSets: ${wordFormSets.length}`,
-  )
-
-  // Normalize template into SectionConfig objects
+  // Normalize and apply overrides
   const hero = defaultTemplate.hero?.[0] ? normalizeBlock(defaultTemplate.hero[0]) : null
   const baseSections = (defaultTemplate.sections || []).map(normalizeBlock)
-
-  // Apply overrides
   const mergedSections = applyOverrides(baseSections, overrideChain)
   const mergedHero = hero ? (applyOverrides([hero], overrideChain)[0] ?? null) : null
+  const filteredSections = filterByDataDependencies(mergedSections, { skills: entity.skills })
 
-  console.log(
-    `[ResumePage] after merge: hero=${mergedHero ? 'yes' : 'no'} sections=${mergedSections.length}`,
-  )
+  // Build contexts and render
+  const contentSeed = parsed.contentSeed || parsed.industrySlug
+  const baseSlug = parsed.jobTitleSlug || parsed.industrySlug
 
-  // Filter by data dependencies
-  const filteredSections = filterByDataDependencies(mergedSections, {
-    skills: entity.skills,
+  const subCtx = buildSubstitutionContext({
+    kind: 'resume',
+    tenant,
+    parsed,
+    entity,
+    wordFormSets,
+    contentSeed,
+    industrySlug: parsed.industrySlug,
+    jobTitleSlug: parsed.jobTitleSlug,
+    pageType: parsed.type,
   })
 
-  // Resolve variations
   const variationCtx: VariationInput = {
     tenantSlug: tenant.slug,
-    contentSeed: parsed.contentSeed || parsed.industrySlug,
+    contentSeed,
     variationSets,
     entitySkills: entity.skills,
   }
 
-  const resolvedHero = mergedHero ? resolveVariationsInSection(mergedHero, variationCtx) : null
-  const resolvedSections = filteredSections.map((section) =>
-    resolveVariationsInSection(section, variationCtx),
-  )
-
-  // Substitute template variables
-  const substitutionContext: SubstitutionContext = {
-    adjective: parsed.adjective,
-    builder: parsed.builder,
-    content: parsed.content,
-    skills: entity.skills,
-    skillSeed: `${tenant.slug}.${parsed.contentSeed || parsed.industrySlug}.skills`,
-    industryName: entity.industryName,
-    jobTitleName: entity.jobTitleName,
-    brandTitle: process.env.NEXT_PUBLIC_BRAND_TITLE || tenant.name,
-    ...resolveAllWordForms(
-      wordFormSets,
-      {
-        resumeWord: 'resume',
-        builder: parsed.builder,
-        adjective: parsed.adjective,
-        contentWord: parsed.content,
-      },
-      tenant.id,
-    ),
-    pageTerms: {
-      pageTerm: parsed.type === 'job-title' ? entity.jobTitleName || '' : entity.industryName || '',
-      iSlug: parsed.industrySlug,
-      jSlug: parsed.jobTitleSlug || '',
-    },
-    pageData: {
-      industry: { name: entity.industryName, slug: parsed.industrySlug },
-      ...(parsed.type === 'job-title' && entity.jobTitleName
-        ? { jobTitle: { name: entity.jobTitleName, slug: parsed.jobTitleSlug } }
-        : {}),
-    },
-  }
-
-  const substitutedHero = resolvedHero ? substituteSection(resolvedHero, substitutionContext) : null
-  const substitutedSections = resolvedSections.map((section) =>
-    substituteSection(section, substitutionContext),
-  )
-
-  // Order sections
-  const baseSlug = parsed.jobTitleSlug || parsed.industrySlug
-  const ordered = orderSections({ sections: substitutedSections, baseSlug })
-
-  console.log(
-    `[ResumePage] rendering: hero=${substitutedHero ? substitutedHero.blockType : 'none'} sections=${ordered.map((s) => s.blockType).join(',')}`,
-  )
-
-  return (
-    <article>
-      {substitutedHero && <RenderHero blocks={[sectionToBlock(substitutedHero)]} />}
-      <RenderBlocks blocks={ordered.map(sectionToBlock)} />
-    </article>
-  )
+  const page = renderTemplate(mergedHero, filteredSections, variationCtx, subCtx, baseSlug)
+  return <RenderedPage page={page} />
 }
 
 // --- SEO Metadata ---
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { tenantId: tenantSlug, segments } = await params
-  console.log(
-    `[generateMetadata] start: tenantSlug=${tenantSlug} segments=${JSON.stringify(segments)}`,
-  )
-
   const payload = await getPayload({ config })
 
   const tenant = await resolveTenantBySlug(payload, tenantSlug)
-  if (!tenant) {
-    console.log(`[generateMetadata] tenant not found: ${tenantSlug}`)
-    return {}
-  }
+  if (!tenant) return {}
 
   const suffixWords = await getCachedSuffixWords()
   const path = `/resumes/${segments.join('/')}`
   const parsed = parseResumeUrl(path, suffixWords)
-  if (!parsed) {
-    console.log(`[generateMetadata] parse failed for path: ${path}`)
-    return {}
-  }
+  if (!parsed) return {}
 
   const entity = await validateEntity(payload, parsed)
-  if (!entity) {
-    console.log(
-      `[generateMetadata] entity validation failed: ${parsed.type} ${parsed.industrySlug}`,
-    )
-    return {}
-  }
+  if (!entity) return {}
 
   const title =
     entity.meta?.title ||

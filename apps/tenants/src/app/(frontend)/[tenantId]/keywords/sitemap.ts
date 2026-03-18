@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next'
 
+import { headers } from 'next/headers'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 
@@ -11,12 +12,11 @@ import { resolveTenantBySlug } from '@/utils/resolveTenant'
 
 export const revalidate = 86400
 
-export default async function sitemap({
-  params,
-}: {
-  params: Promise<{ tenantId: string }>
-}): Promise<MetadataRoute.Sitemap> {
-  const { tenantId } = await params
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const headersList = await headers()
+  const tenantId = headersList.get('x-tenant-slug')
+  if (!tenantId) return []
+
   const payload = await getPayload({ config })
 
   const tenant = await resolveTenantBySlug(payload, tenantId)

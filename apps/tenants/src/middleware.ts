@@ -12,7 +12,6 @@ import { NextRequest, NextResponse } from 'next/server'
 function getTenantSlugFromHost(hostname: string): string | null {
   const domain = hostname.split(':')[0]
 
-  // Try env var JSON map first
   const mapJson = process.env.DOMAIN_TENANT_MAP
   if (mapJson) {
     try {
@@ -30,34 +29,21 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
   const host = request.headers.get('host') || ''
 
-  console.log(`[middleware] incoming: host=${host} pathname=${pathname}`)
-
-  // Only intercept /resumes/* routes (at least one segment after /resumes/)
-  if (!pathname.startsWith('/resumes/')) {
-    console.log(`[middleware] skipping non-resumes path: ${pathname}`)
-    return NextResponse.next()
-  }
-
   const tenantSlug = getTenantSlugFromHost(host) || process.env.DEFAULT_TENANT_SLUG || null
+  if (!tenantSlug) return NextResponse.next()
 
-  console.log(`[middleware] resolved tenantSlug=${tenantSlug} (host=${host}, DEFAULT_TENANT_SLUG=${process.env.DEFAULT_TENANT_SLUG || '<unset>'}, DOMAIN_TENANT_MAP=${process.env.DOMAIN_TENANT_MAP ? 'set' : '<unset>'})`)
-
-  if (!tenantSlug) {
-    // No tenant resolved -- let the route handle 404
-    console.log(`[middleware] no tenant resolved, passing through`)
-    return NextResponse.next()
-  }
-
-  // Rewrite: /resumes/advertising → /resumes/{tenantSlug}/advertising (internal)
-  const segments = pathname.slice('/resumes/'.length)
+  // Rewrite by prepending tenant slug: /resume-ideas → /{tenant}/resume-ideas
   const url = request.nextUrl.clone()
-  url.pathname = `/resumes/${tenantSlug}/${segments}`
+  url.pathname = `/${tenantSlug}${pathname}`
 
-  console.log(`[middleware] rewriting: ${pathname} → ${url.pathname}`)
+  const requestHeaders = new Headers(request.headers)
+  requestHeaders.set('x-tenant-slug', tenantSlug)
 
-  return NextResponse.rewrite(url)
+  return NextResponse.rewrite(url, { request: { headers: requestHeaders } })
 }
 
 export const config = {
-  matcher: ['/resumes/:path+'],
+  matcher: [
+    '/((?!_next/static|_next/image|favicon.ico|api|admin|next|.*\\.(?:ico|png|jpg|jpeg|gif|svg|webp|css|js|woff2?|ttf|eot)).*)',
+  ],
 }

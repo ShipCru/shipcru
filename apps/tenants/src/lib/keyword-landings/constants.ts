@@ -11,4 +11,9 @@ export const PRE_RENDERED_KEYWORDS = [
   'resume-maker',
   'resume-templates',
   'professional-resume-builder',
+  'resume-ideas',
+  'resume-examples',
+  'free-resume',
+  'cv-templates',
+  'cv-examples',
 ] as const

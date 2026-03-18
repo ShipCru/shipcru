@@ -5,6 +5,7 @@ import { WORD_FORM_SET_LOOKUP_FIELD } from '@/collections/WordFormSets/constants
 
 export interface CanonicalSuffix {
   adjective: string
+  resumeWord: string
   builder: string
   contentWord: string
   strategy: 'redirect-301' | 'redirect-302' | 'rel-canonical'
@@ -43,6 +44,7 @@ export async function resolveCanonicalSuffix(
     if (adj && builder && content) {
       return {
         adjective: adj,
+        resumeWord: suffixData.canonicalResumeWord ?? 'resume',
         builder,
         contentWord: content,
         strategy:
@@ -61,6 +63,7 @@ export async function resolveCanonicalSuffix(
   ) {
     return {
       adjective: suffixData.canonicalAdjective,
+      resumeWord: suffixData.canonicalResumeWord ?? 'resume',
       builder: suffixData.canonicalBuilder,
       contentWord: suffixData.canonicalContentWord,
       strategy: (suffixData.canonicalStrategy as CanonicalSuffix['strategy']) ?? 'rel-canonical',
