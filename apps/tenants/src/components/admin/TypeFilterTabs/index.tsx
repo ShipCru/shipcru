@@ -18,7 +18,7 @@ export const TypeFilterTabs: React.FC = () => {
   const currentType = searchParams.get('where[type][equals]') ?? ''
 
   return (
-    <div className="flex flex-wrap gap-2 mb-4">
+    <div className="gutter gutter--left gutter--right flex flex-wrap gap-2 mb-4">
       {TABS.map(({ label, value }) => {
         const isActive = currentType === value
         return (

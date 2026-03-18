@@ -7,11 +7,15 @@ import { fileURLToPath } from 'url'
 import { GetPlatformProxyOptions } from 'wrangler'
 import { CloudflareContext, getCloudflareContext } from '@opennextjs/cloudflare'
 import { postgresAdapter } from '@payloadcms/db-postgres'
+import { customType } from 'drizzle-orm/pg-core'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { mcpPlugin } from '@payloadcms/plugin-mcp'
 import { r2Storage } from '@payloadcms/storage-r2'
 
 import { isSuperAdmin } from './access/isSuperAdmin'
+import { jobTitleFullText, resumeContentFullText } from './lib/search/textExtractors'
+import { createSemanticSearchPlugin } from './plugins/semanticSearch'
+import { generateSearchEmbeddingTask } from './plugins/semanticSearch/tasks/generateSearchEmbedding'
 import { ContentVariations } from './collections/ContentVariations'
 import { Industries } from './collections/Industries'
 import { IndustryCategories } from './collections/IndustryCategories'
@@ -105,6 +109,22 @@ export default buildConfig({
   db: postgresAdapter({
     pool: { connectionString: process.env.DATABASE_URL || '' },
     push: pushEnabled,
+    afterSchemaInit: [
+      ({ schema, extendTable }) => {
+        const vector = customType<{ data: string }>({
+          dataType() {
+            return 'vector(512)'
+          },
+        })
+        extendTable({
+          table: schema.tables.search_locales,
+          columns: {
+            embedding: vector('embedding'),
+          },
+        })
+        return schema
+      },
+    ],
   }),
   logger: isProduction ? cloudflareLogger : undefined,
   localization: {
@@ -162,7 +182,22 @@ export default buildConfig({
     }),
     pluginMultiTenant,
     pluginNestedDocs,
+    createSemanticSearchPlugin({
+      collections: [
+        { slug: 'job-titles', priority: 20, generateFullText: jobTitleFullText },
+        { slug: 'resume-content', priority: 10, generateFullText: resumeContentFullText },
+      ],
+    }),
   ],
+  jobs: {
+    tasks: [generateSearchEmbeddingTask],
+    autoRun: [
+      {
+        cron: '*/5 * * * *',
+        limit: 100,
+      },
+    ],
+  },
 })
 
 // Adapted from https://github.com/opennextjs/opennextjs-cloudflare/blob/d00b3a13e42e65aad76fba41774815726422cc39/packages/cloudflare/src/api/cloudflare-context.ts#L328C36-L328C46

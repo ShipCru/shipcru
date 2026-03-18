@@ -15,6 +15,8 @@ import { default as default_a92c5dfb3c2e323ee05fef993ef6e5f5 } from '../../../co
 import { WordFormSetsListActions as WordFormSetsListActions_22d5a53eab36571250c25cd618ca3567 } from '@/components/admin/WordFormSetsListActions'
 import { SectionOverrideRowLabel as SectionOverrideRowLabel_a65b2ee139f4c7668f8e6e1e6bfe0c74 } from '@/components/admin/SectionOverrideRowLabel'
 import { WatchTenantCollection as WatchTenantCollection_1d0591e3cf4f332c83a86da13a0de59a } from '@payloadcms/plugin-multi-tenant/client'
+import { LinkToDoc as LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
+import { ReindexButton as ReindexButton_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
 import { default as default_17c6ef4bfe47bfa29d923fb5718170b7 } from '@/globals/Header/RowLabel'
 import { default as default_eb9f0801d65a2b66bac35d04f88fd707 } from '@/components/admin/SuffixVariationRowLabel'
 import { TenantSelector as TenantSelector_d6d5f193a167989e2ee7d14202901e62 } from '@payloadcms/plugin-multi-tenant/rsc'
@@ -40,6 +42,8 @@ export const importMap = {
   "@/components/admin/WordFormSetsListActions#WordFormSetsListActions": WordFormSetsListActions_22d5a53eab36571250c25cd618ca3567,
   "@/components/admin/SectionOverrideRowLabel#SectionOverrideRowLabel": SectionOverrideRowLabel_a65b2ee139f4c7668f8e6e1e6bfe0c74,
   "@payloadcms/plugin-multi-tenant/client#WatchTenantCollection": WatchTenantCollection_1d0591e3cf4f332c83a86da13a0de59a,
+  "@payloadcms/plugin-search/client#LinkToDoc": LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634,
+  "@payloadcms/plugin-search/client#ReindexButton": ReindexButton_aead06e4cbf6b2620c5c51c9ab283634,
   "@/globals/Header/RowLabel#default": default_17c6ef4bfe47bfa29d923fb5718170b7,
   "@/components/admin/SuffixVariationRowLabel#default": default_eb9f0801d65a2b66bac35d04f88fd707,
   "@payloadcms/plugin-multi-tenant/rsc#TenantSelector": TenantSelector_d6d5f193a167989e2ee7d14202901e62,

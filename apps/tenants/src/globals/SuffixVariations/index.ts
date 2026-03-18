@@ -2,6 +2,7 @@ import type { Field, GlobalConfig } from 'payload'
 
 import { isSuperAdminAccess } from '@/access/isSuperAdmin'
 import { createGlobalRevalidationHook } from '@/lib/resume-pages/hooks/revalidateResumeData'
+import { resyncSuffixOnGlobalChange } from '@/plugins/semanticSearch/hooks/resyncSuffixOnGlobalChange'
 import { validateCanonical } from './hooks/validateCanonical'
 
 function weightedWordFormSetFields(wordFormSetType: string): Field[] {
@@ -39,7 +40,7 @@ export const SuffixVariations: GlobalConfig = {
     update: isSuperAdminAccess,
   },
   hooks: {
-    afterChange: [createGlobalRevalidationHook('suffix-variations')],
+    afterChange: [createGlobalRevalidationHook('suffix-variations'), resyncSuffixOnGlobalChange],
     beforeValidate: [validateCanonical],
   },
   fields: [

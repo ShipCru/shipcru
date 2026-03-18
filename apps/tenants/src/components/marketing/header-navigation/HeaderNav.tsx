@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { getCMSLinkHref } from '@/components/CMSLink'
 import { getCachedHeader } from '@/globals/Header/queries/getHeader'
 import { DropdownNavItem } from './DropdownNavItem'
+import { HeaderSearch } from './HeaderSearch'
 
 type NavItem = NonNullable<HeaderType['navItems']>[number]
 
@@ -56,8 +57,10 @@ export async function HeaderNav() {
           </ul>
         </nav>
 
-        {/* CTA */}
-        <Link
+        {/* Search + CTA */}
+        <div className="flex items-center gap-2">
+          <HeaderSearch />
+          <Link
           href="/"
           className="inline-flex items-center gap-1.5 rounded-lg bg-brand-solid px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-brand-700/20 ring-1 ring-brand-700/10 transition duration-200 hover:bg-brand-solid_hover hover:shadow-md hover:shadow-brand-700/25"
         >
@@ -76,7 +79,8 @@ export async function HeaderNav() {
               strokeLinejoin="round"
             />
           </svg>
-        </Link>
+          </Link>
+        </div>
       </div>
     </header>
   )

@@ -1263,6 +1263,7 @@ export interface Config {
     tenants: Tenant;
     'tenant-page-configs': TenantPageConfig;
     'payload-mcp-api-keys': PayloadMcpApiKey;
+    search: Search;
     'payload-kv': PayloadKv;
     'payload-jobs': PayloadJob;
     'payload-locked-documents': PayloadLockedDocument;
@@ -1292,6 +1293,7 @@ export interface Config {
     tenants: TenantsSelect<false> | TenantsSelect<true>;
     'tenant-page-configs': TenantPageConfigsSelect<false> | TenantPageConfigsSelect<true>;
     'payload-mcp-api-keys': PayloadMcpApiKeysSelect<false> | PayloadMcpApiKeysSelect<true>;
+    search: SearchSelect<false> | SearchSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -1316,6 +1318,7 @@ export interface Config {
   user: User | PayloadMcpApiKey;
   jobs: {
     tasks: {
+      generateSearchEmbedding: TaskGenerateSearchEmbedding;
       schedulePublish: TaskSchedulePublish;
       inline: {
         input: unknown;
@@ -2449,6 +2452,37 @@ export interface PayloadMcpApiKey {
   collection: 'payload-mcp-api-keys';
 }
 /**
+ * This is a collection of automatically created search results. These results are used by the global site search and will be updated automatically as documents in the CMS are created or updated.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "search".
+ */
+export interface Search {
+  id: number;
+  title?: string | null;
+  priority?: number | null;
+  doc:
+    | {
+        relationTo: 'job-titles';
+        value: number | JobTitle;
+      }
+    | {
+        relationTo: 'resume-content';
+        value: number | ResumeContent;
+      };
+  fullText?: string | null;
+  sourceSlug?: string | null;
+  industrySlug?: string | null;
+  suffixAdjective?: string | null;
+  suffixResumeWord?: string | null;
+  suffixBuilder?: string | null;
+  suffixContentWord?: string | null;
+  contentType?: string | null;
+  hasEmbedding?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -2517,7 +2551,7 @@ export interface PayloadJob {
     | {
         executedAt: string;
         completedAt: string;
-        taskSlug: 'inline' | 'schedulePublish';
+        taskSlug: 'inline' | 'generateSearchEmbedding' | 'schedulePublish';
         taskID: string;
         input?:
           | {
@@ -2550,7 +2584,7 @@ export interface PayloadJob {
         id?: string | null;
       }[]
     | null;
-  taskSlug?: ('inline' | 'schedulePublish') | null;
+  taskSlug?: ('inline' | 'generateSearchEmbedding' | 'schedulePublish') | null;
   queue?: string | null;
   waitUntil?: string | null;
   processing?: boolean | null;
@@ -2619,6 +2653,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'payload-mcp-api-keys';
         value: number | PayloadMcpApiKey;
+      } | null)
+    | ({
+        relationTo: 'search';
+        value: number | Search;
       } | null);
   globalSlug?: string | null;
   user:
@@ -3402,6 +3440,26 @@ export interface PayloadMcpApiKeysSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "search_select".
+ */
+export interface SearchSelect<T extends boolean = true> {
+  title?: T;
+  priority?: T;
+  doc?: T;
+  fullText?: T;
+  sourceSlug?: T;
+  industrySlug?: T;
+  suffixAdjective?: T;
+  suffixResumeWord?: T;
+  suffixBuilder?: T;
+  suffixContentWord?: T;
+  contentType?: T;
+  hasEmbedding?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -3715,6 +3773,17 @@ export interface SuffixVariationsSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskGenerateSearchEmbedding".
+ */
+export interface TaskGenerateSearchEmbedding {
+  input: {
+    docId: number;
+    collection: string;
+  };
+  output?: unknown;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

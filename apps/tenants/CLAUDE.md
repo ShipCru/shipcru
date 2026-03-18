@@ -20,6 +20,7 @@ Fight entropy. Leave the codebase better than you found it.
   - Example: `border-[var(--theme-elevation-150)]` -> `border-(--theme-elevation-150)`
 - Admin components: use Tailwind classes for styling, not inline `style` attributes
 - Don't add comments that restate what the function name or signature already says. No decorative separator comments. Only comment where the logic isn't self-evident.
+- Don't use `as any` — Payload's generated types include plugin-created collections (`search`, `payload-jobs`) and `payload.db.drizzle` is properly typed. Use `as unknown as T` only for raw SQL result rows where the DB returns `Record<string, unknown>[]`.
 
 ## Core Principles
 
