@@ -2,6 +2,7 @@ import type { SuffixWordsData } from '@/globals/SuffixVariations/queries/getSuff
 import type { Payload } from 'payload'
 
 import { WORD_FORM_SET_LOOKUP_FIELD } from '@/collections/WordFormSets/constants'
+import { WordFormSet } from '@/payload-types'
 
 export interface CanonicalSuffix {
   adjective: string
@@ -78,10 +79,15 @@ function fetchWordFormSet(payload: Payload, id: number | string | null | undefin
   return payload.findByID({ collection: 'word-form-sets', id, depth: 0 })
 }
 
-function extractWordFromDoc(doc: object | null, wordFormSetType: string): string | undefined {
+function extractWordFromDoc(
+  doc: WordFormSet | null,
+  wordFormSetType: keyof typeof WORD_FORM_SET_LOOKUP_FIELD,
+): string | undefined {
   if (!doc) return undefined
+
   const field = WORD_FORM_SET_LOOKUP_FIELD[wordFormSetType]
   if (!field) return undefined
-  const value = (doc as Record<string, unknown>)[field]
+
+  const value = doc[field]
   return typeof value === 'string' && value ? value : undefined
 }

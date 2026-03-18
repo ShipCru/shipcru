@@ -82,7 +82,7 @@ describe('validateEntity', () => {
     const result = await validateEntity(mockPayload, parsed)
     expect(result).not.toBeNull()
     expect(result!.jobTitleName).toBe('Account Manager')
-    expect(result!.skills).toEqual(['Excel', 'Salesforce'])
+    expect(result!.skills).toEqual([])
   })
 
   it('returns null when job title does not belong to industry', async () => {

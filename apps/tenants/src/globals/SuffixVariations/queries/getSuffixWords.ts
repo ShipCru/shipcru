@@ -15,14 +15,15 @@ interface WordEntry {
 
 function extractWords(
   items: WordEntry[] | null | undefined,
-  wordFormSetType: string,
+  wordFormSetType: keyof typeof WORD_FORM_SET_LOOKUP_FIELD,
 ): string[] {
-  const field = WORD_FORM_SET_LOOKUP_FIELD[wordFormSetType] as keyof WordFormSet | undefined
+  const field = WORD_FORM_SET_LOOKUP_FIELD[wordFormSetType]
   if (!field) return []
 
   return (items ?? []).flatMap((item) => {
     const doc = item.wordFormSet
     if (!doc || typeof doc === 'number') return []
+
     const value = doc[field]
     return typeof value === 'string' && value ? [value] : []
   })
@@ -30,9 +31,9 @@ function extractWords(
 
 function extractCanonicalWord(
   items: WordEntry[] | null | undefined,
-  wordFormSetType: string,
+  wordFormSetType: keyof typeof WORD_FORM_SET_LOOKUP_FIELD,
 ): string | null {
-  const field = WORD_FORM_SET_LOOKUP_FIELD[wordFormSetType] as keyof WordFormSet | undefined
+  const field = WORD_FORM_SET_LOOKUP_FIELD[wordFormSetType]
   if (!field) return null
 
   const canonical = (items ?? []).find((item) => item.isCanonical)
@@ -40,6 +41,7 @@ function extractCanonicalWord(
 
   const doc = canonical.wordFormSet
   if (!doc || typeof doc === 'number') return null
+
   const value = doc[field]
   return typeof value === 'string' && value ? value : null
 }
@@ -58,19 +60,17 @@ export interface SuffixWordsData {
 
 export async function getSuffixWords(payload: Payload): Promise<SuffixWordsData> {
   const global = await payload.findGlobal({ slug: 'suffix-variations', depth: 1 })
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const doc = global as any
 
   return {
-    resumeWords: extractWords(doc.resumeWords, 'resumeWord'),
-    adjectives: extractWords(doc.adjectives, 'adjective'),
-    builders: extractWords(doc.builders, 'verb'),
-    contentWords: extractWords(doc.contentWords, 'contentWord'),
-    canonicalResumeWord: extractCanonicalWord(doc.resumeWords, 'resumeWord'),
-    canonicalAdjective: extractCanonicalWord(doc.adjectives, 'adjective'),
-    canonicalBuilder: extractCanonicalWord(doc.builders, 'verb'),
-    canonicalContentWord: extractCanonicalWord(doc.contentWords, 'contentWord'),
-    canonicalStrategy: doc.canonicalStrategy ?? 'rel-canonical',
+    resumeWords: extractWords(global.resumeWords, 'resumeWord'),
+    adjectives: extractWords(global.adjectives, 'adjective'),
+    builders: extractWords(global.builders, 'verb'),
+    contentWords: extractWords(global.contentWords, 'contentWord'),
+    canonicalResumeWord: extractCanonicalWord(global.resumeWords, 'resumeWord'),
+    canonicalAdjective: extractCanonicalWord(global.adjectives, 'adjective'),
+    canonicalBuilder: extractCanonicalWord(global.builders, 'verb'),
+    canonicalContentWord: extractCanonicalWord(global.contentWords, 'contentWord'),
+    canonicalStrategy: global.canonicalStrategy ?? 'rel-canonical',
   }
 }
 

@@ -12,7 +12,7 @@ import { getCachedWordFormSets } from '@/collections/WordFormSets/queries/getWor
 import { getCachedDefaultTemplate } from '@/globals/DefaultTemplates/queries/getDefaultTemplate'
 import { getCachedSuffixWords } from '@/globals/SuffixVariations/queries/getSuffixWords'
 import { buildOverrideChain } from '@/lib/resume-pages/buildOverrideChain'
-import { checkTenantPageConfig } from '@/lib/resume-pages/checkTenantPageConfig'
+import { checkPageAccess } from '@/lib/tenant-visibility'
 import { applyOverrides, filterByDataDependencies } from '@/lib/resume-pages/mergeTemplate'
 import { normalizeBlock } from '@/lib/resume-pages/normalizeBlock'
 import { buildJobTitleSuffixPath, parseResumeUrl } from '@/lib/resume-pages/parseResumeUrl'
@@ -50,7 +50,7 @@ export default async function ResumePage({ params }: PageProps) {
   if (!entity) return notFound()
 
   const pageConfig = await getCachedTenantPageConfig(tenant.id)
-  if (!checkTenantPageConfig(pageConfig, parsed, entity)) return notFound()
+  if (!checkPageAccess(pageConfig, parsed, entity)) return notFound()
 
   // Canonical suffix resolution (job-title pages only)
   if (parsed.type === 'job-title') {

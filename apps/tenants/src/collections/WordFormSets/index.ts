@@ -13,7 +13,8 @@ import { seedWordFormSetsEndpoint } from './endpoints/seedWordFormSets'
 /** Auto-generate `name` from the type-specific lookup field */
 const autoGenerateName: CollectionBeforeValidateHook = ({ data }) => {
   if (!data?.type) return data
-  const lookupField = WORD_FORM_SET_LOOKUP_FIELD[data.type]
+  const lookupField =
+    WORD_FORM_SET_LOOKUP_FIELD[data.type as keyof typeof WORD_FORM_SET_LOOKUP_FIELD]
   if (lookupField && data[lookupField]) {
     data.name = data[lookupField]
   }

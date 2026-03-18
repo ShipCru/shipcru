@@ -1,27 +1,18 @@
 import type { MetadataRoute } from 'next'
 
-import { headers } from 'next/headers'
-import { getPayload } from 'payload'
-import config from '@payload-config'
-
 import { getCachedTenantPageConfig } from '@/collections/TenantPageConfigs/queries/getTenantPageConfig'
 import { getCachedSuffixWords } from '@/globals/SuffixVariations/queries/getSuffixWords'
 import { checkKeywordAccess } from '@/lib/keyword-landings/checkKeywordAccess'
 import { generateKeywordCombinations } from '@/lib/keyword-landings/generateCombinations'
-import { resolveTenantBySlug } from '@/utils/resolveTenant'
+import { resolveSitemapTenantContext } from '@/lib/sitemaps/resolveBaseUrl'
 
 export const revalidate = 86400
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const headersList = await headers()
-  const tenantId = headersList.get('x-tenant-slug')
-  if (!tenantId) return []
+  const ctx = await resolveSitemapTenantContext()
+  if (!ctx) return []
 
-  const payload = await getPayload({ config })
-
-  const tenant = await resolveTenantBySlug(payload, tenantId)
-  if (!tenant) return []
-
+  const { tenant, baseUrl } = ctx
   const pageConfig = await getCachedTenantPageConfig(tenant.id)
 
   const keywordConfig = pageConfig?.keywordLandings ?? {
@@ -29,16 +20,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     mode: 'all' as const,
     patterns: [],
   }
-
   if (!keywordConfig.enabled) return []
 
-  // Generate all combinations and filter by tenant access
   const pools = await getCachedSuffixWords()
   const allSlugs = generateKeywordCombinations(pools)
   const allowedSlugs = allSlugs.filter((slug) => checkKeywordAccess(slug, keywordConfig))
-
-  // Resolve base URL from tenant domain or fallback
-  const baseUrl = tenant.domain ? `https://${tenant.domain}` : `https://example.com/${tenantId}`
 
   return allowedSlugs.map((slug) => ({
     url: `${baseUrl}/${slug}`,
