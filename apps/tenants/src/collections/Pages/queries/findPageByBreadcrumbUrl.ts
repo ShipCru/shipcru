@@ -3,7 +3,8 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 
 export async function findPageByBreadcrumbUrl(tenantId: number | string, slugPath: string) {
-  const url = slugPath ? `/${slugPath}` : '/'
+  // nestedDocsPlugin generates '/home' for the root page, never bare '/'.
+  const url = !slugPath || slugPath === '/' ? '/home' : `/${slugPath}`
   const { isEnabled: draft } = await draftMode()
   const payload = await getPayload({ config })
 

@@ -2,6 +2,8 @@ import type { Block, Field } from 'payload'
 
 import { fieldAffectsData } from 'payload/shared'
 
+import { selectDbName, selectEnumName } from '@/lib/dbName'
+
 type FieldWithLabel = Field & { name: string; label?: unknown }
 
 /**
@@ -43,7 +45,8 @@ export function buildOverrideFields(blocks: Block[]): Field[] {
             name: 'fieldsToOverride',
             type: 'select' as const,
             hasMany: true,
-            dbName: ({ tableName }: { tableName?: string }) => `enum_${tableName}_flds`,
+            dbName: selectDbName('flds'),
+            enumName: selectEnumName('flds'),
             options: fieldOptions,
             admin: {
               description:

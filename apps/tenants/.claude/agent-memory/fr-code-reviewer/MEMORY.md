@@ -24,3 +24,7 @@
 - `getUserTenantIDs()` with optional role filter for tenant-scoped access
 - Revalidation hook pattern with `context.disableRevalidate` guard
 - Pages use breadcrumbs-based URL resolution from nested-docs plugin
+- Custom React hooks live in `src/hooks/` (e.g., `useSearchPanel.ts`, `useHeaderSearch.ts`)
+- `usehooks-ts` v3.1.1 is installed; used for `useEventListener`, `useDebounceValue`, `useOnClickOutside`
+- `tenantId` route param accessed via `useParams()` in client components
+- Tailwind + `cx()` utility from `@/utils/styles/cx` used for conditional class merging

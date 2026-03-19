@@ -3,6 +3,7 @@ import type { Config, Plugin } from 'payload'
 
 import { searchPlugin } from '@payloadcms/plugin-search'
 
+import { queueMissingEmbeddingsEndpoint } from './endpoints/queueMissingEmbeddings'
 import { getSemanticSearchFields } from './fields'
 import { createBeforeSync } from './hooks/beforeSync'
 import { queueSearchEmbeddingGeneration } from './hooks/queueEmbeddingGeneration'
@@ -23,6 +24,13 @@ export function createSemanticSearchPlugin(pluginConfig: SemanticSearchPluginCon
       beforeSync: createBeforeSync(fullTextExtractors),
       searchOverrides: {
         fields: ({ defaultFields }) => [...defaultFields, ...getSemanticSearchFields()],
+        endpoints: [queueMissingEmbeddingsEndpoint],
+        admin: {
+          defaultColumns: ['title', 'priority', 'hasEmbedding'],
+          components: {
+            beforeList: ['@/components/admin/SearchListActions#SearchListActions'],
+          },
+        },
       },
     })(config)
 

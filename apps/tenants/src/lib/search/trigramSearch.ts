@@ -52,13 +52,20 @@ export async function trigramSearch(
       s."suffix_builder" AS "suffixBuilder",
       s."suffix_content_word" AS "suffixContentWord",
       s."content_type" AS "contentType",
-      similarity(sl."title", ${query}) AS "score"
+      GREATEST(
+        similarity(sl."title", ${query}),
+        word_similarity(${query}, sl."title")
+      ) AS "score"
     FROM "search" s
     JOIN "search_locales" sl ON sl."_parent_id" = s."id" AND sl."_locale" = ${locale}
     JOIN "search_rels" sr ON sr."parent_id" = s."id" AND sr."path" = 'doc'
     WHERE sl."title" % ${query}
+       OR ${query} <% sl."title"
     ${collectionFilter}
-    ORDER BY similarity(sl."title", ${query}) DESC
+    ORDER BY GREATEST(
+      similarity(sl."title", ${query}),
+      word_similarity(${query}, sl."title")
+    ) DESC
     LIMIT ${limit}
   `)
 

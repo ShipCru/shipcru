@@ -1,5 +1,6 @@
 import type { User } from './payload-types'
 
+import { customType } from 'drizzle-orm/pg-core'
 import fs from 'fs'
 import path from 'path'
 import { buildConfig } from 'payload'
@@ -7,15 +8,11 @@ import { fileURLToPath } from 'url'
 import { GetPlatformProxyOptions } from 'wrangler'
 import { CloudflareContext, getCloudflareContext } from '@opennextjs/cloudflare'
 import { postgresAdapter } from '@payloadcms/db-postgres'
-import { customType } from 'drizzle-orm/pg-core'
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { mcpPlugin } from '@payloadcms/plugin-mcp'
+import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { r2Storage } from '@payloadcms/storage-r2'
 
 import { isSuperAdmin } from './access/isSuperAdmin'
-import { jobTitleFullText, resumeContentFullText } from './lib/search/textExtractors'
-import { createSemanticSearchPlugin } from './plugins/semanticSearch'
-import { generateSearchEmbeddingTask } from './plugins/semanticSearch/tasks/generateSearchEmbedding'
 import { ContentVariations } from './collections/ContentVariations'
 import { Industries } from './collections/Industries'
 import { IndustryCategories } from './collections/IndustryCategories'
@@ -32,9 +29,12 @@ import { WordFormSets } from './collections/WordFormSets'
 import { DefaultTemplates } from './globals/DefaultTemplates'
 import { Header } from './globals/Header'
 import { SuffixVariations } from './globals/SuffixVariations'
+import { jobTitleFullText, resumeContentFullText } from './lib/search/textExtractors'
 import { SUPPORTED_LOCALES } from './locales'
 import { pluginMultiTenant } from './plugins/multiTenant'
 import { pluginNestedDocs } from './plugins/nestedDocs'
+import { createSemanticSearchPlugin } from './plugins/semanticSearch'
+import { generateSearchEmbeddingTask } from './plugins/semanticSearch/tasks/generateSearchEmbedding'
 import { getUserTenantIDs } from './utils/getUserTenantIDs'
 
 const filename = fileURLToPath(import.meta.url)
@@ -193,8 +193,8 @@ export default buildConfig({
     tasks: [generateSearchEmbeddingTask],
     autoRun: [
       {
-        cron: '*/5 * * * *',
-        limit: 100,
+        cron: '*/2 * * * *',
+        limit: 250,
       },
     ],
   },
