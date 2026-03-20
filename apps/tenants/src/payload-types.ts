@@ -2035,7 +2035,7 @@ export interface TemplateOverride {
    * Leave empty for a global override
    */
   tenant?: (number | null) | Tenant;
-  targetType?: ('industry-category' | 'industry' | 'job-title') | null;
+  targetType?: ('industry-category' | 'industry' | 'job-title' | 'keyword-landing') | null;
   targetEntity?:
     | ({
         relationTo: 'industry-categories';
@@ -2049,6 +2049,10 @@ export interface TemplateOverride {
         relationTo: 'job-titles';
         value: number | JobTitle;
       } | null);
+  /**
+   * Glob pattern for keyword landing slugs. Use * as wildcard. Examples: *, free-resume-*, *-resume-builder
+   */
+  targetPattern?: string | null;
   sectionOverrides?:
     | {
         /**
@@ -3175,6 +3179,7 @@ export interface TemplateOverridesSelect<T extends boolean = true> {
   tenant?: T;
   targetType?: T;
   targetEntity?: T;
+  targetPattern?: T;
   sectionOverrides?:
     | T
     | {
@@ -3547,6 +3552,7 @@ export interface DefaultTemplate {
     hero?: HeroSplitBlock[] | null;
     sections?: (BlogBlock | TestimonialsBlock | MetricsBlock | CTABlock)[] | null;
   };
+  _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -3703,6 +3709,7 @@ export interface DefaultTemplatesSelect<T extends boolean = true> {
               cta?: T | CTABlockSelect<T>;
             };
       };
+  _status?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

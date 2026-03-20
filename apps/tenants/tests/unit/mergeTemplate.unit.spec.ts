@@ -1,4 +1,8 @@
-import type { ResolvedTemplateOverride, SectionConfig } from '@/lib/resume-pages/types'
+import type {
+  ResolvedTemplateOverride,
+  ResolvedTemplateOverrideBase,
+  SectionConfig,
+} from '@/lib/resume-pages/types'
 
 import { describe, expect, it } from 'vitest'
 
@@ -17,8 +21,10 @@ function makeSectionConfig(overrides: Partial<SectionConfig> = {}): SectionConfi
 }
 
 function makeOverride(
-  overrides: Partial<ResolvedTemplateOverride> & {
+  overrides: Partial<ResolvedTemplateOverrideBase> & {
     sectionOverrides: ResolvedTemplateOverride['sectionOverrides']
+    targetType?: 'industry-category' | 'industry' | 'job-title'
+    targetEntity?: string | number | null
   },
 ): ResolvedTemplateOverride {
   return {

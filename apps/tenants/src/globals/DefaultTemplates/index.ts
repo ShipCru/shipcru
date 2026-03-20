@@ -41,4 +41,8 @@ export const DefaultTemplates: GlobalConfig = {
       ],
     },
   ],
+  versions: {
+    max: 50,
+    drafts: true,
+  },
 }

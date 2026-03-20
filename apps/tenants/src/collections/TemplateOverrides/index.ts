@@ -68,18 +68,41 @@ export const TemplateOverrides: CollectionConfig = {
         { label: 'Industry Category', value: 'industry-category' },
         { label: 'Industry', value: 'industry' },
         { label: 'Job Title', value: 'job-title' },
+        { label: 'Keyword Landing', value: 'keyword-landing' },
       ],
     },
     {
       name: 'targetEntity',
       type: 'relationship',
       relationTo: ['industry-categories', 'industries', 'job-titles'],
+      admin: {
+        condition: (data) => data?.targetType !== 'keyword-landing',
+      },
       filterOptions: ({ relationTo, siblingData }) => {
         const targetType = (siblingData as Record<string, unknown>)?.targetType as string
         if (!targetType) return true
 
         // Only show results from the collection matching the selected targetType
         if (TARGET_TYPE_TO_RELATION[targetType] !== relationTo) return false
+        return true
+      },
+    },
+    {
+      name: 'targetPattern',
+      type: 'text',
+      admin: {
+        description:
+          'Glob pattern for keyword landing slugs. Use * as wildcard. Examples: *, free-resume-*, *-resume-builder',
+        condition: (data) => data?.targetType === 'keyword-landing',
+      },
+      validate: (
+        value: string | null | undefined,
+        { siblingData }: { siblingData: Record<string, unknown> },
+      ) => {
+        const targetType = siblingData?.targetType
+        if (targetType === 'keyword-landing' && !value) {
+          return 'Pattern is required for keyword landing overrides'
+        }
         return true
       },
     },
@@ -93,8 +116,7 @@ export const TemplateOverrides: CollectionConfig = {
       admin: {
         initCollapsed: true,
         components: {
-          RowLabel:
-            '@/components/admin/SectionOverrideRowLabel#SectionOverrideRowLabel',
+          RowLabel: '@/components/admin/SectionOverrideRowLabel#SectionOverrideRowLabel',
         },
       },
       fields: [

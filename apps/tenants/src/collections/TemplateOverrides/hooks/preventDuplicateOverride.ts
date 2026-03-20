@@ -1,9 +1,5 @@
-import type { CollectionBeforeValidateHook, CollectionSlug } from 'payload'
+import type { CollectionBeforeValidateHook } from 'payload'
 
-/**
- * Prevents duplicate overrides for the same entity + tenant combination.
- * Each entity can only have one override per tenant.
- */
 export const preventDuplicateOverride: CollectionBeforeValidateHook = async ({
   data,
   req,
@@ -21,11 +17,15 @@ export const preventDuplicateOverride: CollectionBeforeValidateHook = async ({
   }
 
   where.targetType = { equals: data.targetType }
-  if (data.targetEntity) {
+
+  if (data.targetType === 'keyword-landing') {
+    where.targetPattern = { equals: data.targetPattern }
+  } else if (data.targetEntity) {
     where.targetEntity = { equals: data.targetEntity }
+  } else {
+    return data
   }
 
-  // Exclude current doc on update
   if (operation === 'update' && originalDoc?.id) {
     where.id = { not_equals: originalDoc.id }
   }
@@ -38,8 +38,12 @@ export const preventDuplicateOverride: CollectionBeforeValidateHook = async ({
   })
 
   if (existing.docs.length > 0) {
+    const target =
+      data.targetType === 'keyword-landing'
+        ? `pattern "${data.targetPattern}"`
+        : 'this entity'
     throw new Error(
-      'An override already exists for this entity. Each entity can only have one override per tenant.',
+      `An override already exists for ${target}. Each target can only have one override per tenant.`,
     )
   }
 

@@ -154,20 +154,24 @@ export interface SectionOverrideEntry {
   overrideFields: Record<string, unknown>
 }
 
-/**
- * Represents a single template-override document from the ResolvedTemplateOverrides collection.
- * The merge function receives an ordered array of these.
- */
-export interface ResolvedTemplateOverride {
+export interface ResolvedTemplateOverrideBase {
   id: string | number
   name: string
-  /** When non-null, this is a tenant-scoped override */
   tenant: string | number | null
-  targetType: 'industry-category' | 'industry' | 'job-title' | null
-  targetEntity: string | number | null
-  /** The section-level overrides within this doc */
   sectionOverrides: SectionOverrideEntry[]
 }
+
+export type ResolvedTemplateOverride = ResolvedTemplateOverrideBase &
+  (
+    | {
+        targetType: 'industry-category' | 'industry' | 'job-title'
+        targetEntity: string | number | null
+      }
+    | {
+        targetType: 'keyword-landing'
+        targetPattern: string
+      }
+  )
 
 /**
  * Entity data used for data-dependency filtering.

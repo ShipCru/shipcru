@@ -2,6 +2,7 @@ import type { SectionConfig, VariationInput } from '@/lib/resume-pages/types'
 import type { Page } from '@/payload-types'
 import type { ResolvedTenant } from '@/utils/resolveTenant'
 import type { Metadata } from 'next'
+import type { Payload } from 'payload'
 
 import { notFound } from 'next/navigation'
 import { getPayload } from 'payload'
@@ -17,6 +18,8 @@ import { getCachedDefaultTemplate } from '@/globals/DefaultTemplates/queries/get
 import { getCachedSuffixWords } from '@/globals/SuffixVariations/queries/getSuffixWords'
 import { checkKeywordAccess } from '@/lib/keyword-landings/checkKeywordAccess'
 import { parseKeywordSlug } from '@/lib/keyword-landings/parseKeywordSlug'
+import { buildOverrideChain } from '@/lib/resume-pages/buildOverrideChain'
+import { applyOverrides } from '@/lib/resume-pages/mergeTemplate'
 import { normalizeBlock } from '@/lib/resume-pages/normalizeBlock'
 import { buildSubstitutionContext } from '@/lib/shared/buildSubstitutionContext'
 import { RenderedPage } from '@/lib/shared/RenderedPage'
@@ -47,7 +50,7 @@ export default async function CatchAllPage({ params }: PageProps) {
 
   // Single segment → try keyword landing
   if (slug && slug.length === 1) {
-    return renderKeywordLanding(tenant, slug[0])
+    return renderKeywordLanding(payload, tenant, slug[0])
   }
 
   return notFound()
@@ -66,7 +69,7 @@ function renderPage(page: Page) {
 
 // --- Keyword landing rendering ---
 
-async function renderKeywordLanding(tenant: ResolvedTenant, keywordSlug: string) {
+async function renderKeywordLanding(payload: Payload, tenant: ResolvedTenant, keywordSlug: string) {
   const pools = await getCachedSuffixWords()
 
   const parsed = parseKeywordSlug(keywordSlug, pools)
@@ -91,15 +94,22 @@ async function renderKeywordLanding(tenant: ResolvedTenant, keywordSlug: string)
   if (!checkKeywordAccess(keywordSlug, keywordConfig)) return notFound()
 
   // Load template and supporting data in parallel
-  const [templateData, variationSets, wordFormSets] = await Promise.all([
+  const [templateData, overrideChain, variationSets, wordFormSets] = await Promise.all([
     getCachedDefaultTemplate('keyword'),
+    buildOverrideChain(payload, {
+      entityType: 'keyword-landing',
+      keywordSlug: keywordSlug,
+      tenantId: tenant.id,
+    }),
     getCachedVariationSets(),
     getCachedWordFormSets(),
   ])
 
-  // Normalize template blocks
+  // Normalize and apply overrides
   const heroBlock = templateData.hero?.[0] ? normalizeBlock(templateData.hero[0]) : null
   const sections: SectionConfig[] = (templateData.sections ?? []).map(normalizeBlock)
+  const mergedSections = applyOverrides(sections, overrideChain)
+  const mergedHero = heroBlock ? (applyOverrides([heroBlock], overrideChain)[0] ?? null) : null
 
   const subCtx = buildSubstitutionContext({
     kind: 'keyword',
@@ -116,7 +126,7 @@ async function renderKeywordLanding(tenant: ResolvedTenant, keywordSlug: string)
     entitySkills: [],
   }
 
-  const page = renderTemplate(heroBlock, sections, variationCtx, subCtx, keywordSlug)
+  const page = renderTemplate(mergedHero, mergedSections, variationCtx, subCtx, keywordSlug)
   return <RenderedPage page={page} />
 }
 
