@@ -3549,6 +3549,18 @@ export interface DefaultTemplate {
     sections?: (BlogBlock | TestimonialsBlock | MetricsBlock | CTABlock)[] | null;
   };
   keyword?: {
+    /**
+     * Define URL patterns for keyword landing pages. Each pattern generates a set of pages from word pool combinations.
+     */
+    patterns?:
+      | {
+          /**
+           * URL template. Variables: $(resume), $(verb), $(verber), $(adjective), $(contentWord). Literals like "how-to-" are kept as-is.
+           */
+          pattern: string;
+          id?: string | null;
+        }[]
+      | null;
     hero?: HeroSplitBlock[] | null;
     sections?: (BlogBlock | TestimonialsBlock | MetricsBlock | CTABlock)[] | null;
   };
@@ -3695,6 +3707,12 @@ export interface DefaultTemplatesSelect<T extends boolean = true> {
   keyword?:
     | T
     | {
+        patterns?:
+          | T
+          | {
+              pattern?: T;
+              id?: T;
+            };
         hero?:
           | T
           | {

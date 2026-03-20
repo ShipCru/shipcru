@@ -4,27 +4,22 @@ import { unstable_cache } from 'next/cache'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 
+import { DefaultTemplate } from '@/payload-types'
 import { generateCacheTag } from '@/utilities/generateCacheTag'
 
 export type TemplatePageType = 'jobTitle' | 'industry' | 'keyword'
 
-interface TemplateTab {
-  hero?: object[]
-  sections?: object[]
-}
-
-export async function getDefaultTemplate(
+export async function getDefaultTemplate<T extends TemplatePageType>(
   payload: Payload,
-  pageType: TemplatePageType,
-): Promise<TemplateTab> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const doc = await payload.findGlobal({ slug: 'default-templates' as any })
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const tab = (doc as any)[pageType]
-  return tab ?? { hero: [], sections: [] }
+  pageType: T,
+) {
+  const doc = await payload.findGlobal({ slug: 'default-templates' })
+  const tab = doc[pageType]
+
+  return tab ?? ({ hero: [], sections: [] } as NonNullable<DefaultTemplate[T]>)
 }
 
-export const getCachedDefaultTemplate = (pageType: TemplatePageType) =>
+export const getCachedDefaultTemplate = <T extends TemplatePageType>(pageType: T) =>
   unstable_cache(
     async () => {
       const payload = await getPayload({ config })

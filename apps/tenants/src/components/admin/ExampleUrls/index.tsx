@@ -1,8 +1,10 @@
 import type { Industry } from '@/payload-types'
 import type { UIFieldServerComponent } from 'payload'
 
-import { getSuffixWords } from '@/globals/SuffixVariations/queries/getSuffixWords'
-
+import {
+  buildTemplateWordPools,
+  getSuffixWords,
+} from '@/globals/SuffixVariations/queries/getSuffixWords'
 import { CopyableUrl } from './CopyableUrl'
 
 const MAX_EXAMPLES = 5
@@ -19,10 +21,10 @@ export const ExampleUrls: UIFieldServerComponent = async ({ payload, data }) => 
     return <Hint>Save the document to see example URLs.</Hint>
   }
 
-  const suffixWords = await getSuffixWords(payload)
-  const adjectives = [...new Set(suffixWords.adjectives)]
-  const builders = [...new Set(suffixWords.builders)]
-  const contentWords = [...new Set(suffixWords.contentWords)]
+  const pools = buildTemplateWordPools(await getSuffixWords(payload))
+  const adjectives = [...new Set(pools.adjective)]
+  const builders = [...new Set(pools.verber)]
+  const contentWords = [...new Set(pools.contentWord)]
 
   if (!adjectives.length || !builders.length || !contentWords.length) {
     return <Hint>Configure suffix variations to see example URLs.</Hint>
@@ -79,10 +81,7 @@ export const ExampleUrls: UIFieldServerComponent = async ({ payload, data }) => 
             ({adjectives.length}&times;{builders.length}&times;{contentWords.length})
           </span>
           {industrySlugs.length > 1 && (
-            <span className="opacity-60">
-              {' '}
-              &middot; {industrySlugs.length} industries
-            </span>
+            <span className="opacity-60"> &middot; {industrySlugs.length} industries</span>
           )}
         </span>
       </div>

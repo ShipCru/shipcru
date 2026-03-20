@@ -1,9 +1,14 @@
 import type { MetadataRoute } from 'next'
 
 import { getCachedTenantPageConfig } from '@/collections/TenantPageConfigs/queries/getTenantPageConfig'
-import { getCachedSuffixWords } from '@/globals/SuffixVariations/queries/getSuffixWords'
+import { getCachedDefaultTemplate } from '@/globals/DefaultTemplates/queries/getDefaultTemplate'
+import {
+  buildCanonicalWordPools,
+  getCachedSuffixWords,
+} from '@/globals/SuffixVariations/queries/getSuffixWords'
 import { checkKeywordAccess } from '@/lib/keyword-landings/checkKeywordAccess'
-import { generateKeywordCombinations } from '@/lib/keyword-landings/generateCombinations'
+import { generateTemplateCombinations } from '@/lib/keyword-landings/generateCombinations'
+import { DEFAULT_KEYWORD_PATTERNS } from '@/lib/keyword-landings/templatePatterns'
 import { resolveSitemapTenantContext } from '@/lib/sitemaps/resolveBaseUrl'
 
 export const revalidate = 86400
@@ -22,8 +27,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
   if (!keywordConfig.enabled) return []
 
-  const pools = await getCachedSuffixWords()
-  const allSlugs = generateKeywordCombinations(pools)
+  const [suffixData, templateData] = await Promise.all([
+    getCachedSuffixWords(),
+    getCachedDefaultTemplate('keyword'),
+  ])
+
+  const canonicalPools = buildCanonicalWordPools(suffixData)
+
+  const rawPatterns = templateData.patterns
+  const patterns = rawPatterns?.length
+    ? rawPatterns.map((p) => p.pattern)
+    : DEFAULT_KEYWORD_PATTERNS
+
+  const allSlugs = generateTemplateCombinations(patterns, canonicalPools)
   const allowedSlugs = allSlugs.filter((slug) => checkKeywordAccess(slug, keywordConfig))
 
   return allowedSlugs.map((slug) => ({

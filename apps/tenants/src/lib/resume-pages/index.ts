@@ -16,7 +16,6 @@ export type {
   SectionConfig,
   SectionOverrideEntry,
   SubstitutionContext,
-  SuffixWordLists,
   VariationFieldValue,
   VariationInput,
   VariationOption,

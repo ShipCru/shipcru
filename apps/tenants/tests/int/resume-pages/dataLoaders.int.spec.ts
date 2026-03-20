@@ -35,9 +35,18 @@ describe('getSuffixWords', () => {
     } as any
 
     const result = await getSuffixWords(mockPayload)
-    expect(result.adjectives).toEqual(['best', 'top'])
-    expect(result.builders).toEqual(['creator', 'builder'])
-    expect(result.contentWords).toEqual(['content', 'ideas'])
+    expect(result.adjectives).toEqual([
+      { value: 'best', isCanonical: false },
+      { value: 'top', isCanonical: false },
+    ])
+    expect(result.builders).toEqual([
+      { value: 'creator', isCanonical: false },
+      { value: 'builder', isCanonical: false },
+    ])
+    expect(result.contentWords).toEqual([
+      { value: 'content', isCanonical: false },
+      { value: 'ideas', isCanonical: false },
+    ])
   })
 })
 

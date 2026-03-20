@@ -43,16 +43,6 @@ export interface VariationInput {
   entitySkills: string[]
 }
 
-/**
- * Suffix word lists extracted from the `suffix-variations` global.
- * Passed to the parser so it can validate suffix segments.
- */
-export interface SuffixWordLists {
-  resumeWords: string[]
-  adjectives: string[]
-  builders: string[]
-  contentWords: string[]
-}
 
 /**
  * Result of parsing a resume page URL path.

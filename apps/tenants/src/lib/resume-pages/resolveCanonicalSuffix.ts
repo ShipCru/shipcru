@@ -2,6 +2,7 @@ import type { SuffixWordsData } from '@/globals/SuffixVariations/queries/getSuff
 import type { Payload } from 'payload'
 
 import { WORD_FORM_SET_LOOKUP_FIELD } from '@/collections/WordFormSets/constants'
+import { getCanonical } from '@/globals/SuffixVariations/queries/getSuffixWords'
 import { WordFormSet } from '@/payload-types'
 
 export interface CanonicalSuffix {
@@ -45,7 +46,7 @@ export async function resolveCanonicalSuffix(
     if (adj && builder && content) {
       return {
         adjective: adj,
-        resumeWord: suffixData.canonicalResumeWord ?? 'resume',
+        resumeWord: getCanonical(suffixData.resumeWords) ?? 'resume',
         builder,
         contentWord: content,
         strategy:
@@ -57,16 +58,16 @@ export async function resolveCanonicalSuffix(
   }
 
   // Fall back to global canonical
-  if (
-    suffixData.canonicalAdjective &&
-    suffixData.canonicalBuilder &&
-    suffixData.canonicalContentWord
-  ) {
+  const canonicalAdj = getCanonical(suffixData.adjectives)
+  const canonicalBuilder = getCanonical(suffixData.builders)
+  const canonicalContent = getCanonical(suffixData.contentWords)
+
+  if (canonicalAdj && canonicalBuilder && canonicalContent) {
     return {
-      adjective: suffixData.canonicalAdjective,
-      resumeWord: suffixData.canonicalResumeWord ?? 'resume',
-      builder: suffixData.canonicalBuilder,
-      contentWord: suffixData.canonicalContentWord,
+      adjective: canonicalAdj,
+      resumeWord: getCanonical(suffixData.resumeWords) ?? 'resume',
+      builder: canonicalBuilder,
+      contentWord: canonicalContent,
       strategy: (suffixData.canonicalStrategy as CanonicalSuffix['strategy']) ?? 'rel-canonical',
     }
   }

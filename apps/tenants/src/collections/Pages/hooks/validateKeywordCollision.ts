@@ -1,7 +1,10 @@
 import type { CollectionBeforeChangeHook } from 'payload'
 
-import { getCachedSuffixWords } from '@/globals/SuffixVariations/queries/getSuffixWords'
-import { isValidKeywordSlug } from '@/lib/keyword-landings/parseKeywordSlug'
+import {
+  buildTemplateWordPools,
+  getCachedSuffixWords,
+} from '@/globals/SuffixVariations/queries/getSuffixWords'
+import { isValidKeywordSlug } from '@/lib/keyword-landings/templatePatterns'
 
 /**
  * Warns (but does not block) when a root-level page slug collides with a
@@ -19,7 +22,8 @@ export const warnKeywordCollision: CollectionBeforeChangeHook = async ({
   const slug = data?.slug ?? originalDoc?.slug
   if (!slug) return data
 
-  const pools = await getCachedSuffixWords()
+  const suffixData = await getCachedSuffixWords()
+  const pools = buildTemplateWordPools(suffixData)
 
   if (isValidKeywordSlug(slug, pools)) {
     req.payload.logger.warn(

@@ -1,40 +1,51 @@
-export interface KeywordWordPools {
-  resumeWords: string[]
-  adjectives: string[]
-  builders: string[]
-  contentWords: string[]
-}
+import type { TemplateVariableName, TemplateWordPools } from './templatePatterns'
 
-/**
- * Generates all valid keyword landing URL slugs from word pools.
- *
- * Format: [adjective?]-[resumeWord]-[builder?]-[contentWord?]
- * Rules:
- * - Resume word is always present
- * - Adjective, builder, and content word are optional
- * - At least 2 parts required (resumeWord alone is too generic)
- */
-export function generateKeywordCombinations(pools: KeywordWordPools): string[] {
-  const { resumeWords, adjectives, builders, contentWords } = pools
-  if (resumeWords.length === 0) return []
+export type { TemplateWordPools }
 
+const VARIABLE_PATTERN = /\$\(([^)]+)\)/
+
+export function generateTemplateCombinations(
+  patterns: string[],
+  wordPools: TemplateWordPools,
+): string[] {
+  if (patterns.length === 0) return []
+
+  const seen = new Set<string>()
   const slugs: string[] = []
-  const adjectiveOptions = ['', ...adjectives]
-  const builderOptions = ['', ...builders]
-  const contentOptions = ['', ...contentWords]
 
-  for (const adj of adjectiveOptions) {
-    for (const rw of resumeWords) {
-      for (const builder of builderOptions) {
-        for (const cw of contentOptions) {
-          const parts = [adj, rw, builder, cw].filter(Boolean)
-          // Require at least 2 parts (resumeWord alone is too generic)
-          if (parts.length < 2) continue
-          slugs.push(parts.join('-'))
-        }
+  for (const pattern of patterns) {
+    const varNames: TemplateVariableName[] = []
+    let match: RegExpExecArray | null
+    const re = new RegExp(VARIABLE_PATTERN.source, 'g')
+    while ((match = re.exec(pattern)) !== null) {
+      varNames.push(match[1] as TemplateVariableName)
+    }
+
+    if (varNames.length === 0) continue
+
+    const wordArrays = varNames.map((v) => wordPools[v] ?? [])
+    if (wordArrays.some((arr) => arr.length === 0)) continue
+
+    const combos = cartesian(wordArrays)
+
+    for (const combo of combos) {
+      let idx = 0
+      const slug = pattern.replace(new RegExp(VARIABLE_PATTERN.source, 'g'), () => combo[idx++])
+
+      if (!seen.has(slug)) {
+        seen.add(slug)
+        slugs.push(slug)
       }
     }
   }
 
   return slugs
+}
+
+function cartesian(arrays: string[][]): string[][] {
+  if (arrays.length === 0) return [[]]
+  return arrays.reduce<string[][]>(
+    (acc, arr) => acc.flatMap((combo) => arr.map((word) => [...combo, word])),
+    [[]],
+  )
 }

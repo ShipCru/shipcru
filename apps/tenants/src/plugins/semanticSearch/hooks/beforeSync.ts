@@ -4,6 +4,7 @@ import type { Payload, PayloadRequest } from 'payload'
 
 import { getSuffixWords } from '@/globals/SuffixVariations/queries/getSuffixWords'
 import { resolveCanonicalSuffix } from '@/lib/resume-pages/resolveCanonicalSuffix'
+import { getEntityId } from '@/utilities/getEntityId'
 
 interface BeforeSyncArgs {
   originalDoc: Record<string, any>
@@ -45,9 +46,7 @@ export function createBeforeSync(fullTextExtractors: Record<string, GenerateFull
         })
       }
 
-      const industryIds = (originalDoc.industries ?? [])
-        .map((i: Record<string, unknown>) => (typeof i === 'object' && i !== null ? i.id : i))
-        .filter(Boolean)
+      const industryIds = (originalDoc.industries ?? []).map(getEntityId).filter(Boolean)
 
       if (industryIds.length > 0) {
         try {

@@ -8,68 +8,61 @@ import config from '@payload-config'
 import { WORD_FORM_SET_LOOKUP_FIELD } from '@/collections/WordFormSets/constants'
 import { generateCacheTag } from '@/utilities/generateCacheTag'
 
+export type { SuffixWordEntry, SuffixWordsData } from './suffixWordPools'
+export {
+  buildCanonicalWordPools,
+  buildTemplateWordPools,
+  getCanonical,
+  getValues,
+} from './suffixWordPools'
+
+import type { SuffixWordEntry, SuffixWordsData } from './suffixWordPools'
+
 interface WordEntry {
   wordFormSet?: WordFormSet | number | null
   isCanonical?: boolean | null
 }
 
-function extractWords(
+type WordFormSetField = keyof WordFormSet & string
+
+function extractEntries(
   items: WordEntry[] | null | undefined,
   wordFormSetType: keyof typeof WORD_FORM_SET_LOOKUP_FIELD,
-): string[] {
+): SuffixWordEntry[] {
   const field = WORD_FORM_SET_LOOKUP_FIELD[wordFormSetType]
   if (!field) return []
 
   return (items ?? []).flatMap((item) => {
     const doc = item.wordFormSet
     if (!doc || typeof doc === 'number') return []
-
     const value = doc[field]
-    return typeof value === 'string' && value ? [value] : []
+    if (typeof value !== 'string' || !value) return []
+    return [{ value, isCanonical: !!item.isCanonical }]
   })
 }
 
-function extractCanonicalWord(
+function extractEntriesWithField(
   items: WordEntry[] | null | undefined,
-  wordFormSetType: keyof typeof WORD_FORM_SET_LOOKUP_FIELD,
-): string | null {
-  const field = WORD_FORM_SET_LOOKUP_FIELD[wordFormSetType]
-  if (!field) return null
-
-  const canonical = (items ?? []).find((item) => item.isCanonical)
-  if (!canonical) return null
-
-  const doc = canonical.wordFormSet
-  if (!doc || typeof doc === 'number') return null
-
-  const value = doc[field]
-  return typeof value === 'string' && value ? value : null
-}
-
-export interface SuffixWordsData {
-  resumeWords: string[]
-  adjectives: string[]
-  builders: string[]
-  contentWords: string[]
-  canonicalResumeWord: string | null
-  canonicalAdjective: string | null
-  canonicalBuilder: string | null
-  canonicalContentWord: string | null
-  canonicalStrategy: string
+  field: WordFormSetField,
+): SuffixWordEntry[] {
+  return (items ?? []).flatMap((item) => {
+    const doc = item.wordFormSet
+    if (!doc || typeof doc === 'number') return []
+    const value = doc[field]
+    if (typeof value !== 'string' || !value) return []
+    return [{ value, isCanonical: !!item.isCanonical }]
+  })
 }
 
 export async function getSuffixWords(payload: Payload): Promise<SuffixWordsData> {
   const global = await payload.findGlobal({ slug: 'suffix-variations', depth: 1 })
 
   return {
-    resumeWords: extractWords(global.resumeWords, 'resumeWord'),
-    adjectives: extractWords(global.adjectives, 'adjective'),
-    builders: extractWords(global.builders, 'verb'),
-    contentWords: extractWords(global.contentWords, 'contentWord'),
-    canonicalResumeWord: extractCanonicalWord(global.resumeWords, 'resumeWord'),
-    canonicalAdjective: extractCanonicalWord(global.adjectives, 'adjective'),
-    canonicalBuilder: extractCanonicalWord(global.builders, 'verb'),
-    canonicalContentWord: extractCanonicalWord(global.contentWords, 'contentWord'),
+    resumeWords: extractEntries(global.resumeWords, 'resumeWord'),
+    adjectives: extractEntries(global.adjectives, 'adjective'),
+    builders: extractEntries(global.builders, 'verb'),
+    verbs: extractEntriesWithField(global.builders, 'v_singular'),
+    contentWords: extractEntries(global.contentWords, 'contentWord'),
     canonicalStrategy: global.canonicalStrategy ?? 'rel-canonical',
   }
 }

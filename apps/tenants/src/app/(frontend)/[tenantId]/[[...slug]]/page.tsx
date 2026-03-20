@@ -15,9 +15,16 @@ import { findPageByBreadcrumbUrl } from '@/collections/Pages/queries/findPageByB
 import { getCachedTenantPageConfig } from '@/collections/TenantPageConfigs/queries/getTenantPageConfig'
 import { getCachedWordFormSets } from '@/collections/WordFormSets/queries/getWordFormSets'
 import { getCachedDefaultTemplate } from '@/globals/DefaultTemplates/queries/getDefaultTemplate'
-import { getCachedSuffixWords } from '@/globals/SuffixVariations/queries/getSuffixWords'
+import {
+  buildTemplateWordPools,
+  getCachedSuffixWords,
+  getCanonical,
+} from '@/globals/SuffixVariations/queries/getSuffixWords'
 import { checkKeywordAccess } from '@/lib/keyword-landings/checkKeywordAccess'
-import { parseKeywordSlug } from '@/lib/keyword-landings/parseKeywordSlug'
+import {
+  DEFAULT_KEYWORD_PATTERNS,
+  matchSlugToTemplates,
+} from '@/lib/keyword-landings/templatePatterns'
 import { buildOverrideChain } from '@/lib/resume-pages/buildOverrideChain'
 import { applyOverrides } from '@/lib/resume-pages/mergeTemplate'
 import { normalizeBlock } from '@/lib/resume-pages/normalizeBlock'
@@ -70,17 +77,26 @@ function renderPage(page: Page) {
 // --- Keyword landing rendering ---
 
 async function renderKeywordLanding(payload: Payload, tenant: ResolvedTenant, keywordSlug: string) {
-  const pools = await getCachedSuffixWords()
+  const [suffixData, templateData] = await Promise.all([
+    getCachedSuffixWords(),
+    getCachedDefaultTemplate('keyword'),
+  ])
 
-  const parsed = parseKeywordSlug(keywordSlug, pools)
-  if (!parsed) return notFound()
+  const allPools = buildTemplateWordPools(suffixData)
 
-  // Fill missing parts from canonical suffixes for template rendering
+  const rawPatterns = templateData.patterns
+  const patterns = rawPatterns?.length
+    ? rawPatterns.map((p) => p.pattern)
+    : DEFAULT_KEYWORD_PATTERNS
+
+  const matched = matchSlugToTemplates(keywordSlug, patterns, allPools)
+  if (!matched) return notFound()
+
   const resolvedParsed = {
-    adjective: parsed.adjective ?? pools.canonicalAdjective,
-    resumeWord: parsed.resumeWord,
-    builder: parsed.builder ?? pools.canonicalBuilder,
-    contentWord: parsed.contentWord ?? pools.canonicalContentWord,
+    adjective: matched.variables.adjective ?? getCanonical(suffixData.adjectives),
+    resumeWord: matched.variables.resume ?? getCanonical(suffixData.resumeWords) ?? '',
+    builder: matched.variables.verber ?? getCanonical(suffixData.builders),
+    contentWord: matched.variables.contentWord ?? getCanonical(suffixData.contentWords),
   }
 
   const pageConfig = await getCachedTenantPageConfig(tenant.id)
@@ -93,9 +109,7 @@ async function renderKeywordLanding(payload: Payload, tenant: ResolvedTenant, ke
   }
   if (!checkKeywordAccess(keywordSlug, keywordConfig)) return notFound()
 
-  // Load template and supporting data in parallel
-  const [templateData, overrideChain, variationSets, wordFormSets] = await Promise.all([
-    getCachedDefaultTemplate('keyword'),
+  const [overrideChain, variationSets, wordFormSets] = await Promise.all([
     buildOverrideChain(payload, {
       entityType: 'keyword-landing',
       keywordSlug: keywordSlug,
@@ -105,7 +119,6 @@ async function renderKeywordLanding(payload: Payload, tenant: ResolvedTenant, ke
     getCachedWordFormSets(),
   ])
 
-  // Normalize and apply overrides
   const heroBlock = templateData.hero?.[0] ? normalizeBlock(templateData.hero[0]) : null
   const sections: SectionConfig[] = (templateData.sections ?? []).map(normalizeBlock)
   const mergedSections = applyOverrides(sections, overrideChain)

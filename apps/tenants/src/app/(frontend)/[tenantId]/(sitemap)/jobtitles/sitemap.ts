@@ -1,10 +1,14 @@
 import type { MetadataRoute } from 'next'
 
 import { getCachedTenantPageConfig } from '@/collections/TenantPageConfigs/queries/getTenantPageConfig'
-import { getCachedSuffixWords } from '@/globals/SuffixVariations/queries/getSuffixWords'
+import {
+  getCachedSuffixWords,
+  getCanonical,
+} from '@/globals/SuffixVariations/queries/getSuffixWords'
 import { resolveCanonicalSuffix } from '@/lib/resume-pages/resolveCanonicalSuffix'
 import { resolveSitemapTenantContext } from '@/lib/sitemaps/resolveBaseUrl'
 import { buildIndustryWhere, buildJobTitleWhere } from '@/lib/tenant-visibility'
+import { getEntityId } from '@/utilities/getEntityId'
 
 export const revalidate = 86400
 
@@ -20,11 +24,7 @@ export async function generateSitemaps() {
   return Array.from({ length: chunks }, (_, i) => ({ id: i }))
 }
 
-export default async function sitemap({
-  id,
-}: {
-  id: number
-}): Promise<MetadataRoute.Sitemap> {
+export default async function sitemap({ id }: { id: number }): Promise<MetadataRoute.Sitemap> {
   const ctx = await resolveSitemapTenantContext()
   if (!ctx) return []
 
@@ -65,9 +65,7 @@ async function buildAllEntries(ctx: {
   if (industries.docs.length === 0) return []
 
   const visibleIndustryIds = industries.docs.map((ind) => ind.id)
-  const visibleIndustryMap = new Map(
-    industries.docs.map((ind) => [ind.id, ind.slug]),
-  )
+  const visibleIndustryMap = new Map(industries.docs.map((ind) => [ind.id, ind.slug]))
 
   const jtWhere = buildJobTitleWhere(pageConfig, visibleIndustryIds)
 
@@ -88,15 +86,17 @@ async function buildAllEntries(ctx: {
     },
   })
 
+  const canonicalAdj = getCanonical(suffixWords.adjectives)
+  const canonicalBuilder = getCanonical(suffixWords.builders)
+  const canonicalContent = getCanonical(suffixWords.contentWords)
+
   const globalCanonical =
-    suffixWords.canonicalAdjective &&
-    suffixWords.canonicalBuilder &&
-    suffixWords.canonicalContentWord
+    canonicalAdj && canonicalBuilder && canonicalContent
       ? {
-          adjective: suffixWords.canonicalAdjective,
-          resumeWord: suffixWords.canonicalResumeWord ?? 'resume',
-          builder: suffixWords.canonicalBuilder,
-          contentWord: suffixWords.canonicalContentWord,
+          adjective: canonicalAdj,
+          resumeWord: getCanonical(suffixWords.resumeWords) ?? 'resume',
+          builder: canonicalBuilder,
+          contentWord: canonicalContent,
         }
       : null
 
@@ -115,9 +115,9 @@ async function buildAllEntries(ctx: {
         payload,
         {
           overrideSuffix: jt.overrideSuffix,
-          suffixAdjective: typeof jt.suffixAdjective === 'object' ? jt.suffixAdjective?.id : jt.suffixAdjective,
-          suffixBuilder: typeof jt.suffixBuilder === 'object' ? jt.suffixBuilder?.id : jt.suffixBuilder,
-          suffixContentWord: typeof jt.suffixContentWord === 'object' ? jt.suffixContentWord?.id : jt.suffixContentWord,
+          suffixAdjective: getEntityId(jt.suffixAdjective),
+          suffixBuilder: getEntityId(jt.suffixBuilder),
+          suffixContentWord: getEntityId(jt.suffixContentWord),
           suffixStrategy: jt.suffixStrategy,
         },
         suffixWords,

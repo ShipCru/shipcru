@@ -1,16 +1,17 @@
 'use client'
 
-import type { KeywordWordPools } from '@/lib/keyword-landings/generateCombinations'
+import type { TemplateWordPools } from '@/lib/keyword-landings/templatePatterns'
 
 import React, { useEffect, useState } from 'react'
 import { useFormFields } from '@payloadcms/ui'
 
-import { isValidKeywordSlug } from '@/lib/keyword-landings/parseKeywordSlug'
+import { isValidKeywordSlug } from '@/lib/keyword-landings/templatePatterns'
 
 interface WordFormSetDoc {
   rw_singular?: string
   adj_singular?: string
   v_worder?: string
+  v_singular?: string
   cw_plural?: string
 }
 
@@ -37,17 +38,18 @@ function extractWord(items: WeightedEntry[] | undefined, field: keyof WordFormSe
 export const KeywordCollisionWarning: React.FC = () => {
   const slug = useFormFields(([fields]) => fields.slug?.value as string | undefined)
   const parent = useFormFields(([fields]) => fields.parent?.value)
-  const [pools, setPools] = useState<KeywordWordPools | null>(null)
+  const [pools, setPools] = useState<TemplateWordPools | null>(null)
 
   useEffect(() => {
     fetch('/api/globals/suffix-variations?depth=1')
       .then((res) => res.json())
       .then((data: SuffixVariationsResponse) => {
         setPools({
-          resumeWords: extractWord(data.resumeWords, 'rw_singular'),
-          adjectives: extractWord(data.adjectives, 'adj_singular'),
-          builders: extractWord(data.builders, 'v_worder'),
-          contentWords: extractWord(data.contentWords, 'cw_plural'),
+          resume: extractWord(data.resumeWords, 'rw_singular'),
+          verb: extractWord(data.builders, 'v_singular'),
+          verber: extractWord(data.builders, 'v_worder'),
+          adjective: extractWord(data.adjectives, 'adj_singular'),
+          contentWord: extractWord(data.contentWords, 'cw_plural'),
         })
       })
       .catch(() => {})

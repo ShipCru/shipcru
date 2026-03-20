@@ -1,4 +1,5 @@
-import type { ParsedResumeUrl, SuffixWordLists } from './types'
+import type { ParsedResumeUrl } from './types'
+import type { TemplateWordPools } from '@/lib/keyword-landings/templatePatterns'
 
 /**
  * Builds the internal path for a job-title suffix page.
@@ -26,10 +27,7 @@ export function buildJobTitleSuffixPath(
  * @param suffixWords - The known suffix word lists (adjectives, builders, contentWords)
  * @returns Parsed URL data, or null if the URL is invalid
  */
-export function parseResumeUrl(
-  path: string,
-  suffixWords: SuffixWordLists,
-): ParsedResumeUrl | null {
+export function parseResumeUrl(path: string, pools: TemplateWordPools): ParsedResumeUrl | null {
   // Strip leading /resumes/ prefix
   const stripped = path.replace(/^\/resumes\/?/, '')
   const segments = stripped.split('/').filter(Boolean)
@@ -51,11 +49,7 @@ export function parseResumeUrl(
     const fullJobSegment = segments[1]
     const parts = fullJobSegment.split('-')
 
-    // Known resume words from the global config (fall back to ['resume'] for backwards compat)
-    const resumeWords =
-      suffixWords.resumeWords && suffixWords.resumeWords.length > 0
-        ? suffixWords.resumeWords
-        : ['resume']
+    const resumeWords = pools.resume && pools.resume.length > 0 ? pools.resume : ['resume']
 
     // Minimum: "{jobTitle}-{adj}-{resumeWord}-{builder}-{content}" = at least 5 parts
     if (parts.length < 5) return null
@@ -64,8 +58,8 @@ export function parseResumeUrl(
     const contentWord = parts[parts.length - 1]
     const builderWord = parts[parts.length - 2]
 
-    if (!suffixWords.contentWords.includes(contentWord)) return null
-    if (!suffixWords.builders.includes(builderWord)) return null
+    if (!pools.contentWord.includes(contentWord)) return null
+    if (!pools.verber.includes(builderWord)) return null
 
     // Try to match a resume word at the position(s) before the builder
     // Resume words can be multi-word (e.g., "curriculum-vitae" = 2 parts)
@@ -94,7 +88,7 @@ export function parseResumeUrl(
     const adjIdx = parts.length - 2 - resumeWordPartCount - 1
     if (adjIdx < 0) return null
     const adjective = parts[adjIdx]
-    if (!suffixWords.adjectives.includes(adjective)) return null
+    if (!pools.adjective.includes(adjective)) return null
 
     // Everything before the adjective is the job title slug
     const jobTitleSlug = parts.slice(0, adjIdx).join('-')

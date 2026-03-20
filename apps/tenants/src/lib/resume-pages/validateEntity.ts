@@ -1,6 +1,8 @@
 import type { ParsedResumeUrl } from './types'
 import type { Payload } from 'payload'
 
+import { getEntityId } from '@/utilities/getEntityId'
+
 function extractRelId(value: unknown): number | string | null {
   if (value === null || value === undefined) return null
   if (typeof value === 'number' || typeof value === 'string') return value
@@ -101,11 +103,9 @@ async function validateJobTitleEntity(
 
   if (!industry || !jobTitle) return null
 
-  const jtIndustries = jobTitle.industries as Array<{ id: number | string } | number | string>
+  const jtIndustries = jobTitle.industries ?? []
   const industryId = industry.id
-  const belongs = jtIndustries?.some(
-    (ind) => (typeof ind === 'object' ? ind.id : ind) === industryId,
-  )
+  const belongs = jtIndustries.some((ind) => getEntityId(ind) === industryId)
 
   if (!belongs) return null
 

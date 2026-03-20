@@ -10,9 +10,11 @@ import { getCachedVariationSets } from '@/collections/ContentVariations/queries/
 import { getCachedTenantPageConfig } from '@/collections/TenantPageConfigs/queries/getTenantPageConfig'
 import { getCachedWordFormSets } from '@/collections/WordFormSets/queries/getWordFormSets'
 import { getCachedDefaultTemplate } from '@/globals/DefaultTemplates/queries/getDefaultTemplate'
-import { getCachedSuffixWords } from '@/globals/SuffixVariations/queries/getSuffixWords'
+import {
+  buildTemplateWordPools,
+  getCachedSuffixWords,
+} from '@/globals/SuffixVariations/queries/getSuffixWords'
 import { buildOverrideChain } from '@/lib/resume-pages/buildOverrideChain'
-import { checkPageAccess } from '@/lib/tenant-visibility'
 import { applyOverrides, filterByDataDependencies } from '@/lib/resume-pages/mergeTemplate'
 import { normalizeBlock } from '@/lib/resume-pages/normalizeBlock'
 import { buildJobTitleSuffixPath, parseResumeUrl } from '@/lib/resume-pages/parseResumeUrl'
@@ -21,6 +23,7 @@ import { validateEntity } from '@/lib/resume-pages/validateEntity'
 import { buildSubstitutionContext } from '@/lib/shared/buildSubstitutionContext'
 import { RenderedPage } from '@/lib/shared/RenderedPage'
 import { renderTemplate } from '@/lib/shared/renderTemplate'
+import { checkPageAccess } from '@/lib/tenant-visibility'
 import { resolveTenantBySlug } from '@/utils/resolveTenant'
 
 export const revalidate = 86400 // 24h
@@ -43,7 +46,8 @@ export default async function ResumePage({ params }: PageProps) {
 
   const suffixWords = await getCachedSuffixWords()
 
-  const parsed = parseResumeUrl(path, suffixWords)
+  const pools = buildTemplateWordPools(suffixWords)
+  const parsed = parseResumeUrl(path, pools)
   if (!parsed) return notFound()
 
   const entity = await validateEntity(payload, parsed)
@@ -52,7 +56,6 @@ export default async function ResumePage({ params }: PageProps) {
   const pageConfig = await getCachedTenantPageConfig(tenant.id)
   if (!checkPageAccess(pageConfig, parsed, entity)) return notFound()
 
-  // Canonical suffix resolution (job-title pages only)
   if (parsed.type === 'job-title') {
     const canonicalSuffix = await resolveCanonicalSuffix(payload, entity, suffixWords)
 
@@ -136,7 +139,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const suffixWords = await getCachedSuffixWords()
   const path = `/resumes/${segments.join('/')}`
-  const parsed = parseResumeUrl(path, suffixWords)
+  const parsed = parseResumeUrl(path, buildTemplateWordPools(suffixWords))
   if (!parsed) return {}
 
   const entity = await validateEntity(payload, parsed)
