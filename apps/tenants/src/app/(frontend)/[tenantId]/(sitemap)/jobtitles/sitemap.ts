@@ -5,6 +5,7 @@ import {
   getCachedSuffixWords,
   getCanonical,
 } from '@/globals/SuffixVariations/queries/getSuffixWords'
+import { buildSuffixString } from '@/lib/resume-pages/parseResumeUrl'
 import { resolveCanonicalSuffix } from '@/lib/resume-pages/resolveCanonicalSuffix'
 import { resolveSitemapTenantContext } from '@/lib/sitemaps/resolveBaseUrl'
 import { buildIndustryWhere, buildJobTitleWhere } from '@/lib/tenant-visibility'
@@ -54,6 +55,7 @@ async function buildAllEntries(ctx: {
   const [industries, suffixWords] = await Promise.all([
     payload.find({
       collection: 'industries',
+      overrideAccess: false,
       where: industryWhere,
       depth: 0,
       pagination: false,
@@ -71,6 +73,7 @@ async function buildAllEntries(ctx: {
 
   const jobTitles = await payload.find({
     collection: 'job-titles',
+    overrideAccess: false,
     where: jtWhere,
     depth: 0,
     pagination: false,
@@ -130,7 +133,7 @@ async function buildAllEntries(ctx: {
     if (!suffix) continue
 
     const jtIndustryIds = (jt.industries ?? []) as number[]
-    const suffixStr = `${suffix.adjective}-${suffix.resumeWord}-${suffix.builder}-${suffix.contentWord}`
+    const suffixStr = buildSuffixString(suffix)
 
     for (const indId of jtIndustryIds) {
       const industrySlug = visibleIndustryMap.get(indId)

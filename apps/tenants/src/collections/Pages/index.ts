@@ -26,7 +26,6 @@ export const Pages: CollectionConfig = {
     useAsTitle: 'title',
     livePreview: {
       url: ({ data, req }) =>
-        // TODO - change according to multitenancy
         generatePreviewPath({
           slug: data?.slug,
           collection: 'pages',
@@ -35,11 +34,11 @@ export const Pages: CollectionConfig = {
             breadcrumbs: data?.breadcrumbs,
             absolute: false,
           }),
+          tenantSlug: process.env.DEFAULT_TENANT_SLUG,
           req,
         }),
     },
     preview: (data, { req }) =>
-      // TODO - change according to multitenancy
       generatePreviewPath({
         slug: data?.slug as string,
         collection: 'pages',
@@ -48,6 +47,7 @@ export const Pages: CollectionConfig = {
           breadcrumbs: data?.breadcrumbs as Page['breadcrumbs'],
           absolute: false,
         }),
+        tenantSlug: process.env.DEFAULT_TENANT_SLUG,
         req,
       }),
   },

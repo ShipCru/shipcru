@@ -21,6 +21,8 @@ Fight entropy. Leave the codebase better than you found it.
 - Admin components: use Tailwind classes for styling, not inline `style` attributes
 - Don't add comments that restate what the function name or signature already says. No decorative separator comments. Only comment where the logic isn't self-evident.
 - Don't use `as any` — Payload's generated types include plugin-created collections (`search`, `payload-jobs`) and `payload.db.drizzle` is properly typed. Use `as unknown as T` only for raw SQL result rows where the DB returns `Record<string, unknown>[]`.
+- Suffix URL building: use `buildSuffixString()` from `@/lib/resume-pages/parseResumeUrl` — don't inline the `${adj}-${resumeWord}-${builder}-${contentWord}` pattern.
+- Tenant routing: the middleware unconditionally prepends `/${tenantSlug}` to every matched request. Never include the tenant slug in paths used for `redirect()`, `permanentRedirect()`, canonical URLs, or sitemap entries — the middleware handles it. Including it causes double-prefixing.
 
 ## Core Principles
 

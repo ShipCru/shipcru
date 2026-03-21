@@ -1,8 +1,8 @@
 import type { MetadataRoute } from 'next'
 
 import { getCachedTenantPageConfig } from '@/collections/TenantPageConfigs/queries/getTenantPageConfig'
-import { buildIndustryWhere } from '@/lib/tenant-visibility'
 import { resolveSitemapTenantContext } from '@/lib/sitemaps/resolveBaseUrl'
+import { buildIndustryWhere } from '@/lib/tenant-visibility'
 
 export const revalidate = 86400
 
@@ -18,6 +18,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const result = await payload.find({
     collection: 'industries',
+    overrideAccess: false,
     where,
     depth: 0,
     pagination: false,

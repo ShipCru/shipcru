@@ -1,21 +1,26 @@
 import type { CollectionSlug, PayloadRequest } from 'payload'
 
 type Props = {
-  collection: Extract<CollectionSlug, 'pages'>
+  collection: Extract<CollectionSlug, 'pages' | 'industries' | 'job-titles'>
   slug: string
   path: string
   req: PayloadRequest
+  tenantSlug?: string
 }
 
-export const generatePreviewPath = ({ collection, slug, path }: Props) => {
-  const encodedParams = new URLSearchParams({
+export const generatePreviewPath = ({ collection, slug, path, tenantSlug }: Props) => {
+  const params: Record<string, string> = {
     slug,
     collection,
     path,
     previewSecret: process.env.PREVIEW_SECRET || '',
-  })
+  }
 
-  const url = `/next/preview?${encodedParams.toString()}`
+  if (tenantSlug) {
+    params.tenantSlug = tenantSlug
+  }
+
+  const url = `/next/preview?${new URLSearchParams(params).toString()}`
 
   return url
 }

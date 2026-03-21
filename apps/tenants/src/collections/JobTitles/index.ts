@@ -1,18 +1,25 @@
 import { type CollectionConfig, slugField } from 'payload'
 
+import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
 import { superAdminCrud } from '@/access/superAdminCrud'
 import { originFields } from '@/fields/origin'
 import { seo } from '@/lib/fields/seo'
+import { jobTitlePreview } from './admin/preview'
 
 export const JobTitles: CollectionConfig = {
   slug: 'job-titles',
-  access: superAdminCrud,
+  access: { ...superAdminCrud, read: authenticatedOrPublished },
   admin: {
     useAsTitle: 'name',
     listSearchableFields: ['name', 'slug'],
     group: 'Resume Pages',
-    defaultColumns: ['name', 'industries'],
+    defaultColumns: ['name', '_status', 'industries'],
+    livePreview: {
+      url: ({ data, req }) => jobTitlePreview(data as Record<string, unknown>, { req } as Parameters<typeof jobTitlePreview>[1]),
+    },
+    preview: jobTitlePreview,
   },
+  versions: { drafts: true },
   fields: [
     {
       type: 'tabs',

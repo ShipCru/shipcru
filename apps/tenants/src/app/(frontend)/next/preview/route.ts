@@ -1,7 +1,7 @@
 import type { NextRequest } from 'next/server';
 import type { CollectionSlug, PayloadRequest } from 'payload';
 
-import { draftMode } from 'next/headers';
+import { cookies, draftMode } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { getPayload } from 'payload';
 import configPromise from '@payload-config';
@@ -15,6 +15,7 @@ export async function GET(req: NextRequest): Promise<Response> {
 	const collection = searchParams.get('collection') as CollectionSlug;
 	const slug = searchParams.get('slug');
 	const previewSecret = searchParams.get('previewSecret');
+	const tenantSlug = searchParams.get('tenantSlug');
 
 	if (previewSecret !== process.env.PREVIEW_SECRET) {
 		return new Response('You are not allowed to preview this page', { status: 403 });
@@ -47,9 +48,18 @@ export async function GET(req: NextRequest): Promise<Response> {
 		return new Response('You are not allowed to preview this page', { status: 403 });
 	}
 
-	// You can add additional checks here to see if the user is allowed to preview this page
-
 	draft.enable();
+
+	const cookieStore = await cookies();
+	if (tenantSlug) {
+		cookieStore.set('x-draft-tenant', tenantSlug, {
+			path: '/',
+			httpOnly: true,
+			sameSite: 'lax',
+		});
+	} else {
+		cookieStore.delete('x-draft-tenant');
+	}
 
 	redirect(path);
 }

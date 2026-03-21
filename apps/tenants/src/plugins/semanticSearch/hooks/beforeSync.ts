@@ -15,6 +15,8 @@ interface BeforeSyncArgs {
 
 export function createBeforeSync(fullTextExtractors: Record<string, GenerateFullText>) {
   return async ({ originalDoc, payload, searchDoc }: BeforeSyncArgs): Promise<DocToSync> => {
+    if (originalDoc._status && originalDoc._status !== 'published') return searchDoc
+
     const collectionSlug = searchDoc.doc.relationTo
     const generateFullText = fullTextExtractors[collectionSlug]
 

@@ -29,7 +29,8 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
   const host = request.headers.get('host') || ''
 
-  const tenantSlug = getTenantSlugFromHost(host) || process.env.DEFAULT_TENANT_SLUG || null
+  const draftTenant = request.cookies.get('x-draft-tenant')?.value
+  const tenantSlug = getTenantSlugFromHost(host) || draftTenant || process.env.DEFAULT_TENANT_SLUG || null
   if (!tenantSlug) return NextResponse.next()
 
   // Rewrite by prepending tenant slug: /resume-ideas → /{tenant}/resume-ideas

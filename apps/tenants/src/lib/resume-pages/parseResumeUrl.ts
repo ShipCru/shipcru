@@ -1,17 +1,18 @@
 import type { ParsedResumeUrl } from './types'
 import type { TemplateWordPools } from '@/lib/keyword-landings/templatePatterns'
 
-/**
- * Builds the internal path for a job-title suffix page.
- * Inverse of the job-title branch in parseResumeUrl.
- */
+export type SuffixWords = { adjective: string; resumeWord: string; builder: string; contentWord: string }
+
+export function buildSuffixString(suffix: SuffixWords): string {
+  return `${suffix.adjective}-${suffix.resumeWord}-${suffix.builder}-${suffix.contentWord}`
+}
+
 export function buildJobTitleSuffixPath(
-  tenantSlug: string,
   industrySlug: string,
   jobTitleSlug: string,
-  suffix: { adjective: string; resumeWord: string; builder: string; contentWord: string },
+  suffix: SuffixWords,
 ): string {
-  return `/${tenantSlug}/resumes/${industrySlug}/${jobTitleSlug}-${suffix.adjective}-${suffix.resumeWord}-${suffix.builder}-${suffix.contentWord}`
+  return `/resumes/${industrySlug}/${jobTitleSlug}-${buildSuffixString(suffix)}`
 }
 
 /**

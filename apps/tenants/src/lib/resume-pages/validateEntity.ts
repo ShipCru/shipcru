@@ -1,6 +1,8 @@
 import type { ParsedResumeUrl } from './types'
 import type { Payload } from 'payload'
 
+import { draftMode } from 'next/headers'
+
 import { getEntityId } from '@/utilities/getEntityId'
 
 function extractRelId(value: unknown): number | string | null {
@@ -45,22 +47,27 @@ export async function validateEntity(
   payload: Payload,
   parsed: ParsedResumeUrl,
 ): Promise<EntityData | null> {
+  const { isEnabled: draft } = await draftMode()
+
   if (parsed.type === 'industry') {
-    return validateIndustryEntity(payload, parsed.industrySlug)
+    return validateIndustryEntity(payload, parsed.industrySlug, draft)
   }
 
-  return validateJobTitleEntity(payload, parsed.industrySlug, parsed.jobTitleSlug!)
+  return validateJobTitleEntity(payload, parsed.industrySlug, parsed.jobTitleSlug!, draft)
 }
 
 async function validateIndustryEntity(
   payload: Payload,
   industrySlug: string,
+  draft: boolean,
 ): Promise<EntityData | null> {
   const result = await payload.find({
     collection: 'industries',
     where: { slug: { equals: industrySlug } },
     limit: 1,
     depth: 1,
+    draft,
+    overrideAccess: draft,
   })
 
   const industry = result.docs[0]
@@ -83,18 +90,23 @@ async function validateJobTitleEntity(
   payload: Payload,
   industrySlug: string,
   jobTitleSlug: string,
+  draft: boolean,
 ): Promise<EntityData | null> {
   const [industryResult, jobTitleResult] = await Promise.all([
     payload.find({
       collection: 'industries',
       where: { slug: { equals: industrySlug } },
       limit: 1,
+      draft,
+      overrideAccess: draft,
     }),
     payload.find({
       collection: 'job-titles',
       where: { slug: { equals: jobTitleSlug } },
       limit: 1,
       depth: 1,
+      draft,
+      overrideAccess: draft,
     }),
   ])
 

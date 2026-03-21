@@ -67,7 +67,6 @@ export default async function ResumePage({ params }: PageProps) {
 
       if (!isCanonicalUrl && canonicalSuffix.strategy.startsWith('redirect-')) {
         const canonicalPath = buildJobTitleSuffixPath(
-          tenantSlug,
           parsed.industrySlug,
           parsed.jobTitleSlug!,
           canonicalSuffix,
@@ -169,7 +168,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
       if (!isCanonicalUrl && canonicalSuffix.strategy === 'rel-canonical') {
         const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL || ''
-        canonicalUrl = `${serverUrl}${buildJobTitleSuffixPath(tenantSlug, parsed.industrySlug, parsed.jobTitleSlug!, canonicalSuffix)}`
+        canonicalUrl = `${serverUrl}${buildJobTitleSuffixPath(parsed.industrySlug, parsed.jobTitleSlug!, canonicalSuffix)}`
       }
     }
   }

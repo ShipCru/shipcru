@@ -1,14 +1,19 @@
 import type { ParsedResumeUrl } from '@/lib/resume-pages/types'
 
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 
 import { validateEntity } from '@/lib/resume-pages/validateEntity'
+
+vi.mock('next/headers', () => ({
+  draftMode: async () => ({ isEnabled: false }),
+}))
 
 const mockIndustry = {
   id: 1,
   name: 'Advertising',
   slug: 'advertising',
   category: 10,
+  _status: 'published' as const,
   meta: { title: 'Advertising Resumes', description: 'Ad resumes', robots: 'index' },
 }
 
@@ -21,6 +26,7 @@ const mockJobTitle = {
     { id: 100, name: 'Excel' },
     { id: 101, name: 'Salesforce' },
   ],
+  _status: 'published' as const,
   meta: { title: 'Account Manager Resume', description: 'AM resume', robots: 'index' },
 }
 
