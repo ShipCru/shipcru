@@ -1,9 +1,9 @@
+import type { SearchResult } from './trigramSearch'
 import type { Payload } from 'payload'
 
 import { sql } from '@payloadcms/db-postgres'
 
 import { generateEmbedding, vectorToString } from '@/lib/embedding/generateEmbedding'
-import type { SearchResult } from './trigramSearch'
 
 export async function vectorSearch(
   payload: Payload,

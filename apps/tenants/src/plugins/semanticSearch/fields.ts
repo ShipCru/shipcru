@@ -1,4 +1,5 @@
 import type { Field, FieldHook } from 'payload'
+
 import { sql } from '@payloadcms/db-postgres'
 
 const checkEmbeddingExists: FieldHook = async ({ data, req }) => {

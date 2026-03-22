@@ -19,6 +19,29 @@ function pascalToLabel(str: string): string {
     .replace(/(\d)([a-zA-Z])/g, '$1 $2')
 }
 
+const ALLOWED_ICONS = new Set([
+  'check-circle',
+  'bar-chart-01',
+  'trend-up-01',
+  'users-01',
+  'clock',
+  'star-01',
+  'zap',
+  'shield-tick',
+  'heart',
+  'globe-01',
+  'award-01',
+  'target-01',
+  'lightning-01',
+  'rocket-01',
+  'briefcase-01',
+  'file-check-01',
+  'thumbs-up',
+  'trophy-01',
+  'certificate-01',
+  'lightbulb-01',
+])
+
 const icons = Object.entries(UntitledIcons)
   .filter(([, component]) => typeof component === 'function')
   .map(([name, component]) => ({
@@ -26,6 +49,7 @@ const icons = Object.entries(UntitledIcons)
     value: pascalToKebab(name),
     component: component as ComponentType<SVGProps<SVGSVGElement>>,
   }))
+  .filter(({ value }) => ALLOWED_ICONS.has(value))
   .sort((a, b) => a.label.localeCompare(b.label))
 
 export const ICONS = icons.map(({ label, value }) => ({ label, value }))

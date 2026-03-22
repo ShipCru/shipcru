@@ -24,6 +24,7 @@ const SuffixVariationRowLabel: React.FC = () => {
 
   useEffect(() => {
     if (populatedName) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setName(populatedName)
       return
     }

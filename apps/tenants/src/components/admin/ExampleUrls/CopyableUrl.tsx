@@ -1,7 +1,7 @@
 'use client'
 
-import { Copy01, Check } from '@untitledui/icons'
 import { useCallback, useState } from 'react'
+import { Check, Copy01 } from '@untitledui/icons'
 
 export function CopyableUrl({ url, children }: { url: string; children: React.ReactNode }) {
   const [copied, setCopied] = useState(false)
@@ -20,11 +20,7 @@ export function CopyableUrl({ url, children }: { url: string; children: React.Re
       className="group flex w-full cursor-copy appearance-none items-center gap-1 break-all rounded border-0 bg-(--theme-elevation-100) px-1.5 py-0.5 text-left text-[11px] text-(--theme-elevation-800) outline-none transition-colors hover:bg-(--theme-elevation-200) focus-visible:ring-1 focus-visible:ring-(--theme-elevation-300)"
     >
       <code className="min-w-0 flex-1">
-        {copied ? (
-          <span className="text-(--theme-elevation-500)">Copied!</span>
-        ) : (
-          children
-        )}
+        {copied ? <span className="text-(--theme-elevation-500)">Copied!</span> : children}
       </code>
       {copied ? (
         <Check className="h-3 w-3 shrink-0 opacity-40" aria-hidden="true" />

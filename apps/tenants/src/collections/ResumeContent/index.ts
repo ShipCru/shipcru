@@ -2,7 +2,6 @@ import { type CollectionConfig, slugField } from 'payload'
 
 import { superAdminCrud } from '@/access/superAdminCrud'
 import { originFields } from '@/fields/origin'
-
 import { RESUME_CONTENT_TYPES } from './constants'
 
 export { RESUME_CONTENT_TYPES }
@@ -40,8 +39,7 @@ export const ResumeContent: CollectionConfig = {
       type: 'textarea',
       localized: true,
       admin: {
-        description:
-          'The content text (experience bullet, summary paragraph, skill phrase, etc.)',
+        description: 'The content text (experience bullet, summary paragraph, skill phrase, etc.)',
       },
     },
     originFields(),

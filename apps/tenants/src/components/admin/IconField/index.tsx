@@ -2,6 +2,13 @@
 
 import type { OptionObject, SelectFieldClientComponent } from 'payload'
 
+import { useMemo } from 'react'
+import {
+  components,
+  type OptionProps,
+  type SingleValueProps,
+  type ValueContainerProps,
+} from 'react-select'
 import {
   FieldDescription,
   FieldLabel,
@@ -10,13 +17,6 @@ import {
   useField,
 } from '@payloadcms/ui'
 import { mergeFieldStyles } from '@payloadcms/ui/shared'
-import { useMemo } from 'react'
-import {
-  components,
-  type OptionProps,
-  type SingleValueProps,
-  type ValueContainerProps,
-} from 'react-select'
 
 import { iconMap } from '@/components/icons'
 
@@ -80,9 +80,7 @@ export const IconField: SelectFieldClientComponent = ({ field, path, readOnly })
         }}
         options={options}
         value={
-          selectedOption
-            ? { label: selectedOption.label, value: selectedOption.value }
-            : undefined
+          selectedOption ? { label: selectedOption.label, value: selectedOption.value } : undefined
         }
         components={{
           Option: IconOption,

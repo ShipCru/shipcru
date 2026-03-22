@@ -5,8 +5,13 @@ import config from '@payload-config'
 import { resolveTenantBySlug } from '@/utils/resolveTenant'
 
 export async function resolveSitemapTenantContext() {
-  const headersList = await headers()
-  const tenantSlug = headersList.get('x-tenant-slug')
+  let tenantSlug: string | null = null
+  try {
+    const headersList = await headers()
+    tenantSlug = headersList.get('x-tenant-slug')
+  } catch {
+    tenantSlug = process.env.DEFAULT_TENANT_SLUG || null
+  }
   if (!tenantSlug) return null
 
   const payload = await getPayload({ config })

@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { type ChangeEvent, type KeyboardEvent, useEffect, useState } from 'react'
+import { type ChangeEvent, type KeyboardEvent, useEffect, useRef, useState } from 'react'
 import { useDebounceValue } from 'usehooks-ts'
 
 export interface SearchResult {
@@ -44,14 +44,16 @@ export function useHeaderSearch(open: boolean, onClose: () => void) {
   const router = useRouter()
   const [debouncedQuery] = useDebounceValue(query, 300)
 
-  useEffect(() => {
-    if (!open) {
-      setQuery('')
-      setRawResults([])
-      setActiveIndex(-1)
-      setLoading(false)
-    }
-  }, [open])
+  const prevOpenRef = useRef(open)
+  // eslint-disable-next-line react-hooks/refs
+  if (prevOpenRef.current && !open) {
+    setQuery('')
+    setRawResults([])
+    setActiveIndex(-1)
+    setLoading(false)
+  }
+  // eslint-disable-next-line react-hooks/refs
+  prevOpenRef.current = open
 
   useEffect(() => {
     if (!debouncedQuery.trim()) return

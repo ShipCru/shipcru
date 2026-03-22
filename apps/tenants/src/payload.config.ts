@@ -4,6 +4,7 @@ import { customType } from 'drizzle-orm/pg-core'
 import fs from 'fs'
 import path from 'path'
 import { buildConfig } from 'payload'
+import pg from 'pg'
 import { fileURLToPath } from 'url'
 import { GetPlatformProxyOptions } from 'wrangler'
 import { CloudflareContext, getCloudflareContext } from '@opennextjs/cloudflare'
@@ -105,7 +106,8 @@ export default buildConfig({
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
   db: postgresAdapter({
-    pool: { connectionString: process.env.DATABASE_URL || '' },
+    pg,
+    pool: { connectionString: cloudflare.env.HYPERDRIVE.connectionString, maxUses: 1 },
     push: pushEnabled,
     afterSchemaInit: [
       ({ schema, extendTable }) => {
