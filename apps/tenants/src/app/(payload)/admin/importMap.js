@@ -17,6 +17,7 @@ import { SectionOverrideRowLabel as SectionOverrideRowLabel_a65b2ee139f4c7668f8e
 import { WatchTenantCollection as WatchTenantCollection_1d0591e3cf4f332c83a86da13a0de59a } from '@payloadcms/plugin-multi-tenant/client'
 import { LinkToDoc as LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
 import { SearchListActions as SearchListActions_130797deb4dcedc92b038842827a275a } from '@/components/admin/SearchListActions'
+import { default as default_aef7c57227194c862c211381e70124e4 } from '@/globals/DefaultTemplates/PatternRowLabel'
 import { default as default_17c6ef4bfe47bfa29d923fb5718170b7 } from '@/globals/Header/RowLabel'
 import { default as default_eb9f0801d65a2b66bac35d04f88fd707 } from '@/components/admin/SuffixVariationRowLabel'
 import { TenantSelector as TenantSelector_d6d5f193a167989e2ee7d14202901e62 } from '@payloadcms/plugin-multi-tenant/rsc'
@@ -44,6 +45,7 @@ export const importMap = {
   "@payloadcms/plugin-multi-tenant/client#WatchTenantCollection": WatchTenantCollection_1d0591e3cf4f332c83a86da13a0de59a,
   "@payloadcms/plugin-search/client#LinkToDoc": LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634,
   "@/components/admin/SearchListActions#SearchListActions": SearchListActions_130797deb4dcedc92b038842827a275a,
+  "@/globals/DefaultTemplates/PatternRowLabel#default": default_aef7c57227194c862c211381e70124e4,
   "@/globals/Header/RowLabel#default": default_17c6ef4bfe47bfa29d923fb5718170b7,
   "@/components/admin/SuffixVariationRowLabel#default": default_eb9f0801d65a2b66bac35d04f88fd707,
   "@payloadcms/plugin-multi-tenant/rsc#TenantSelector": TenantSelector_d6d5f193a167989e2ee7d14202901e62,

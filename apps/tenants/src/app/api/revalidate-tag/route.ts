@@ -10,7 +10,7 @@ const ALLOWED_TAGS = [
   'global_default-job-title-template',
   'collection_content-variations',
   'collection_template-overrides',
-  'collection_tenant-page-configs',
+  'collection_tenants',
   'collection_word-form-sets',
 ]
 

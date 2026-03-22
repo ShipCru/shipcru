@@ -7,7 +7,7 @@ import React from 'react'
 import config from '@payload-config'
 
 import { getCachedVariationSets } from '@/collections/ContentVariations/queries/getVariationSets'
-import { getCachedTenantPageConfig } from '@/collections/TenantPageConfigs/queries/getTenantPageConfig'
+import { getCachedTenantPageConfig } from '@/collections/Tenants/queries/getTenantPageConfig'
 import { getCachedWordFormSets } from '@/collections/WordFormSets/queries/getWordFormSets'
 import { getCachedDefaultTemplate } from '@/globals/DefaultTemplates/queries/getDefaultTemplate'
 import {

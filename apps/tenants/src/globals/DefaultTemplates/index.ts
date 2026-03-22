@@ -68,8 +68,11 @@ export const DefaultTemplates: GlobalConfig = {
                 },
               ],
               admin: {
+                components: {
+                  RowLabel: '@/globals/DefaultTemplates/PatternRowLabel',
+                },
                 description:
-                  'Define URL patterns for keyword landing pages. Each pattern generates a set of pages from word pool combinations.',
+                  'Define URL patterns for keyword landing pages. Each pattern generates pages from word pool combinations. Defaults: $(resume)-$(verber), $(resume)-$(contentWord), $(adjective)-$(resume)-$(verber), $(adjective)-$(resume)-$(contentWord), $(adjective)-$(resume)-$(verber)-$(contentWord)',
               },
             },
             heroField(),

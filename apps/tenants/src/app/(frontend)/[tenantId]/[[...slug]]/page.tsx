@@ -12,7 +12,7 @@ import config from '@payload-config'
 import { RenderBlocks, RenderHero } from '@/blocks/RenderBlocks'
 import { getCachedVariationSets } from '@/collections/ContentVariations/queries/getVariationSets'
 import { findPageByBreadcrumbUrl } from '@/collections/Pages/queries/findPageByBreadcrumbUrl'
-import { getCachedTenantPageConfig } from '@/collections/TenantPageConfigs/queries/getTenantPageConfig'
+import { getCachedTenantPageConfig } from '@/collections/Tenants/queries/getTenantPageConfig'
 import { getCachedWordFormSets } from '@/collections/WordFormSets/queries/getWordFormSets'
 import { getCachedDefaultTemplate } from '@/globals/DefaultTemplates/queries/getDefaultTemplate'
 import {

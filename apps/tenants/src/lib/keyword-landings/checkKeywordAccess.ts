@@ -1,4 +1,4 @@
-import { TenantPageConfig } from '@/payload-types'
+import { Tenant } from '@/payload-types'
 
 export interface KeywordLandingsConfig {
   enabled: boolean
@@ -22,7 +22,7 @@ function matchesAnyPattern(slug: string, patterns: Array<{ pattern: string }>): 
 
 export function checkKeywordAccess(
   slug: string,
-  config: TenantPageConfig['keywordLandings'],
+  config: Tenant['keywordLandings'],
 ): boolean {
   if (!config.enabled) return false
   if (config.mode === 'all') return true

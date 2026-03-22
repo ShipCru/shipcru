@@ -1,5 +1,5 @@
 import type { ParsedResumeUrl } from '@/lib/resume-pages/types'
-import type { TenantPageConfig } from '@/payload-types'
+import type { Tenant } from '@/payload-types'
 
 import { isIndustryVisible } from './isIndustryVisible'
 import { isJobTitleVisible } from './isJobTitleVisible'
@@ -9,7 +9,7 @@ interface PageEntity {
 }
 
 export function checkPageAccess(
-  cfg: TenantPageConfig | null,
+  cfg: Tenant | null,
   parsed: ParsedResumeUrl,
   entity: PageEntity,
 ): boolean {

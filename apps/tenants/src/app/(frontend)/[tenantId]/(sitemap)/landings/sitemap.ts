@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next'
 
-import { getCachedTenantPageConfig } from '@/collections/TenantPageConfigs/queries/getTenantPageConfig'
+import { getCachedTenantPageConfig } from '@/collections/Tenants/queries/getTenantPageConfig'
 import { getCachedDefaultTemplate } from '@/globals/DefaultTemplates/queries/getDefaultTemplate'
 import {
   buildCanonicalWordPools,

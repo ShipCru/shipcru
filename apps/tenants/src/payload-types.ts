@@ -1261,7 +1261,6 @@ export interface Config {
     'word-form-sets': WordFormSet;
     'template-overrides': TemplateOverride;
     tenants: Tenant;
-    'tenant-page-configs': TenantPageConfig;
     'payload-mcp-api-keys': PayloadMcpApiKey;
     search: Search;
     'payload-kv': PayloadKv;
@@ -1291,7 +1290,6 @@ export interface Config {
     'word-form-sets': WordFormSetsSelect<false> | WordFormSetsSelect<true>;
     'template-overrides': TemplateOverridesSelect<false> | TemplateOverridesSelect<true>;
     tenants: TenantsSelect<false> | TenantsSelect<true>;
-    'tenant-page-configs': TenantPageConfigsSelect<false> | TenantPageConfigsSelect<true>;
     'payload-mcp-api-keys': PayloadMcpApiKeysSelect<false> | PayloadMcpApiKeysSelect<true>;
     search: SearchSelect<false> | SearchSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -1417,6 +1415,348 @@ export interface Tenant {
    * Locales available for this tenant
    */
   supportedLocales?: ('en' | 'es')[] | null;
+  /**
+   * Controls which industries this tenant generates pages for.
+   */
+  industryMode?: ('all' | 'include' | 'exclude') | null;
+  /**
+   * Industries to include or exclude based on mode.
+   */
+  industries?: (number | Industry)[] | null;
+  /**
+   * Controls which job titles within the selected industries this tenant serves.
+   */
+  jobTitleMode?: ('all-in-industries' | 'specific' | 'exclude-specific') | null;
+  /**
+   * Specific job titles to include.
+   */
+  jobTitles?: (number | JobTitle)[] | null;
+  /**
+   * Specific job titles to exclude.
+   */
+  excludedJobTitles?: (number | JobTitle)[] | null;
+  keywordLandings?: {
+    enabled?: boolean | null;
+    mode?: ('all' | 'include' | 'exclude') | null;
+    /**
+     * Glob patterns using * as wildcard. E.g., "best-*", "*-resume-*", "free-*-templates"
+     */
+    patterns?:
+      | {
+          pattern: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "industries".
+ */
+export interface Industry {
+  id: number;
+  name: string;
+  category?: (number | null) | IndustryCategory;
+  description?: string | null;
+  jobTitles?: {
+    docs?: (number | JobTitle)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+    /**
+     * Allow search engines to index this page
+     */
+    robots?: ('index' | 'noindex') | null;
+  };
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  /**
+   * Where this data originated
+   */
+  origin?: {
+    source?: (number | null) | Source;
+    importedAt?: string | null;
+    /**
+     * Optional: batch ID, file name, external ID, etc.
+     */
+    notes?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "industry-categories".
+ */
+export interface IndustryCategory {
+  id: number;
+  name: string;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  description?: string | null;
+  industries?: {
+    docs?: (number | Industry)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "job-titles".
+ */
+export interface JobTitle {
+  id: number;
+  name: string;
+  industries?: (number | Industry)[] | null;
+  suggestedContent?:
+    | {
+        content: number | ResumeContent;
+        /**
+         * Supply-side: do professionals in this role report this? (0-1)
+         */
+        experienceScore?: number | null;
+        /**
+         * Demand-side: do job seekers for this role search for this? (0-1)
+         */
+        interestScore?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Override the default canonical suffix for this job title. When unchecked, the global canonical suffix from Suffix Variations is used.
+   */
+  overrideSuffix?: boolean | null;
+  /**
+   * Adjective word for canonical suffix (e.g., "best")
+   */
+  suffixAdjective?: (number | null) | WordFormSet;
+  /**
+   * Builder word for canonical suffix (e.g., "creator")
+   */
+  suffixBuilder?: (number | null) | WordFormSet;
+  /**
+   * Content word for canonical suffix (e.g., "content")
+   */
+  suffixContentWord?: (number | null) | WordFormSet;
+  /**
+   * Override the global canonical strategy for this job title.
+   */
+  suffixStrategy?: ('redirect-301' | 'redirect-302' | 'rel-canonical') | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+    /**
+     * Allow search engines to index this page
+     */
+    robots?: ('index' | 'noindex') | null;
+  };
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  /**
+   * Confidence this is a real job title (1.0 = SOC/O*NET verified)
+   */
+  probability?: number | null;
+  /**
+   * Where this data originated
+   */
+  origin?: {
+    source?: (number | null) | Source;
+    importedAt?: string | null;
+    /**
+     * Optional: batch ID, file name, external ID, etc.
+     */
+    notes?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "resume-content".
+ */
+export interface ResumeContent {
+  id: number;
+  type: 'skill' | 'experience' | 'summary' | 'accomplishment' | 'affiliation' | 'certification';
+  name: string;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  /**
+   * The content text (experience bullet, summary paragraph, skill phrase, etc.)
+   */
+  description?: string | null;
+  /**
+   * Where this data originated
+   */
+  origin?: {
+    source?: (number | null) | Source;
+    importedAt?: string | null;
+    /**
+     * Optional: batch ID, file name, external ID, etc.
+     */
+    notes?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sources".
+ */
+export interface Source {
+  id: number;
+  name: string;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  /**
+   * Optional context about this data source.
+   */
+  description?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "word-form-sets".
+ */
+export interface WordFormSet {
+  id: number;
+  name: string;
+  /**
+   * Which category of word forms this entry defines
+   */
+  type: 'resumeWord' | 'verb' | 'adjective' | 'contentWord';
+  /**
+   * Leave empty for a global default. Set to override for a specific tenant.
+   */
+  tenant?: (number | null) | Tenant;
+  /**
+   * e.g., "resume", "CV", "curriculum vitae"
+   */
+  rw_singular?: string | null;
+  /**
+   * e.g., "resumes", "CVs", "curricula vitae"
+   */
+  rw_plural?: string | null;
+  /**
+   * e.g., "Resume", "CV", "Curriculum Vitae"
+   */
+  rw_capitalized?: string | null;
+  /**
+   * e.g., "resume", "CV"
+   */
+  rw_abbreviated?: string | null;
+  /**
+   * e.g., "Resume", "CV"
+   */
+  rw_abbreviatedCapitalized?: string | null;
+  /**
+   * e.g., "Resumes", "CVs"
+   */
+  rw_pluralCapitalized?: string | null;
+  /**
+   * e.g., "resumes", "CVs"
+   */
+  rw_pluralAbbreviated?: string | null;
+  /**
+   * e.g., "Resumes", "CVs"
+   */
+  rw_pluralAbbreviatedCapitalized?: string | null;
+  /**
+   * The URL suffix word, e.g., "creator", "builder", "maker"
+   */
+  v_worder?: string | null;
+  /**
+   * e.g., "create", "build", "make"
+   */
+  v_singular?: string | null;
+  /**
+   * e.g., "Create", "Build"
+   */
+  v_capitalized?: string | null;
+  /**
+   * e.g., "Creator", "Builder"
+   */
+  v_worderCapitalized?: string | null;
+  /**
+   * e.g., "creating", "building"
+   */
+  v_wording?: string | null;
+  /**
+   * e.g., "Creating", "Building"
+   */
+  v_wordingCapitalized?: string | null;
+  /**
+   * e.g., "created", "built", "wrote"
+   */
+  v_past?: string | null;
+  /**
+   * e.g., "Created", "Built"
+   */
+  v_pastCapitalized?: string | null;
+  /**
+   * e.g., "best", "professional", "simple"
+   */
+  adj_singular?: string | null;
+  /**
+   * e.g., "Best", "Professional"
+   */
+  adj_capitalized?: string | null;
+  /**
+   * e.g., "better", "professionally", "easier"
+   */
+  adj_adverb?: string | null;
+  /**
+   * e.g., "Better", "Professionally"
+   */
+  adj_adverbCapitalized?: string | null;
+  /**
+   * e.g., "template", "example", "content"
+   */
+  cw_singular?: string | null;
+  /**
+   * e.g., "templates", "examples", "content" (same for uncountable)
+   */
+  cw_plural?: string | null;
+  /**
+   * e.g., "Template", "Content"
+   */
+  cw_capitalized?: string | null;
+  /**
+   * e.g., "Templates", "Content"
+   */
+  cw_pluralCapitalized?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1716,315 +2056,6 @@ export interface LinkField {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "industry-categories".
- */
-export interface IndustryCategory {
-  id: number;
-  name: string;
-  /**
-   * When enabled, the slug will auto-generate from the title field on save and autosave.
-   */
-  generateSlug?: boolean | null;
-  slug: string;
-  description?: string | null;
-  industries?: {
-    docs?: (number | Industry)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "industries".
- */
-export interface Industry {
-  id: number;
-  name: string;
-  category?: (number | null) | IndustryCategory;
-  description?: string | null;
-  jobTitles?: {
-    docs?: (number | JobTitle)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  meta?: {
-    title?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-    description?: string | null;
-    /**
-     * Allow search engines to index this page
-     */
-    robots?: ('index' | 'noindex') | null;
-  };
-  /**
-   * When enabled, the slug will auto-generate from the title field on save and autosave.
-   */
-  generateSlug?: boolean | null;
-  slug: string;
-  /**
-   * Where this data originated
-   */
-  origin?: {
-    source?: (number | null) | Source;
-    importedAt?: string | null;
-    /**
-     * Optional: batch ID, file name, external ID, etc.
-     */
-    notes?: string | null;
-  };
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "job-titles".
- */
-export interface JobTitle {
-  id: number;
-  name: string;
-  industries?: (number | Industry)[] | null;
-  suggestedContent?:
-    | {
-        content: number | ResumeContent;
-        /**
-         * Supply-side: do professionals in this role report this? (0-1)
-         */
-        experienceScore?: number | null;
-        /**
-         * Demand-side: do job seekers for this role search for this? (0-1)
-         */
-        interestScore?: number | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Override the default canonical suffix for this job title. When unchecked, the global canonical suffix from Suffix Variations is used.
-   */
-  overrideSuffix?: boolean | null;
-  /**
-   * Adjective word for canonical suffix (e.g., "best")
-   */
-  suffixAdjective?: (number | null) | WordFormSet;
-  /**
-   * Builder word for canonical suffix (e.g., "creator")
-   */
-  suffixBuilder?: (number | null) | WordFormSet;
-  /**
-   * Content word for canonical suffix (e.g., "content")
-   */
-  suffixContentWord?: (number | null) | WordFormSet;
-  /**
-   * Override the global canonical strategy for this job title.
-   */
-  suffixStrategy?: ('redirect-301' | 'redirect-302' | 'rel-canonical') | null;
-  meta?: {
-    title?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-    description?: string | null;
-    /**
-     * Allow search engines to index this page
-     */
-    robots?: ('index' | 'noindex') | null;
-  };
-  /**
-   * When enabled, the slug will auto-generate from the title field on save and autosave.
-   */
-  generateSlug?: boolean | null;
-  slug: string;
-  /**
-   * Confidence this is a real job title (1.0 = SOC/O*NET verified)
-   */
-  probability?: number | null;
-  /**
-   * Where this data originated
-   */
-  origin?: {
-    source?: (number | null) | Source;
-    importedAt?: string | null;
-    /**
-     * Optional: batch ID, file name, external ID, etc.
-     */
-    notes?: string | null;
-  };
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "resume-content".
- */
-export interface ResumeContent {
-  id: number;
-  type: 'skill' | 'experience' | 'summary' | 'accomplishment' | 'affiliation' | 'certification';
-  name: string;
-  /**
-   * When enabled, the slug will auto-generate from the title field on save and autosave.
-   */
-  generateSlug?: boolean | null;
-  slug: string;
-  /**
-   * The content text (experience bullet, summary paragraph, skill phrase, etc.)
-   */
-  description?: string | null;
-  /**
-   * Where this data originated
-   */
-  origin?: {
-    source?: (number | null) | Source;
-    importedAt?: string | null;
-    /**
-     * Optional: batch ID, file name, external ID, etc.
-     */
-    notes?: string | null;
-  };
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "sources".
- */
-export interface Source {
-  id: number;
-  name: string;
-  /**
-   * When enabled, the slug will auto-generate from the title field on save and autosave.
-   */
-  generateSlug?: boolean | null;
-  slug: string;
-  /**
-   * Optional context about this data source.
-   */
-  description?: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "word-form-sets".
- */
-export interface WordFormSet {
-  id: number;
-  name: string;
-  /**
-   * Which category of word forms this entry defines
-   */
-  type: 'resumeWord' | 'verb' | 'adjective' | 'contentWord';
-  /**
-   * Leave empty for a global default. Set to override for a specific tenant.
-   */
-  tenant?: (number | null) | Tenant;
-  /**
-   * e.g., "resume", "CV", "curriculum vitae"
-   */
-  rw_singular?: string | null;
-  /**
-   * e.g., "resumes", "CVs", "curricula vitae"
-   */
-  rw_plural?: string | null;
-  /**
-   * e.g., "Resume", "CV", "Curriculum Vitae"
-   */
-  rw_capitalized?: string | null;
-  /**
-   * e.g., "resume", "CV"
-   */
-  rw_abbreviated?: string | null;
-  /**
-   * e.g., "Resume", "CV"
-   */
-  rw_abbreviatedCapitalized?: string | null;
-  /**
-   * e.g., "Resumes", "CVs"
-   */
-  rw_pluralCapitalized?: string | null;
-  /**
-   * e.g., "resumes", "CVs"
-   */
-  rw_pluralAbbreviated?: string | null;
-  /**
-   * e.g., "Resumes", "CVs"
-   */
-  rw_pluralAbbreviatedCapitalized?: string | null;
-  /**
-   * The URL suffix word, e.g., "creator", "builder", "maker"
-   */
-  v_worder?: string | null;
-  /**
-   * e.g., "create", "build", "make"
-   */
-  v_singular?: string | null;
-  /**
-   * e.g., "Create", "Build"
-   */
-  v_capitalized?: string | null;
-  /**
-   * e.g., "Creator", "Builder"
-   */
-  v_worderCapitalized?: string | null;
-  /**
-   * e.g., "creating", "building"
-   */
-  v_wording?: string | null;
-  /**
-   * e.g., "Creating", "Building"
-   */
-  v_wordingCapitalized?: string | null;
-  /**
-   * e.g., "created", "built", "wrote"
-   */
-  v_past?: string | null;
-  /**
-   * e.g., "Created", "Built"
-   */
-  v_pastCapitalized?: string | null;
-  /**
-   * e.g., "best", "professional", "simple"
-   */
-  adj_singular?: string | null;
-  /**
-   * e.g., "Best", "Professional"
-   */
-  adj_capitalized?: string | null;
-  /**
-   * e.g., "better", "professionally", "easier"
-   */
-  adj_adverb?: string | null;
-  /**
-   * e.g., "Better", "Professionally"
-   */
-  adj_adverbCapitalized?: string | null;
-  /**
-   * e.g., "template", "example", "content"
-   */
-  cw_singular?: string | null;
-  /**
-   * e.g., "templates", "examples", "content" (same for uncountable)
-   */
-  cw_plural?: string | null;
-  /**
-   * e.g., "Template", "Content"
-   */
-  cw_capitalized?: string | null;
-  /**
-   * e.g., "Templates", "Content"
-   */
-  cw_pluralCapitalized?: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "template-overrides".
  */
 export interface TemplateOverride {
@@ -2165,52 +2196,6 @@ export interface TemplateOverride {
         id?: string | null;
       }[]
     | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "tenant-page-configs".
- */
-export interface TenantPageConfig {
-  id: number;
-  /**
-   * Each tenant can have exactly one page config.
-   */
-  tenant?: (number | null) | Tenant;
-  /**
-   * Controls which industries this tenant generates pages for.
-   */
-  mode?: ('all' | 'include' | 'exclude') | null;
-  /**
-   * Industries to include or exclude based on mode.
-   */
-  industries?: (number | Industry)[] | null;
-  /**
-   * Controls which job titles within the selected industries this tenant serves.
-   */
-  jobTitleMode?: ('all-in-industries' | 'specific' | 'exclude-specific') | null;
-  /**
-   * Specific job titles to include.
-   */
-  jobTitles?: (number | JobTitle)[] | null;
-  /**
-   * Specific job titles to exclude.
-   */
-  excludedJobTitles?: (number | JobTitle)[] | null;
-  keywordLandings?: {
-    enabled?: boolean | null;
-    mode?: ('all' | 'include' | 'exclude') | null;
-    /**
-     * Glob patterns using * as wildcard. E.g., "best-*", "*-resume-*", "free-*-templates"
-     */
-    patterns?:
-      | {
-          pattern: string;
-          id?: string | null;
-        }[]
-      | null;
-  };
   updatedAt: string;
   createdAt: string;
 }
@@ -2396,29 +2381,23 @@ export interface PayloadMcpApiKey {
      */
     delete?: boolean | null;
   };
-  tenantPageConfigs?: {
-    /**
-     * Allow clients to find tenant-page-configs.
-     */
-    find?: boolean | null;
-    /**
-     * Allow clients to create tenant-page-configs.
-     */
-    create?: boolean | null;
-    /**
-     * Allow clients to update tenant-page-configs.
-     */
-    update?: boolean | null;
-    /**
-     * Allow clients to delete tenant-page-configs.
-     */
-    delete?: boolean | null;
-  };
   tenants?: {
     /**
      * Allow clients to find tenants.
      */
     find?: boolean | null;
+    /**
+     * Allow clients to create tenants.
+     */
+    create?: boolean | null;
+    /**
+     * Allow clients to update tenants.
+     */
+    update?: boolean | null;
+    /**
+     * Allow clients to delete tenants.
+     */
+    delete?: boolean | null;
   };
   defaultTemplates?: {
     /**
@@ -2651,10 +2630,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'tenants';
         value: number | Tenant;
-      } | null)
-    | ({
-        relationTo: 'tenant-page-configs';
-        value: number | TenantPageConfig;
       } | null)
     | ({
         relationTo: 'payload-mcp-api-keys';
@@ -3301,16 +3276,7 @@ export interface TenantsSelect<T extends boolean = true> {
   slug?: T;
   domain?: T;
   supportedLocales?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "tenant-page-configs_select".
- */
-export interface TenantPageConfigsSelect<T extends boolean = true> {
-  tenant?: T;
-  mode?: T;
+  industryMode?: T;
   industries?: T;
   jobTitleMode?: T;
   jobTitles?: T;
@@ -3410,18 +3376,13 @@ export interface PayloadMcpApiKeysSelect<T extends boolean = true> {
         update?: T;
         delete?: T;
       };
-  tenantPageConfigs?:
+  tenants?:
     | T
     | {
         find?: T;
         create?: T;
         update?: T;
         delete?: T;
-      };
-  tenants?:
-    | T
-    | {
-        find?: T;
       };
   defaultTemplates?:
     | T
@@ -3554,7 +3515,7 @@ export interface DefaultTemplate {
   };
   keyword?: {
     /**
-     * Define URL patterns for keyword landing pages. Each pattern generates a set of pages from word pool combinations.
+     * Define URL patterns for keyword landing pages. Each pattern generates pages from word pool combinations. Defaults: $(resume)-$(verber), $(resume)-$(contentWord), $(adjective)-$(resume)-$(verber), $(adjective)-$(resume)-$(contentWord), $(adjective)-$(resume)-$(verber)-$(contentWord)
      */
     patterns?:
       | {

@@ -22,7 +22,6 @@ import { Pages } from './collections/Pages'
 import { ResumeContent } from './collections/ResumeContent'
 import { Sources } from './collections/Sources'
 import { TemplateOverrides } from './collections/TemplateOverrides'
-import { TenantPageConfigs } from './collections/TenantPageConfigs'
 import { Tenants } from './collections/Tenants'
 import { Users } from './collections/Users'
 import { WordFormSets } from './collections/WordFormSets'
@@ -95,10 +94,9 @@ export default buildConfig({
     // Template system:
     ContentVariations,
     WordFormSets,
-    // Group C: Template overrides & tenant page configs:
+    // Group C: Template overrides & tenants:
     TemplateOverrides,
     Tenants,
-    TenantPageConfigs,
   ],
   globals: [DefaultTemplates, Header, SuffixVariations],
   editor: lexicalEditor(),
@@ -171,8 +169,7 @@ export default buildConfig({
         'job-titles': { enabled: true },
         sources: { enabled: true },
         pages: { enabled: true },
-        'tenant-page-configs': { enabled: true },
-        tenants: { enabled: { find: true, create: false, update: false, delete: false } },
+        tenants: { enabled: true },
       },
       globals: {
         'default-templates': { enabled: true },

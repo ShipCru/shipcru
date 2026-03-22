@@ -1,4 +1,4 @@
-import type { TenantPageConfig } from '@/payload-types'
+import type { Tenant } from '@/payload-types'
 import type { Payload } from 'payload'
 
 import { unstable_cache } from 'next/cache'
@@ -10,14 +10,16 @@ import { generateCacheTag } from '@/utilities/generateCacheTag'
 export async function getTenantPageConfig(
   payload: Payload,
   tenantId: number | string,
-): Promise<TenantPageConfig | null> {
-  const result = await payload.find({
-    collection: 'tenant-page-configs',
-    where: { tenant: { equals: tenantId } },
-    limit: 1,
-    depth: 1,
-  })
-  return result.docs[0] ?? null
+): Promise<Tenant | null> {
+  try {
+    return await payload.findByID({
+      collection: 'tenants',
+      id: tenantId,
+      depth: 1,
+    })
+  } catch {
+    return null
+  }
 }
 
 export const getCachedTenantPageConfig = (tenantId: number | string) =>
@@ -26,8 +28,8 @@ export const getCachedTenantPageConfig = (tenantId: number | string) =>
       const payload = await getPayload({ config })
       return getTenantPageConfig(payload, tenantId)
     },
-    [`tenant-page-config_${tenantId}`],
+    [`tenant_${tenantId}`],
     {
-      tags: [generateCacheTag({ type: 'collection', collection: 'tenant-page-configs' })],
+      tags: [generateCacheTag({ type: 'collection', collection: 'tenants' })],
     },
   )()
