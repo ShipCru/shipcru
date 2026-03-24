@@ -12,6 +12,18 @@ importers:
         specifier: 3.77.0
         version: 3.77.0
 
+  apps/router-worker:
+    devDependencies:
+      '@cloudflare/workers-types':
+        specifier: ^4.20260310.0
+        version: 4.20260317.1
+      typescript:
+        specifier: ^5.7.0
+        version: 5.9.3
+      wrangler:
+        specifier: ^4.0.0
+        version: 4.69.0(@cloudflare/workers-types@4.20260317.1)
+
   apps/tenants:
     dependencies:
       '@ai-sdk/openai':
@@ -19,10 +31,10 @@ importers:
         version: 3.0.41(zod@4.3.6)
       '@opennextjs/cloudflare':
         specifier: ^1.11.0
-        version: 1.17.1(next@15.4.11(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.2)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(sass@1.77.4))(wrangler@4.69.0)
+        version: 1.17.1(next@15.4.11(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.2)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(sass@1.77.4))(wrangler@4.69.0(@cloudflare/workers-types@4.20260317.1))
       '@payloadcms/db-postgres':
         specifier: 3.77.0
-        version: 3.77.0(@opentelemetry/api@1.9.0)(payload@3.77.0(graphql@16.13.0)(typescript@5.7.3))
+        version: 3.77.0(@cloudflare/workers-types@4.20260317.1)(@opentelemetry/api@1.9.0)(payload@3.77.0(graphql@16.13.0)(typescript@5.7.3))
       '@payloadcms/live-preview-react':
         specifier: 3.77.0
         version: 3.77.0(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
@@ -70,7 +82,7 @@ importers:
         version: 16.4.7
       drizzle-orm:
         specifier: ^0.45.1
-        version: 0.45.1(@opentelemetry/api@1.9.0)(@types/pg@8.10.2)(pg@8.16.3)
+        version: 0.45.1(@cloudflare/workers-types@4.20260317.1)(@opentelemetry/api@1.9.0)(@types/pg@8.10.2)(pg@8.16.3)
       graphql:
         specifier: ^16.8.1
         version: 16.13.0
@@ -138,6 +150,9 @@ importers:
       '@vitejs/plugin-react':
         specifier: 4.5.2
         version: 4.5.2(vite@7.3.1(@types/node@22.19.9)(jiti@2.6.1)(lightningcss@1.31.1)(sass@1.77.4)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2))
+      dotenv-cli:
+        specifier: ^11.0.0
+        version: 11.0.0
       eslint:
         specifier: ^9.16.0
         version: 9.39.3(jiti@2.6.1)
@@ -173,7 +188,7 @@ importers:
         version: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@22.19.9)(jiti@2.6.1)(jsdom@28.0.0(@noble/hashes@1.8.0))(lightningcss@1.31.1)(sass@1.77.4)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2)
       wrangler:
         specifier: ~4.69.0
-        version: 4.69.0
+        version: 4.69.0(@cloudflare/workers-types@4.20260317.1)
 
   apps/web:
     dependencies:
@@ -204,7 +219,7 @@ importers:
     devDependencies:
       '@cloudflare/vite-plugin':
         specifier: ^1.25.5
-        version: 1.25.6(vite@7.3.1(@types/node@22.19.9)(jiti@2.6.1)(lightningcss@1.31.1)(sass@1.77.4)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2))(workerd@1.20260305.0)(wrangler@4.69.0)
+        version: 1.25.6(vite@7.3.1(@types/node@22.19.9)(jiti@2.6.1)(lightningcss@1.31.1)(sass@1.77.4)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2))(workerd@1.20260305.0)(wrangler@4.69.0(@cloudflare/workers-types@4.20260317.1))
       '@tailwindcss/postcss':
         specifier: ^4.2.1
         version: 4.2.1
@@ -225,7 +240,7 @@ importers:
         version: 5.9.3
       wrangler:
         specifier: ^4.68.1
-        version: 4.69.0
+        version: 4.69.0(@cloudflare/workers-types@4.20260317.1)
 
 packages:
 
@@ -662,6 +677,9 @@ packages:
     engines: {node: '>=16'}
     cpu: [x64]
     os: [win32]
+
+  '@cloudflare/workers-types@4.20260317.1':
+    resolution: {integrity: sha512-+G4eVwyCpm8Au1ex8vQBCuA9wnwqetz4tPNRoB/53qvktERWBRMQnrtvC1k584yRE3emMThtuY0gWshvSJ++PQ==}
 
   '@cspotcode/source-map-support@0.8.1':
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
@@ -4085,8 +4103,20 @@ packages:
   dompurify@3.2.7:
     resolution: {integrity: sha512-WhL/YuveyGXJaerVlMYGWhvQswa7myDG17P7Vu65EWC05o8vfeNbvNf4d/BOvH99+ZW+LlQsc1GDKMa1vNK6dw==}
 
+  dotenv-cli@11.0.0:
+    resolution: {integrity: sha512-r5pA8idbk7GFWuHEU7trSTflWcdBpQEK+Aw17UrSHjS6CReuhrrPcyC3zcQBPQvhArRHnBo/h6eLH1fkCvNlww==}
+    hasBin: true
+
+  dotenv-expand@12.0.3:
+    resolution: {integrity: sha512-uc47g4b+4k/M/SeaW1y4OApx+mtLWl92l5LMPP0GNXctZqELk+YGgOPIIC5elYmUH4OuoK3JLhuRUYegeySiFA==}
+    engines: {node: '>=12'}
+
   dotenv@16.4.7:
     resolution: {integrity: sha512-47qPchRCykZC03FhkYAhrvwU4xDBFIj1QPqaarj6mdM/hgUzfPHcpkHJOn3mJAufFeeAxAzeGsr5X0M4k6fLZQ==}
+    engines: {node: '>=12'}
+
+  dotenv@17.3.1:
+    resolution: {integrity: sha512-IO8C/dzEb6O3F9/twg6ZLXz164a2fhTnEWb95H23Dm4OuN+92NmEAlTrupP9VW6Jm3sO26tQlqyvyi4CsnY9GA==}
     engines: {node: '>=12'}
 
   drizzle-kit@0.31.7:
@@ -7952,13 +7982,13 @@ snapshots:
     optionalDependencies:
       workerd: 1.20260305.0
 
-  '@cloudflare/vite-plugin@1.25.6(vite@7.3.1(@types/node@22.19.9)(jiti@2.6.1)(lightningcss@1.31.1)(sass@1.77.4)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2))(workerd@1.20260305.0)(wrangler@4.69.0)':
+  '@cloudflare/vite-plugin@1.25.6(vite@7.3.1(@types/node@22.19.9)(jiti@2.6.1)(lightningcss@1.31.1)(sass@1.77.4)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2))(workerd@1.20260305.0)(wrangler@4.69.0(@cloudflare/workers-types@4.20260317.1))':
     dependencies:
       '@cloudflare/unenv-preset': 2.14.0(unenv@2.0.0-rc.24)(workerd@1.20260305.0)
       miniflare: 4.20260305.0
       unenv: 2.0.0-rc.24
       vite: 7.3.1(@types/node@22.19.9)(jiti@2.6.1)(lightningcss@1.31.1)(sass@1.77.4)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2)
-      wrangler: 4.69.0
+      wrangler: 4.69.0(@cloudflare/workers-types@4.20260317.1)
       ws: 8.18.0
     transitivePeerDependencies:
       - bufferutil
@@ -7979,6 +8009,8 @@ snapshots:
 
   '@cloudflare/workerd-windows-64@1.20260305.0':
     optional: true
+
+  '@cloudflare/workers-types@4.20260317.1': {}
 
   '@cspotcode/source-map-support@0.8.1':
     dependencies:
@@ -9008,7 +9040,7 @@ snapshots:
       - aws-crt
       - supports-color
 
-  '@opennextjs/cloudflare@1.17.1(next@15.4.11(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.2)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(sass@1.77.4))(wrangler@4.69.0)':
+  '@opennextjs/cloudflare@1.17.1(next@15.4.11(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.2)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(sass@1.77.4))(wrangler@4.69.0(@cloudflare/workers-types@4.20260317.1))':
     dependencies:
       '@ast-grep/napi': 0.40.5
       '@dotenvx/dotenvx': 1.31.0
@@ -9019,7 +9051,7 @@ snapshots:
       glob: 12.0.0
       next: 15.4.11(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.2)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(sass@1.77.4)
       ts-tqdm: 0.8.6
-      wrangler: 4.69.0
+      wrangler: 4.69.0(@cloudflare/workers-types@4.20260317.1)
       yargs: 18.0.0
     transitivePeerDependencies:
       - aws-crt
@@ -9028,13 +9060,13 @@ snapshots:
 
   '@opentelemetry/api@1.9.0': {}
 
-  '@payloadcms/db-postgres@3.77.0(@opentelemetry/api@1.9.0)(payload@3.77.0(graphql@16.13.0)(typescript@5.7.3))':
+  '@payloadcms/db-postgres@3.77.0(@cloudflare/workers-types@4.20260317.1)(@opentelemetry/api@1.9.0)(payload@3.77.0(graphql@16.13.0)(typescript@5.7.3))':
     dependencies:
-      '@payloadcms/drizzle': 3.77.0(@opentelemetry/api@1.9.0)(@types/pg@8.10.2)(payload@3.77.0(graphql@16.13.0)(typescript@5.7.3))(pg@8.16.3)
+      '@payloadcms/drizzle': 3.77.0(@cloudflare/workers-types@4.20260317.1)(@opentelemetry/api@1.9.0)(@types/pg@8.10.2)(payload@3.77.0(graphql@16.13.0)(typescript@5.7.3))(pg@8.16.3)
       '@types/pg': 8.10.2
       console-table-printer: 2.12.1
       drizzle-kit: 0.31.7
-      drizzle-orm: 0.44.7(@opentelemetry/api@1.9.0)(@types/pg@8.10.2)(pg@8.16.3)
+      drizzle-orm: 0.44.7(@cloudflare/workers-types@4.20260317.1)(@opentelemetry/api@1.9.0)(@types/pg@8.10.2)(pg@8.16.3)
       payload: 3.77.0(graphql@16.13.0)(typescript@5.7.3)
       pg: 8.16.3
       prompts: 2.4.2
@@ -9071,11 +9103,11 @@ snapshots:
       - sqlite3
       - supports-color
 
-  '@payloadcms/drizzle@3.77.0(@opentelemetry/api@1.9.0)(@types/pg@8.10.2)(payload@3.77.0(graphql@16.13.0)(typescript@5.7.3))(pg@8.16.3)':
+  '@payloadcms/drizzle@3.77.0(@cloudflare/workers-types@4.20260317.1)(@opentelemetry/api@1.9.0)(@types/pg@8.10.2)(payload@3.77.0(graphql@16.13.0)(typescript@5.7.3))(pg@8.16.3)':
     dependencies:
       console-table-printer: 2.12.1
       dequal: 2.0.3
-      drizzle-orm: 0.44.7(@opentelemetry/api@1.9.0)(@types/pg@8.10.2)(pg@8.16.3)
+      drizzle-orm: 0.44.7(@cloudflare/workers-types@4.20260317.1)(@opentelemetry/api@1.9.0)(@types/pg@8.10.2)(pg@8.16.3)
       payload: 3.77.0(graphql@16.13.0)(typescript@5.7.3)
       prompts: 2.4.2
       to-snake-case: 1.0.0
@@ -11947,7 +11979,20 @@ snapshots:
     optionalDependencies:
       '@types/trusted-types': 2.0.7
 
+  dotenv-cli@11.0.0:
+    dependencies:
+      cross-spawn: 7.0.6
+      dotenv: 17.3.1
+      dotenv-expand: 12.0.3
+      minimist: 1.2.8
+
+  dotenv-expand@12.0.3:
+    dependencies:
+      dotenv: 16.4.7
+
   dotenv@16.4.7: {}
+
+  dotenv@17.3.1: {}
 
   drizzle-kit@0.31.7:
     dependencies:
@@ -11958,14 +12003,16 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.44.7(@opentelemetry/api@1.9.0)(@types/pg@8.10.2)(pg@8.16.3):
+  drizzle-orm@0.44.7(@cloudflare/workers-types@4.20260317.1)(@opentelemetry/api@1.9.0)(@types/pg@8.10.2)(pg@8.16.3):
     optionalDependencies:
+      '@cloudflare/workers-types': 4.20260317.1
       '@opentelemetry/api': 1.9.0
       '@types/pg': 8.10.2
       pg: 8.16.3
 
-  drizzle-orm@0.45.1(@opentelemetry/api@1.9.0)(@types/pg@8.10.2)(pg@8.16.3):
+  drizzle-orm@0.45.1(@cloudflare/workers-types@4.20260317.1)(@opentelemetry/api@1.9.0)(@types/pg@8.10.2)(pg@8.16.3):
     optionalDependencies:
+      '@cloudflare/workers-types': 4.20260317.1
       '@opentelemetry/api': 1.9.0
       '@types/pg': 8.10.2
       pg: 8.16.3
@@ -15321,7 +15368,7 @@ snapshots:
       '@cloudflare/workerd-linux-arm64': 1.20260305.0
       '@cloudflare/workerd-windows-64': 1.20260305.0
 
-  wrangler@4.69.0:
+  wrangler@4.69.0(@cloudflare/workers-types@4.20260317.1):
     dependencies:
       '@cloudflare/kv-asset-handler': 0.4.2
       '@cloudflare/unenv-preset': 2.14.0(unenv@2.0.0-rc.24)(workerd@1.20260305.0)
@@ -15332,6 +15379,7 @@ snapshots:
       unenv: 2.0.0-rc.24
       workerd: 1.20260305.0
     optionalDependencies:
+      '@cloudflare/workers-types': 4.20260317.1
       fsevents: 2.3.3
     transitivePeerDependencies:
       - bufferutil

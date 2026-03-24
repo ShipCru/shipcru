@@ -1,0 +1,19 @@
+name = "shipcru-router"
+main = "src/index.ts"
+compatibility_date = "2026-03-04"
+compatibility_flags = ["nodejs_compat"]
+account_id = "22461a46c1a20a3179b8e5c3da8979f5"
+
+# KV namespace for routing config
+[[kv_namespaces]]
+binding = "ROUTING_KV"
+id = "df30aa368fb541f5ac3380a36249f487"
+
+# Service binding to the OpenNext tenants worker
+[[services]]
+binding = "NEW_ORIGIN"
+service = "shipcru-tenants"
+
+[vars]
+VERCEL_HOST = "cloudflare-routing-demo.vercel.app"
+PUBLIC_DOMAIN = "shipcru-router.gitnation.workers.dev"
