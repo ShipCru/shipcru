@@ -1,0 +1,49 @@
+.bridge-login {
+  margin-bottom: var(--base);
+}
+
+.bridge-login form {
+  display: flex;
+  flex-direction: column;
+}
+
+.bridge-login__inputWrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--base);
+}
+
+.bridge-login__error {
+  margin-top: calc(var(--base) * 0.5);
+  padding: calc(var(--base) * 0.5) var(--base);
+  background: var(--theme-error-500);
+  color: var(--theme-elevation-0);
+  border-radius: var(--border-radius-m);
+  font-size: 0.8125rem;
+}
+
+.bridge-login .form-submit {
+  margin-top: calc(var(--base) * 0.75);
+}
+
+.bridge-login__divider {
+  display: flex;
+  align-items: center;
+  gap: var(--base);
+  margin-top: calc(var(--base) * 1.5);
+  margin-bottom: calc(var(--base) * 0.5);
+}
+
+.bridge-login__divider::before,
+.bridge-login__divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--theme-elevation-150);
+}
+
+.bridge-login__divider span {
+  font-size: 0.75rem;
+  color: var(--theme-elevation-400);
+  white-space: nowrap;
+}

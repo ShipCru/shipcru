@@ -31,6 +31,7 @@ import { Header } from './globals/Header'
 import { SuffixVariations } from './globals/SuffixVariations'
 import { jobTitleFullText, resumeContentFullText } from './lib/search/textExtractors'
 import { SUPPORTED_LOCALES } from './locales'
+import { betterAuthBridge } from './plugins/betterAuthBridge'
 import { pluginMultiTenant } from './plugins/multiTenant'
 import { pluginNestedDocs } from './plugins/nestedDocs'
 import { createSemanticSearchPlugin } from './plugins/semanticSearch'
@@ -156,6 +157,12 @@ export default buildConfig({
     },
   },
   plugins: [
+    betterAuthBridge({
+      cockroachDbUrl:
+        cloudflare.env.COCKROACH_HYPERDRIVE?.connectionString ??
+        process.env.COCKROACH_DATABASE_URL ??
+        '',
+    }),
     r2Storage({
       bucket: cloudflare.env.R2,
       collections: { media: true },

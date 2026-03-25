@@ -20,6 +20,7 @@ import { SearchListActions as SearchListActions_130797deb4dcedc92b038842827a275a
 import { default as default_aef7c57227194c862c211381e70124e4 } from '@/globals/DefaultTemplates/PatternRowLabel'
 import { default as default_17c6ef4bfe47bfa29d923fb5718170b7 } from '@/globals/Header/RowLabel'
 import { default as default_eb9f0801d65a2b66bac35d04f88fd707 } from '@/components/admin/SuffixVariationRowLabel'
+import { default as default_efa5c895d3ab132cdad6355c693178f2 } from '@/plugins/betterAuthBridge/components/BetterAuthLogin'
 import { TenantSelector as TenantSelector_d6d5f193a167989e2ee7d14202901e62 } from '@payloadcms/plugin-multi-tenant/rsc'
 import { R2ClientUploadHandler as R2ClientUploadHandler_85cc02ed84006fcc91d3aff39dda669d } from '@payloadcms/storage-r2/client'
 import { TenantSelectionProvider as TenantSelectionProvider_d6d5f193a167989e2ee7d14202901e62 } from '@payloadcms/plugin-multi-tenant/rsc'
@@ -48,6 +49,7 @@ export const importMap = {
   "@/globals/DefaultTemplates/PatternRowLabel#default": default_aef7c57227194c862c211381e70124e4,
   "@/globals/Header/RowLabel#default": default_17c6ef4bfe47bfa29d923fb5718170b7,
   "@/components/admin/SuffixVariationRowLabel#default": default_eb9f0801d65a2b66bac35d04f88fd707,
+  "@/plugins/betterAuthBridge/components/BetterAuthLogin#default": default_efa5c895d3ab132cdad6355c693178f2,
   "@payloadcms/plugin-multi-tenant/rsc#TenantSelector": TenantSelector_d6d5f193a167989e2ee7d14202901e62,
   "@payloadcms/storage-r2/client#R2ClientUploadHandler": R2ClientUploadHandler_85cc02ed84006fcc91d3aff39dda669d,
   "@payloadcms/plugin-multi-tenant/rsc#TenantSelectionProvider": TenantSelectionProvider_d6d5f193a167989e2ee7d14202901e62,

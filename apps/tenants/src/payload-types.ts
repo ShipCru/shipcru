@@ -224,6 +224,10 @@ export interface User {
         id?: string | null;
       }[]
     | null;
+  /**
+   * CockroachDB user ID (set automatically on SSO login)
+   */
+  externalId?: string | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -1552,6 +1556,7 @@ export interface UsersSelect<T extends boolean = true> {
         roles?: T;
         id?: T;
       };
+  externalId?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;

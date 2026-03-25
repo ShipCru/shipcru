@@ -54,6 +54,10 @@
       "binding": "HYPERDRIVE",
       "id": "f253aad2af694f44870edbff32912ce3",
     },
+    {
+      "binding": "COCKROACH_HYPERDRIVE",
+      "id": "<PLACEHOLDER_ID>",
+    },
   ],
   // Here's how to configure an additional environment
   // It can be deployed with `CLOUDFLARE_ENV=staging pnpm run deploy`
